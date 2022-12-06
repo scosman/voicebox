@@ -78,12 +78,6 @@
     NSString* textToSpeak = self.textView.text;
     AVSpeechUtterance* utterance = [[AVSpeechUtterance alloc] initWithString:textToSpeak];
 
-    // Configure the utterance.
-    utterance.rate = 0.57;
-    utterance.pitchMultiplier = 0.8;
-    utterance.postUtteranceDelay = 0.2;
-    //utterance.volume = 0.9;
-
     // TODO -- specify voice. List all with AVSpeechSynthesisVoice.speechVoices, find
     // highest quality matching curent locale. Save result for next time.
     AVSpeechSynthesisVoice* voice = [[AVSpeechSynthesisVoice alloc] init];;
