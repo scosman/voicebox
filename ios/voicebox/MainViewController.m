@@ -5,13 +5,13 @@
 //  Created by Steve Cosman on 2022-12-05.
 //
 
-#import "ViewController.h"
+#import "MainViewController.h"
 
 #import "VBSpeechSynthesizer.h"
 #import "VBMagicEnhancer.h"
 #import "VBButton.h"
 
-@interface ViewController () <UITextViewDelegate>
+@interface MainViewController () <UITextViewDelegate>
 
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) VBButton *speakButton, *magicButton;
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation ViewController
+@implementation MainViewController
 
 -(instancetype)init {
     self = [super init];

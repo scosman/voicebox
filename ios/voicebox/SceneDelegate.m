@@ -6,7 +6,7 @@
 //
 
 #import "SceneDelegate.h"
-#import "ViewController.h"
+#import "MainViewController.h"
 
 @interface SceneDelegate ()
 
@@ -22,7 +22,7 @@
     }
     UIWindowScene* windowScene = (UIWindowScene*)scene;
     UIWindow* window = [[UIWindow alloc] initWithWindowScene:windowScene];
-    window.rootViewController = [[ViewController alloc] init];
+    window.rootViewController = [[MainViewController alloc] init];
     self.window = window;
     [window makeKeyAndVisible];
     
