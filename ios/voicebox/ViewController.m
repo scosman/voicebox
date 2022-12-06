@@ -7,18 +7,24 @@
 
 #import "ViewController.h"
 
-#import <AVFoundation/AVSpeechSynthesis.h>
+#import "VBSpeechSynthesizer.h"
 #import "VBButton.h"
 
 @interface ViewController () <UITextViewDelegate>
 
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) VBButton *speakButton, *magicButton;
-@property (nonatomic, strong) AVSpeechSynthesizer* speechSynthesizer;
+@property (nonatomic, strong) VBSpeechSynthesizer* speechSynthesizer;
 
 @end
 
 @implementation ViewController
+
+-(instancetype)init {
+    self = [super init];
+    self.speechSynthesizer = [[VBSpeechSynthesizer alloc] init];
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -79,24 +85,8 @@
 }
 
 -(void) speakText:(UIButton*)sender {
-    // Create an utterance.
     NSString* textToSpeak = self.textView.text;
-    AVSpeechUtterance* utterance = [[AVSpeechUtterance alloc] initWithString:textToSpeak];
-
-    // TODO -- specify voice. List all with AVSpeechSynthesisVoice.speechVoices, find
-    // highest quality matching curent locale. Save result for next time.
-    AVSpeechSynthesisVoice* voice = [[AVSpeechSynthesisVoice alloc] init];;
-    utterance.voice = voice;
-    
-    // Create a speech synthesizer and speak
-    if (!_speechSynthesizer) {
-        @synchronized ((self)) {
-            if (!_speechSynthesizer) {
-                _speechSynthesizer = [[AVSpeechSynthesizer alloc] init];
-            }
-        }
-    }
-    [_speechSynthesizer speakUtterance:utterance];
+    [self.speechSynthesizer speak:textToSpeak];
 }
 
 -(void) updateButtonStates {
