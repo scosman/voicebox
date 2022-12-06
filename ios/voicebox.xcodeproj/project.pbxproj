@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E05B910E293F7F94004DBFE2 /* VBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E05B910D293F7F94004DBFE2 /* VBButton.m */; };
 		E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */; };
 		E0BBF1F1293EEE9000FB7FF9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1F0293EEE9000FB7FF9 /* SceneDelegate.m */; };
 		E0BBF1F4293EEE9000FB7FF9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1F3293EEE9000FB7FF9 /* ViewController.m */; };
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E05B910C293F7F94004DBFE2 /* VBButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VBButton.h; path = UI/VBButton.h; sourceTree = "<group>"; };
+		E05B910D293F7F94004DBFE2 /* VBButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = VBButton.m; path = UI/VBButton.m; sourceTree = "<group>"; };
 		E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = voicebox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0BBF1EC293EEE9000FB7FF9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -112,6 +115,8 @@
 				E0BBF1FA293EEE9100FB7FF9 /* LaunchScreen.storyboard */,
 				E0BBF1FD293EEE9100FB7FF9 /* Info.plist */,
 				E0BBF1FE293EEE9100FB7FF9 /* main.m */,
+				E05B910C293F7F94004DBFE2 /* VBButton.h */,
+				E05B910D293F7F94004DBFE2 /* VBButton.m */,
 			);
 			path = voicebox;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 			files = (
 				E0BBF1F4293EEE9000FB7FF9 /* ViewController.m in Sources */,
 				E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */,
+				E05B910E293F7F94004DBFE2 /* VBButton.m in Sources */,
 				E0BBF1FF293EEE9100FB7FF9 /* main.m in Sources */,
 				E0BBF1F1293EEE9000FB7FF9 /* SceneDelegate.m in Sources */,
 			);

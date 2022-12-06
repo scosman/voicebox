@@ -8,11 +8,12 @@
 #import "ViewController.h"
 
 #import <AVFoundation/AVSpeechSynthesis.h>
+#import "VBButton.h"
 
 @interface ViewController () <UITextViewDelegate>
 
 @property (nonatomic, weak) UITextView* textView;
-@property (nonatomic, weak) UIButton *speakButton, *magicButton;
+@property (nonatomic, weak) VBButton *speakButton, *magicButton;
 @property (nonatomic, strong) AVSpeechSynthesizer* speechSynthesizer;
 
 @end
@@ -22,23 +23,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor greenColor];
+    self.view.backgroundColor = [UIColor systemGroupedBackgroundColor];
 
     UITextView* textView = [[UITextView alloc] init];
     [self.view addSubview:textView];
+    // Font side, at least 32, larger if system font is huge
+    textView.font = [UIFont systemFontOfSize:MAX([UIFont systemFontSize], 38.0)];
+    textView.textContainerInset = UIEdgeInsetsMake(23, 25, 23, 25);
+    textView.layer.cornerRadius = 25;
+    textView.clipsToBounds = YES;
     textView.translatesAutoresizingMaskIntoConstraints = NO;
     textView.delegate = self;
     _textView = textView;
 
-    UIButton* speakButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [speakButton setTitle:@"Speak" forState:UIControlStateNormal];
+    VBButton* speakButton =  [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"person.wave.2.fill" andTitle:@"Speak"];
     speakButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [speakButton addTarget:self action:@selector(speakText:) forControlEvents:UIControlEventTouchUpInside];
+    [speakButton addTarget:self action:@selector(speakText:) forControlEvents:UIControlEventPrimaryActionTriggered];
     [self.view addSubview:speakButton];
     _speakButton = speakButton;
     
-    UIButton* magicButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [magicButton setTitle:@"Magic" forState:UIControlStateNormal];
+    VBButton* magicButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"wand.and.stars" andTitle:@"Enhance"];
     magicButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:magicButton];
     _magicButton = magicButton;
@@ -47,6 +51,7 @@
 
     const float buttonWidth = 200.0;
     const float buttonHeith = 150.0;
+    const float accessibleSystemSpaceMultiplier = 3.0;
 
     // Layout
     NSArray<NSLayoutConstraint*>* constraints = @[
@@ -58,12 +63,12 @@
         // Speak button
         [speakButton.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor],
         [speakButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
-        [speakButton.leadingAnchor constraintEqualToSystemSpacingAfterAnchor:textView.trailingAnchor multiplier:1.0],
+        [speakButton.leadingAnchor constraintEqualToSystemSpacingAfterAnchor:textView.trailingAnchor multiplier:accessibleSystemSpaceMultiplier],
         [speakButton.widthAnchor constraintEqualToConstant:buttonWidth],
         [speakButton.heightAnchor constraintEqualToConstant:buttonHeith],
 
         // Magic button
-        [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor multiplier:1.0],
+        [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor multiplier:accessibleSystemSpaceMultiplier],
         [magicButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [magicButton.widthAnchor constraintEqualToConstant:buttonWidth],
         [magicButton.heightAnchor constraintEqualToConstant:buttonHeith],
@@ -95,17 +100,9 @@
 }
 
 -(void) updateButtonStates {
-    if (self.textView.text.length > 0) {
-        self.speakButton.enabled = YES;
-        self.magicButton.enabled = YES;
-        _magicButton.backgroundColor = [UIColor systemBlueColor];
-        _speakButton.backgroundColor = [UIColor systemBlueColor];
-    } else {
-        self.speakButton.enabled = NO;
-        self.magicButton.enabled = NO;
-        _magicButton.backgroundColor = [UIColor grayColor];
-        _speakButton.backgroundColor = [UIColor grayColor];
-    }
+    BOOL hasText = self.textView.text.length > 0;
+    self.speakButton.enabled = hasText;
+    self.magicButton.enabled = hasText;
 }
 
 #pragma - mark UITextViewDelegate
