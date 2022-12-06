@@ -7,10 +7,13 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+#import <AVFoundation/AVSpeechSynthesis.h>
+
+@interface ViewController () <UITextViewDelegate>
 
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) UIButton *speakButton, *magicButton;
+@property (nonatomic, strong) AVSpeechSynthesizer* speechSynthesizer;
 
 @end
 
@@ -24,21 +27,23 @@
     UITextView* textView = [[UITextView alloc] init];
     [self.view addSubview:textView];
     textView.translatesAutoresizingMaskIntoConstraints = NO;
+    textView.delegate = self;
     _textView = textView;
 
     UIButton* speakButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [speakButton setTitle:@"Speak" forState:UIControlStateNormal];
-    speakButton.backgroundColor = [UIColor orangeColor];
     speakButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [speakButton addTarget:self action:@selector(speakText:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:speakButton];
     _speakButton = speakButton;
     
     UIButton* magicButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [magicButton setTitle:@"Magic" forState:UIControlStateNormal];
-    magicButton.backgroundColor = [UIColor orangeColor];
     magicButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:magicButton];
     _magicButton = magicButton;
+    
+    [self updateButtonStates];
 
     const float buttonWidth = 200.0;
     const float buttonHeith = 150.0;
@@ -68,5 +73,51 @@
     [textView becomeFirstResponder];
 }
 
+-(void) speakText:(UIButton*)sender {
+    // Create an utterance.
+    NSString* textToSpeak = self.textView.text;
+    AVSpeechUtterance* utterance = [[AVSpeechUtterance alloc] initWithString:textToSpeak];
+
+    // Configure the utterance.
+    utterance.rate = 0.57;
+    utterance.pitchMultiplier = 0.8;
+    utterance.postUtteranceDelay = 0.2;
+    //utterance.volume = 0.9;
+
+    // TODO -- specify voice. List all with AVSpeechSynthesisVoice.speechVoices, find
+    // highest quality matching curent locale. Save result for next time.
+    AVSpeechSynthesisVoice* voice = [[AVSpeechSynthesisVoice alloc] init];;
+    utterance.voice = voice;
+    
+    // Create a speech synthesizer and speak
+    if (!_speechSynthesizer) {
+        @synchronized ((self)) {
+            if (!_speechSynthesizer) {
+                _speechSynthesizer = [[AVSpeechSynthesizer alloc] init];
+            }
+        }
+    }
+    [_speechSynthesizer speakUtterance:utterance];
+}
+
+-(void) updateButtonStates {
+    if (self.textView.text.length > 0) {
+        self.speakButton.enabled = YES;
+        self.magicButton.enabled = YES;
+        _magicButton.backgroundColor = [UIColor systemBlueColor];
+        _speakButton.backgroundColor = [UIColor systemBlueColor];
+    } else {
+        self.speakButton.enabled = NO;
+        self.magicButton.enabled = NO;
+        _magicButton.backgroundColor = [UIColor grayColor];
+        _speakButton.backgroundColor = [UIColor grayColor];
+    }
+}
+
+#pragma - mark UITextViewDelegate
+
+-(void)textViewDidChange:(UITextView *)textView {
+    [self updateButtonStates];
+}
 
 @end
