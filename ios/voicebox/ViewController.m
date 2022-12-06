@@ -8,6 +8,7 @@
 #import "ViewController.h"
 
 #import "VBSpeechSynthesizer.h"
+#import "VBMagicEnhancer.h"
 #import "VBButton.h"
 
 @interface ViewController () <UITextViewDelegate>
@@ -15,6 +16,7 @@
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) VBButton *speakButton, *magicButton;
 @property (nonatomic, strong) VBSpeechSynthesizer* speechSynthesizer;
+@property (nonatomic, strong) VBMagicEnhancer* enhancer;
 
 @end
 
@@ -23,6 +25,7 @@
 -(instancetype)init {
     self = [super init];
     self.speechSynthesizer = [[VBSpeechSynthesizer alloc] init];
+    self.enhancer = [[VBMagicEnhancer alloc] init];
     return self;
 }
 
@@ -40,6 +43,7 @@
     textView.clipsToBounds = YES;
     textView.translatesAutoresizingMaskIntoConstraints = NO;
     textView.delegate = self;
+    textView.text = @"I cold";
     _textView = textView;
 
     VBButton* speakButton =  [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"person.wave.2.fill" andTitle:@"Speak"];
@@ -50,6 +54,7 @@
     
     VBButton* magicButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"wand.and.stars" andTitle:@"Enhance"];
     magicButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [magicButton addTarget:self action:@selector(enhanceText:) forControlEvents:UIControlEventPrimaryActionTriggered];
     [self.view addSubview:magicButton];
     _magicButton = magicButton;
     
@@ -87,6 +92,13 @@
 -(void) speakText:(UIButton*)sender {
     NSString* textToSpeak = self.textView.text;
     [self.speechSynthesizer speak:textToSpeak];
+}
+
+-(void) enhanceText:(UIButton*)sender {
+    NSString* fullText = self.textView.text;
+    [self.enhancer enhance:fullText onComplete:^(NSArray * _Nonnull options, NSError * _Nonnull error) {
+        NSLog(@"Options: %@", options);
+    }];
 }
 
 -(void) updateButtonStates {
