@@ -22,6 +22,26 @@
     return self;
 }
 
+-(instancetype)initOptionButtonWithTitle:(NSString*)title {
+    self = [super init];
+    
+    UIButtonConfiguration* config = UIButtonConfiguration.filledButtonConfiguration;
+    config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:MAX([UIFont systemFontSize], 24.0)]}];
+    config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
+    self.configuration = config;
+    
+    return self;
+}
 
+-(instancetype)initOptionCancelButton {
+    self = [super init];
+    
+    UIButtonConfiguration* config = UIButtonConfiguration.grayButtonConfiguration;
+    config.attributedTitle = [[NSAttributedString alloc] initWithString:@"Cancel" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:MAX([UIFont systemFontSize], 24.0)]}];
+    config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
+    self.configuration = config;
+    
+    return self;
+}
 
 @end

@@ -7,11 +7,13 @@
 
 #import "MainViewController.h"
 
+#import "Constants.h"
 #import "VBSpeechSynthesizer.h"
 #import "VBMagicEnhancer.h"
 #import "VBButton.h"
+#import "VBEnhanceViewController.h"
 
-@interface MainViewController () <UITextViewDelegate>
+@interface MainViewController () <UITextViewDelegate, EnhanceViewSelectionDelegate>
 
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) VBButton *speakButton, *magicButton;
@@ -62,7 +64,6 @@
 
     const float buttonWidth = 200.0;
     const float buttonHeith = 150.0;
-    const float accessibleSystemSpaceMultiplier = 3.0;
 
     // Layout
     NSArray<NSLayoutConstraint*>* constraints = @[
@@ -74,12 +75,12 @@
         // Speak button
         [speakButton.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor],
         [speakButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
-        [speakButton.leadingAnchor constraintEqualToSystemSpacingAfterAnchor:textView.trailingAnchor multiplier:accessibleSystemSpaceMultiplier],
+        [speakButton.leadingAnchor constraintEqualToSystemSpacingAfterAnchor:textView.trailingAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [speakButton.widthAnchor constraintEqualToConstant:buttonWidth],
         [speakButton.heightAnchor constraintEqualToConstant:buttonHeith],
 
         // Magic button
-        [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor multiplier:accessibleSystemSpaceMultiplier],
+        [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [magicButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [magicButton.widthAnchor constraintEqualToConstant:buttonWidth],
         [magicButton.heightAnchor constraintEqualToConstant:buttonHeith],
@@ -95,9 +96,22 @@
 }
 
 -(void) enhanceText:(UIButton*)sender {
+    VBEnhanceViewController* enhanceVc = [[VBEnhanceViewController alloc] init];
+    enhanceVc.modalPresentationStyle = UIModalPresentationPageSheet;
+    enhanceVc.selectionDelegate = self;
+    [self presentViewController:enhanceVc animated:YES completion:nil];
+    
+    // Load suggestions from the great ML in the cloud
     NSString* fullText = self.textView.text;
     [self.enhancer enhance:fullText onComplete:^(NSArray * _Nonnull options, NSError * _Nonnull error) {
-        NSLog(@"Options: %@", options);
+        if (error) {
+            // TODO: user visible error handling
+            [enhanceVc dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [enhanceVc showOptions:options];
+        });
     }];
 }
 
@@ -111,6 +125,12 @@
 
 -(void)textViewDidChange:(UITextView *)textView {
     [self updateButtonStates];
+}
+
+#pragma - mark EnhanceViewSelectionDelegate
+
+- (void)didSelectEnhanceOption:(NSString *)selectedOption {
+    self.textView.text = selectedOption;
 }
 
 @end

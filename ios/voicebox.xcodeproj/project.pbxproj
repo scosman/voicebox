@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E049ED3D293FCC38002080BD /* VBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED3C293FCC38002080BD /* VBButton.m */; };
 		E049ED41293FCC5D002080BD /* VBMagicEnhancer.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED40293FCC5D002080BD /* VBMagicEnhancer.m */; };
+		E049ED45293FFB93002080BD /* VBEnhanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED44293FFB93002080BD /* VBEnhanceViewController.m */; };
 		E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */; };
 		E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */; };
 		E0BBF1F1293EEE9000FB7FF9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1F0293EEE9000FB7FF9 /* SceneDelegate.m */; };
@@ -44,6 +45,9 @@
 		E049ED3F293FCC5D002080BD /* VBMagicEnhancer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBMagicEnhancer.h; sourceTree = "<group>"; };
 		E049ED40293FCC5D002080BD /* VBMagicEnhancer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBMagicEnhancer.m; sourceTree = "<group>"; };
 		E049ED42293FEB36002080BD /* AppSecrets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppSecrets.h; sourceTree = "<group>"; };
+		E049ED43293FFB93002080BD /* VBEnhanceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBEnhanceViewController.h; sourceTree = "<group>"; };
+		E049ED44293FFB93002080BD /* VBEnhanceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBEnhanceViewController.m; sourceTree = "<group>"; };
+		E049ED462940F261002080BD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		E05B910F293FC4ED004DBFE2 /* VBSpeechSynthesizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBSpeechSynthesizer.h; sourceTree = "<group>"; };
 		E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBSpeechSynthesizer.m; sourceTree = "<group>"; };
 		E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = voicebox.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,6 +98,10 @@
 			children = (
 				E049ED3B293FCC38002080BD /* VBButton.h */,
 				E049ED3C293FCC38002080BD /* VBButton.m */,
+				E049ED43293FFB93002080BD /* VBEnhanceViewController.h */,
+				E049ED44293FFB93002080BD /* VBEnhanceViewController.m */,
+				E0BBF1F2293EEE9000FB7FF9 /* MainViewController.h */,
+				E0BBF1F3293EEE9000FB7FF9 /* MainViewController.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -139,12 +147,11 @@
 				E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */,
 				E0BBF1EF293EEE9000FB7FF9 /* SceneDelegate.h */,
 				E0BBF1F0293EEE9000FB7FF9 /* SceneDelegate.m */,
-				E0BBF1F2293EEE9000FB7FF9 /* MainViewController.h */,
-				E0BBF1F3293EEE9000FB7FF9 /* MainViewController.m */,
 				E0BBF1F8293EEE9100FB7FF9 /* Assets.xcassets */,
 				E0BBF1FA293EEE9100FB7FF9 /* LaunchScreen.storyboard */,
 				E0BBF1FD293EEE9100FB7FF9 /* Info.plist */,
 				E0BBF1FE293EEE9100FB7FF9 /* main.m */,
+				E049ED462940F261002080BD /* Constants.h */,
 			);
 			path = voicebox;
 			sourceTree = "<group>";
@@ -298,6 +305,7 @@
 				E0BBF1F4293EEE9000FB7FF9 /* MainViewController.m in Sources */,
 				E049ED41293FCC5D002080BD /* VBMagicEnhancer.m in Sources */,
 				E049ED3D293FCC38002080BD /* VBButton.m in Sources */,
+				E049ED45293FFB93002080BD /* VBEnhanceViewController.m in Sources */,
 				E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */,
 				E0BBF1FF293EEE9100FB7FF9 /* main.m in Sources */,
 				E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */,
