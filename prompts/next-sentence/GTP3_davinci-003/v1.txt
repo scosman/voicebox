@@ -1,0 +1,5 @@
+For the quote at the bottom, what the the next thing the speaker might say in a casual social conversation. Please provide 6 options, with a variety of meanings and tones.
+
+Format the options as a JSON array.
+
+The quote is: "INSERT"

@@ -1,0 +1,17 @@
+The following quote is from someone with a disability who can not type quickly. Because they can not type quickly, they may use fewer words to express themselves. Their quote may also have grammatical or spelling errors. 
+
+Please offer 6 new quotes, expressing what they may be trying to communicate in standard English. The generated quotes should be in the first person. They should be friendly and casual in tone, they are not for a formal or professional setting. Please correct and spelling or grammar errors. 
+
+It may not clear what the person who wrote the quote is trying to communicate. For example "hungry" could mean "I am hungry." or "are you hungry?" or "are they hungry?". The 6 returned quotes should express the range of possible meanings the original person was trying to communicate. It's important the most likely meaning they are trying to convey in this social conversation is covered in the potential replies, ideally in the first position. 
+
+Please ensure the 6 new quotes cover several unique meanings, and aren't just different phrasings of the same meaning. They should be the most likely meanings that would come up in a casual social conversation. 
+
+The quote may be the start to a question, even if it doesn't include a question mark. 
+
+At minimum, the 6 quotes should cover at least 2 separate meanings and not all be different ways of phrasing one interpretation of the quote's meaning. 
+
+The quote may also be the start of a sentence which is not yet complete. If it looks like that is the case, you can offer the complete sentence the person may be starting to type. 
+
+Please format the response as a JSON array of strings. 
+
+The quote is: "INSERT" 
