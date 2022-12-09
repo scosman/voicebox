@@ -12,7 +12,7 @@
 
 @interface VBEnhanceViewController ()
 
-@property (nonatomic, strong) NSArray<NSString*>* options;
+@property (nonatomic, strong) NSArray<NSString*> *options, *optionsLoadedInView;
 @property (nonatomic, weak) UILabel* loadingLabel;
 @property (nonatomic, weak) UIActivityIndicatorView* spinner;
 @property (nonatomic, weak) UIButton* closeBtn;
@@ -52,8 +52,6 @@
     [self.view addSubview:optionsStackView];
     _optionsStackView = optionsStackView;
     
-    [self updateState];
-    
     NSArray* constraints = @[
         // Loading Content
         [spinner.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
@@ -72,6 +70,8 @@
         [optionsStackView.heightAnchor constraintEqualToAnchor:self.view.heightAnchor multiplier:0.95],
     ];
     [NSLayoutConstraint activateConstraints:constraints];
+    
+    [self updateState];
 }
 
 -(void) closeButtonAction:(UIButton*)sender {
@@ -90,8 +90,19 @@
 -(void) showOptions:(NSArray<NSString*>*)options {
     _options = options;
     [self updateState];
+}
+
+-(void) updateOptionsButtons {
+    NSArray<NSString*>* options = _options;
     
-    // replace old options
+    @synchronized (self) {
+        if (options == _optionsLoadedInView) {
+            return;
+        }
+        _optionsLoadedInView = options;
+    }
+    
+    // remove old options
     for (UIView* oldView in _optionsStackView.subviews) {
         [oldView removeFromSuperview];
     }
@@ -139,6 +150,8 @@
         _loadingLabel.hidden = YES;
         _optionsStackView.hidden = NO;
     }
+    
+    [self updateOptionsButtons];
 }
 
 -(NSString*) randomLoadingLabel {
