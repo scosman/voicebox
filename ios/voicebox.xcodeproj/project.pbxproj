@@ -10,6 +10,7 @@
 		E049ED3D293FCC38002080BD /* VBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED3C293FCC38002080BD /* VBButton.m */; };
 		E049ED41293FCC5D002080BD /* VBMagicEnhancer.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED40293FCC5D002080BD /* VBMagicEnhancer.m */; };
 		E049ED45293FFB93002080BD /* VBEnhanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED44293FFB93002080BD /* VBEnhanceViewController.m */; };
+		E049ED492943A6A2002080BD /* text-expansion.txt in Resources */ = {isa = PBXBuildFile; fileRef = E049ED482943A4DC002080BD /* text-expansion.txt */; };
 		E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */; };
 		E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */; };
 		E0BBF1F1293EEE9000FB7FF9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1F0293EEE9000FB7FF9 /* SceneDelegate.m */; };
@@ -48,6 +49,7 @@
 		E049ED43293FFB93002080BD /* VBEnhanceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBEnhanceViewController.h; sourceTree = "<group>"; };
 		E049ED44293FFB93002080BD /* VBEnhanceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBEnhanceViewController.m; sourceTree = "<group>"; };
 		E049ED462940F261002080BD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		E049ED482943A4DC002080BD /* text-expansion.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "text-expansion.txt"; sourceTree = "<group>"; };
 		E05B910F293FC4ED004DBFE2 /* VBSpeechSynthesizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBSpeechSynthesizer.h; sourceTree = "<group>"; };
 		E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBSpeechSynthesizer.m; sourceTree = "<group>"; };
 		E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = voicebox.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +120,14 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		E049ED472943A4B2002080BD /* Prompts */ = {
+			isa = PBXGroup;
+			children = (
+				E049ED482943A4DC002080BD /* text-expansion.txt */,
+			);
+			path = Prompts;
+			sourceTree = "<group>";
+		};
 		E0BBF1E0293EEE9000FB7FF9 = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +151,7 @@
 		E0BBF1EB293EEE9000FB7FF9 /* voicebox */ = {
 			isa = PBXGroup;
 			children = (
+				E049ED472943A4B2002080BD /* Prompts */,
 				E049ED3A293FCC38002080BD /* UI */,
 				E049ED3E293FCC5D002080BD /* Util */,
 				E0BBF1EC293EEE9000FB7FF9 /* AppDelegate.h */,
@@ -276,6 +287,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E049ED492943A6A2002080BD /* text-expansion.txt in Resources */,
 				E0BBF1FC293EEE9100FB7FF9 /* LaunchScreen.storyboard in Resources */,
 				E0BBF1F9293EEE9100FB7FF9 /* Assets.xcassets in Resources */,
 			);

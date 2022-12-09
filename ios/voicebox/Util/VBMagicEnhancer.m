@@ -15,7 +15,7 @@
 -(void) enhance:(NSString*)text onComplete:(void (^)(NSArray*, NSError*))complete {
     // TODO -- better escaping, or use edit API that separates input and instructions
     NSString* escapedText = [text stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];
-    NSString* prompt = [NSString stringWithFormat:[self promptTemplate], escapedText];
+    NSString* prompt = [[self textExpansionPromptTemplate] stringByReplacingOccurrencesOfString:@"INSERT_QUOTE_PLACEHOLDER" withString:escapedText];
     [self openAiGptRequest:prompt onComplete:complete];
 }
 
@@ -84,16 +84,15 @@
     [dataTask resume];
 }
 
--(NSString*) promptTemplate {
-    return @"The following quote is from someone with a disability who can not type quickly. Because they can not type quickly, they may use fewer words to express themselves. Their quote may also have gramatical or spelling errors.\n\n\
-    Please offer 6 new quotes, expressing what they may be trying to communicate in standard English. The generated quotes should be in the first person. They should be friendly and casual in tone, they are not for a formal or professional setting. Please correct and spelling or gammar errors.\n\n\
-    It may not clear what the person who wrote the quote is trying to communicate. For example \"hungry\" could mean \"I am hungry.\" or \"are you hungry?\" or \"are they hungry?\". The 6 returned quotes should express the range of possible meanings the original person was trying to communicate. It's important the most likely meaning they are trying to convey in this social conversation is covered in the potential replies, ideally in the first position.\n\n\
-    Please ensure the 6 new quotes cover several unique meanings, and aren't just different phrasings of the same meaning. They should be the most likley meanings that would come up in a casual social conversation.\n\n\
-    The quote may be the start to a quesiton, even if it doesn't include a question mark.\n\n\
-    At minimum, the 6 quotes should cover at least 2 separate meanings and not all be different ways of phrasing one interpretation of the quote's meaning.\n\n\
-    The quote may also be the start of a sentance which is not yet complete. If it looks like that is the case, you can offer the complete sentance the person may be starting to type.\n\n\
-    Please format the response as a JSON array of strings.\n\n\
-    The quote is: \"%@\"";
+-(NSString*) textExpansionPromptTemplate {
+    static NSString* textExpansionPrompt;
+    if (!textExpansionPrompt) {
+        NSString* path = [[NSBundle mainBundle] pathForResource:@"text-expansion" ofType:@"txt"];
+        textExpansionPrompt = [NSString stringWithContentsOfFile:path
+                                                      encoding:NSUTF8StringEncoding
+                                                         error:NULL];
+    }
+    return textExpansionPrompt;
 }
 
 @end
