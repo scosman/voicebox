@@ -8,15 +8,36 @@
 #import "VBMagicEnhancer.h"
 
 #import "AppSecrets.h"
+#import "VBStringUtils.h"
+
+typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
+    kModeTextExpansion,
+    kModeNextSentence
+};
+
+#define PROMPT_QUOTE_PLACEHOLDER @"INSERT_QUOTE_PLACEHOLDER"
+#define PROMPT_PRIOR_CONTENT_PLACEHOLDER @"PRIOR_CONTENT_PLACEHOLDER"
+
+@implementation VBMagicEnhancerOption
+@end
 
 @implementation VBMagicEnhancer
 
-
--(void) enhance:(NSString*)text onComplete:(void (^)(NSArray*, NSError*))complete {
-    // TODO -- better escaping, or use edit API that separates input and instructions
-    NSString* escapedText = [text stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];
-    NSString* prompt = [NSString stringWithFormat:[self promptTemplate], escapedText];
-    [self openAiGptRequest:prompt onComplete:complete];
+-(void) enhance:(NSString*)text onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete {
+    // default to text expansion.
+    MagicEnhancerMode mode = kModeTextExpansion;
+    // if last charater is a period, do the next sentence completion
+    if ([VBStringUtils endsInCompleteSentence:text]) {
+        mode = kModeNextSentence;
+    }
+    
+    NSString* prompt = [self promptForText:text withMode:mode];
+    if (!prompt) {
+        complete(nil, [NSError errorWithDomain:@"net.scosman.voicebox.custom" code:89939 userInfo:@{NSLocalizedDescriptionKey:@"Issue generating prompt."}]);
+        return;;
+    }
+    
+    [self openAiGptRequest:prompt withOriginalText:text withMode:mode onComplete:complete];
 }
 
 /*
@@ -26,7 +47,8 @@
   - use "n" param of open API endpoint, and structured response instead of parsing json from plaintext
   - add timeout to request
  */
--(void) openAiGptRequest:(NSString*)prompt onComplete:(void (^)(NSArray*, NSError*))complete {
+-(void) openAiGptRequest:(NSString*)prompt withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete {
+    // TODO: none of these are tuned, just defaults
     NSDictionary* bodyPayloadData = @{
         @"model": @"text-davinci-003",
         @"prompt": prompt,
@@ -56,7 +78,7 @@
     
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSArray* options;
+        NSArray* stringOptions;
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
         if(httpResponse.statusCode != 200)
         {
@@ -68,32 +90,121 @@
             if (!parseError && responseJSONString) {
                 NSLog(@"The payload response is - %@", responseJSONString);
                 NSData* jsonData = [responseJSONString dataUsingEncoding:NSUTF8StringEncoding];
-                options = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&parseError];
-                NSLog(@"The options are - %@", options);
+                stringOptions = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&parseError];
+                NSLog(@"The options are - %@", stringOptions);
             }
             NSLog(@"The response is - %@",responseDictionary);
         }
         
-        if (!options) {
-            complete(nil,  [NSError errorWithDomain:@"net.scosman.voicebox.openai.errors" code:91111 userInfo:@{NSLocalizedDescriptionKey:@"Issue with OpenAPI API."}]);
+        if (!stringOptions) {
+            complete(nil,  [NSError errorWithDomain:@"net.scosman.voicebox.openai.errors" code:91111 userInfo:@{NSLocalizedDescriptionKey:@"Issue with OpenAI API."}]);
         }
         else {
+            NSMutableArray<VBMagicEnhancerOption*>* options = [[NSMutableArray alloc] initWithCapacity:stringOptions.count];
+            for (NSString* stringOption in stringOptions) {
+                VBMagicEnhancerOption* option = [self optionForText:originalText withSelectedOption:stringOption withMode:mode];
+                [options addObject:option];
+            }
             complete(options, nil);
         }
     }];
     [dataTask resume];
 }
 
--(NSString*) promptTemplate {
-    return @"The following quote is from someone with a disability who can not type quickly. Because they can not type quickly, they may use fewer words to express themselves. Their quote may also have gramatical or spelling errors.\n\n\
-    Please offer 6 new quotes, expressing what they may be trying to communicate in standard English. The generated quotes should be in the first person. They should be friendly and casual in tone, they are not for a formal or professional setting. Please correct and spelling or gammar errors.\n\n\
-    It may not clear what the person who wrote the quote is trying to communicate. For example \"hungry\" could mean \"I am hungry.\" or \"are you hungry?\" or \"are they hungry?\". The 6 returned quotes should express the range of possible meanings the original person was trying to communicate. It's important the most likely meaning they are trying to convey in this social conversation is covered in the potential replies, ideally in the first position.\n\n\
-    Please ensure the 6 new quotes cover several unique meanings, and aren't just different phrasings of the same meaning. They should be the most likley meanings that would come up in a casual social conversation.\n\n\
-    The quote may be the start to a quesiton, even if it doesn't include a question mark.\n\n\
-    At minimum, the 6 quotes should cover at least 2 separate meanings and not all be different ways of phrasing one interpretation of the quote's meaning.\n\n\
-    The quote may also be the start of a sentance which is not yet complete. If it looks like that is the case, you can offer the complete sentance the person may be starting to type.\n\n\
-    Please format the response as a JSON array of strings.\n\n\
-    The quote is: \"%@\"";
+-(NSString*) escapeDoubleQuotes:(NSString*)text {
+    // TODO -- better escaping, or use edit API that separates input and instructions
+    return [text stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];;
+}
+
+-(NSString*) originalTextToKeepWhenStrippingLastPartialSentence:(NSString*)text {
+    NSString* lastSentenceToReplace = [VBStringUtils lastPartialSentenceFromString:text];
+    NSUInteger originalTextToKeepLength = text.length - lastSentenceToReplace.length;
+    if (originalTextToKeepLength > text.length) {
+        // shouldn't hit
+        NSAssert(NO, @"Unexpected: last sentence to replace longer than original text.");
+        return @"";
+    }
+    return [text substringToIndex:originalTextToKeepLength];;
+}
+
+-(NSString*) promptForText:(NSString*)originalText withMode:(MagicEnhancerMode)mode {
+    switch (mode) {
+        case kModeTextExpansion:
+        {
+            // TODO P0 -- we're only passing last sentence to ML. It loses all context from prior sentences.
+            NSString* promptTemplate = [self textExpansionPromptTemplate];
+            NSString* lastSentence = [VBStringUtils lastPartialSentenceFromString:originalText];
+            if (!lastSentence) {
+                return nil;
+            }
+            
+            NSString* originalTextToKeep = [self originalTextToKeepWhenStrippingLastPartialSentence:originalText];
+            NSString* trimmedOriginalTextToKeep = [originalTextToKeep stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSString* promptTemplateWithPriorContextFilled;
+            if (trimmedOriginalTextToKeep.length > 0) {
+                // TODO trim this
+                NSString* escapedPriorContent = [self escapeDoubleQuotes:trimmedOriginalTextToKeep];
+                NSString* priorContentSection = [NSString stringWithFormat:@"The speaker had just said: \"%@\"", escapedPriorContent];
+                promptTemplateWithPriorContextFilled = [promptTemplate stringByReplacingOccurrencesOfString:PROMPT_PRIOR_CONTENT_PLACEHOLDER withString:priorContentSection];
+            } else {
+                promptTemplateWithPriorContextFilled = [promptTemplate stringByReplacingOccurrencesOfString:PROMPT_PRIOR_CONTENT_PLACEHOLDER withString:@""];
+            }
+            
+            NSString* prompt = [promptTemplateWithPriorContextFilled stringByReplacingOccurrencesOfString:PROMPT_QUOTE_PLACEHOLDER withString:[self escapeDoubleQuotes:lastSentence]];
+            return prompt;
+        }
+        case kModeNextSentence:
+        {
+            if (originalText.length <= 0) {
+                return nil;
+            }
+            NSString* promptTemplate = [self nextSentancePromptTemplate];
+            return [promptTemplate stringByReplacingOccurrencesOfString:PROMPT_QUOTE_PLACEHOLDER withString:[self escapeDoubleQuotes:originalText]];
+        }
+    }
+}
+
+-(VBMagicEnhancerOption*) optionForText:(NSString*)originalText withSelectedOption:(NSString*)optionString withMode:(MagicEnhancerMode)mode {
+    VBMagicEnhancerOption* option = [[VBMagicEnhancerOption alloc] init];
+    option.buttonLabel = optionString;
+    
+    switch (mode) {
+        case kModeTextExpansion:
+        {
+            NSString* originalTextToKeep = [self originalTextToKeepWhenStrippingLastPartialSentence:originalText];
+            option.replacementText = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalTextToKeep withSecondString:optionString];
+            break;
+        }
+        case kModeNextSentence:
+        {
+            option.replacementText = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalText withSecondString:optionString];
+            break;
+        }
+    }
+    
+    return option;
+}
+
+-(NSString*) textExpansionPromptTemplate {
+    static NSString* textExpansionPrompt;
+    if (!textExpansionPrompt) {
+        NSString* path = [[NSBundle mainBundle] pathForResource:@"text-expansion" ofType:@"txt"];
+        textExpansionPrompt = [NSString stringWithContentsOfFile:path
+                                                      encoding:NSUTF8StringEncoding
+                                                         error:NULL];
+    }
+    return textExpansionPrompt;
+}
+
+-(NSString*) nextSentancePromptTemplate {
+    static NSString* nextSentencePrompt;
+    if (!nextSentencePrompt) {
+        NSString* path = [[NSBundle mainBundle] pathForResource:@"next-sentence" ofType:@"txt"];
+        nextSentencePrompt = [NSString stringWithContentsOfFile:path
+                                                      encoding:NSUTF8StringEncoding
+                                                         error:NULL];
+    }
+    return nextSentencePrompt;
 }
 
 @end

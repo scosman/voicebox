@@ -9,9 +9,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface VBMagicEnhancerOption : NSObject
+
+@property (nonatomic, strong) NSString* buttonLabel;
+@property (nonatomic, strong) NSString* replacementText;
+
+@end
+
 @interface VBMagicEnhancer : NSObject
 
--(void) enhance:(NSString*)text onComplete:(void (^)(NSArray*, NSError*))complete;
+-(void) enhance:(NSString*)text onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete;
 
 @end
 
