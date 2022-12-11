@@ -1,4 +1,5 @@
 .DS_Store
 *.xcuserstate
+*.xcuserdatad
 /ios/voicebox/Util/AppSecrets.h
-ios/voicebox.xcodeproj/xcuserdata/
+

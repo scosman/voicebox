@@ -16,4 +16,4 @@ jobs:
         run: cp ios/voicebox/Util/AppSecrets.h.TEMPLATE ios/voicebox/Util/AppSecrets.h
 
       - name: Build and test 
-        run: xcodebuild test -project ios/voicebox.xcodeproj -scheme voicebox -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPad Pro (12.9-inch) (5th generation),OS=16.0' 
+        run: xcodebuild test -project ios/voicebox.xcodeproj -scheme voiceboxGithubTests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPad Pro (12.9-inch) (5th generation),OS=16.0' 
