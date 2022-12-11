@@ -5,7 +5,7 @@ Expand text, allowing them to type much less, while communicating their meaning 
 
 ### Current State
 
-**Current preferred prompt:** GTP3_davinci-003/v2.txt 
+**Current preferred prompt:** GTP3_davinci-003/v4.txt 
 
 **Status:** Very rough prompt engineering, minimal tuning, lots to learn. No well defined test or validation sets. Really early, and seeing if there's something here worth pushing deeper on. Goal is to see great potential sometimes, before optimizing.
 

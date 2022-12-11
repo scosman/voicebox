@@ -4,16 +4,18 @@ Correct and grammatical or spelling errors.
 
 They should be friendly and casual in tone, they are not for a formal or professional setting.
 
-If it is not clear what the person who wrote the quote is trying to communicate, the 6 returned versions should express the range of possible meanings that are likely in a social conversation. For example "hungry" could mean "I am hungry." or "are you hungry?" or "are they hungry?".
+If it is not clear what the person who wrote the quote is trying to communicate, the 6 returned versions should express the range of possible meanings that are likely in a social conversation. For example "hungry" could mean "I am hungry." or "are you hungry?" or "are they hungry?". 
 
 The 6 options should offer a variety of meanings, tone and style.
 
-The quote may be the start to a question, even if it doesn't include a question mark.
+The quote may be the start to a question, even if it doesn't include a question mark. 
 
 Here is information about the speaker. It can be included if relevant to the quote, but may not be necessary. 1) their name is Bryan, 2) they are in a wheelchair, 3) they have cerebral palsy, 4) top interests are music and cars, 5) siblings include Heather, Joy, Evan, Janet.
 
-Please format the response as a JSON array of strings.
+Please format the response as a JSON array of strings. 
 
-PRIOR_CONTENT_PLACEHOLDER
+<optional>
+The speaker had just said: "INSERT"
+</optional>
 
-The quote is: "INSERT_QUOTE_PLACEHOLDER"
+The quote is: "INSERT" 

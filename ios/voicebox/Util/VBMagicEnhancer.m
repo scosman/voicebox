@@ -15,6 +15,9 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     kModeNextSentence
 };
 
+#define PROMPT_QUOTE_PLACEHOLDER @"INSERT_QUOTE_PLACEHOLDER"
+#define PROMPT_PRIOR_CONTENT_PLACEHOLDER @"PRIOR_CONTENT_PLACEHOLDER"
+
 @implementation VBMagicEnhancerOption
 @end
 
@@ -108,10 +111,20 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     [dataTask resume];
 }
 
--(NSString*) escapeAndReplaceDoubleQuotePrompt:(NSString*)prompt withValue:(NSString*)value {
+-(NSString*) escapeDoubleQuotes:(NSString*)text {
     // TODO -- better escaping, or use edit API that separates input and instructions
-    NSString* escapedQuoteValue = [value stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];
-    return [prompt stringByReplacingOccurrencesOfString:@"INSERT_QUOTE_PLACEHOLDER" withString:escapedQuoteValue];
+    return [text stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];;
+}
+
+-(NSString*) originalTextToKeepWhenStrippingLastPartialSentence:(NSString*)text {
+    NSString* lastSentenceToReplace = [VBStringUtils lastPartialSentenceFromString:text];
+    NSUInteger originalTextToKeepLength = text.length - lastSentenceToReplace.length;
+    if (originalTextToKeepLength > text.length) {
+        // shouldn't hit
+        NSAssert(NO, @"Unexpected: last sentence to replace longer than original text.");
+        return @"";
+    }
+    return [text substringToIndex:originalTextToKeepLength];;
 }
 
 -(NSString*) promptForText:(NSString*)originalText withMode:(MagicEnhancerMode)mode {
@@ -124,7 +137,21 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
             if (!lastSentence) {
                 return nil;
             }
-            return [self escapeAndReplaceDoubleQuotePrompt:promptTemplate withValue:lastSentence];
+            
+            NSString* originalTextToKeep = [self originalTextToKeepWhenStrippingLastPartialSentence:originalText];
+            NSString* trimmedOriginalTextToKeep = [originalTextToKeep stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSString* promptTemplateWithPriorContextFilled;
+            if (trimmedOriginalTextToKeep.length > 0) {
+                // TODO trim this
+                NSString* escapedPriorContent = [self escapeDoubleQuotes:trimmedOriginalTextToKeep];
+                NSString* priorContentSection = [NSString stringWithFormat:@"The speaker had just said: \"%@\"", escapedPriorContent];
+                promptTemplateWithPriorContextFilled = [promptTemplate stringByReplacingOccurrencesOfString:PROMPT_PRIOR_CONTENT_PLACEHOLDER withString:priorContentSection];
+            } else {
+                promptTemplateWithPriorContextFilled = [promptTemplate stringByReplacingOccurrencesOfString:PROMPT_PRIOR_CONTENT_PLACEHOLDER withString:@""];
+            }
+            
+            NSString* prompt = [promptTemplateWithPriorContextFilled stringByReplacingOccurrencesOfString:PROMPT_QUOTE_PLACEHOLDER withString:[self escapeDoubleQuotes:lastSentence]];
+            return prompt;
         }
         case kModeNextSentence:
         {
@@ -132,7 +159,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
                 return nil;
             }
             NSString* promptTemplate = [self nextSentancePromptTemplate];
-            return [self escapeAndReplaceDoubleQuotePrompt:promptTemplate withValue:originalText];
+            return [promptTemplate stringByReplacingOccurrencesOfString:PROMPT_QUOTE_PLACEHOLDER withString:[self escapeDoubleQuotes:originalText]];
         }
     }
 }
@@ -144,16 +171,8 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     switch (mode) {
         case kModeTextExpansion:
         {
-            NSString* lastSentenceToReplace = [VBStringUtils lastPartialSentenceFromString:originalText];
-            NSUInteger originalTextToKeepLength = originalText.length - lastSentenceToReplace.length;
-            if (originalTextToKeepLength > originalText.length) {
-                // shouldn't hit
-                NSAssert(NO, @"Unexpected: last sentence to replace longer than original text.");
-                option.replacementText = optionString;
-            } else {
-                NSString* originalTextToKeep = [originalText substringToIndex:originalTextToKeepLength];
-                option.replacementText = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalTextToKeep withSecondString:optionString];
-            }
+            NSString* originalTextToKeep = [self originalTextToKeepWhenStrippingLastPartialSentence:originalText];
+            option.replacementText = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalTextToKeep withSecondString:optionString];
             break;
         }
         case kModeNextSentence:
