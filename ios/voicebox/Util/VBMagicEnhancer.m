@@ -28,20 +28,12 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
         mode = kModeNextSentence;
     }
     
-    NSString* promptTemplate;
-    switch (mode) {
-        case kModeTextExpansion:
-            // TODO P0 -- only works for first sentence
-            promptTemplate =[self textExpansionPromptTemplate];
-            break;
-        case kModeNextSentence:
-            promptTemplate = [self nextSentancePromptTemplate];
-            break;
+    NSString* prompt = [self promptForText:text withMode:mode];
+    if (!prompt) {
+        complete(nil, [NSError errorWithDomain:@"net.scosman.voicebox.custom" code:89939 userInfo:@{NSLocalizedDescriptionKey:@"Issue generating prompt."}]);
+        return;;
     }
-
-    // TODO -- better escaping, or use edit API that separates input and instructions
-    NSString* escapedText = [text stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];
-    NSString* prompt = [promptTemplate stringByReplacingOccurrencesOfString:@"INSERT_QUOTE_PLACEHOLDER" withString:escapedText];
+    
     [self openAiGptRequest:prompt withOriginalText:text withMode:mode onComplete:complete];
 }
 
@@ -53,6 +45,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
   - add timeout to request
  */
 -(void) openAiGptRequest:(NSString*)prompt withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete {
+    // TODO: none of these are tuned, just defaults
     NSDictionary* bodyPayloadData = @{
         @"model": @"text-davinci-003",
         @"prompt": prompt,
@@ -115,18 +108,59 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     [dataTask resume];
 }
 
+-(NSString*) escapeAndReplaceDoubleQuotePrompt:(NSString*)prompt withValue:(NSString*)value {
+    // TODO -- better escaping, or use edit API that separates input and instructions
+    NSString* escapedQuoteValue = [value stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];
+    return [prompt stringByReplacingOccurrencesOfString:@"INSERT_QUOTE_PLACEHOLDER" withString:escapedQuoteValue];
+}
+
+-(NSString*) promptForText:(NSString*)originalText withMode:(MagicEnhancerMode)mode {
+    switch (mode) {
+        case kModeTextExpansion:
+        {
+            // TODO P0 -- we're only passing last sentence to ML. It loses all context from prior sentences.
+            NSString* promptTemplate = [self textExpansionPromptTemplate];
+            NSString* lastSentence = [VBStringUtils lastPartialSentenceFromString:originalText];
+            if (!lastSentence) {
+                return nil;
+            }
+            return [self escapeAndReplaceDoubleQuotePrompt:promptTemplate withValue:lastSentence];
+        }
+        case kModeNextSentence:
+        {
+            if (originalText.length <= 0) {
+                return nil;
+            }
+            NSString* promptTemplate = [self nextSentancePromptTemplate];
+            return [self escapeAndReplaceDoubleQuotePrompt:promptTemplate withValue:originalText];
+        }
+    }
+}
+
 -(VBMagicEnhancerOption*) optionForText:(NSString*)originalText withSelectedOption:(NSString*)optionString withMode:(MagicEnhancerMode)mode {
     VBMagicEnhancerOption* option = [[VBMagicEnhancerOption alloc] init];
     option.buttonLabel = optionString;
     
     switch (mode) {
         case kModeTextExpansion:
-            // TODO P0 -- only works for first sentence
-            option.replacementText = optionString;
+        {
+            NSString* lastSentenceToReplace = [VBStringUtils lastPartialSentenceFromString:originalText];
+            NSUInteger originalTextToKeepLength = originalText.length - lastSentenceToReplace.length;
+            if (originalTextToKeepLength > originalText.length) {
+                // shouldn't hit
+                NSAssert(NO, @"Unexpected: last sentence to replace longer than original text.");
+                option.replacementText = optionString;
+            } else {
+                NSString* originalTextToKeep = [originalText substringToIndex:originalTextToKeepLength];
+                option.replacementText = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalTextToKeep withSecondString:optionString];
+            }
             break;
+        }
         case kModeNextSentence:
+        {
             option.replacementText = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalText withSecondString:optionString];
             break;
+        }
     }
     
     return option;

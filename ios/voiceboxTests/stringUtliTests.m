@@ -37,12 +37,33 @@
     expected = @"Not terminated";
     [self lastPartialHelper:text withExpected:expected];
     
+    text = @" Not terminated with leading whitespace";
+    expected = @"Not terminated with leading whitespace";
+    [self lastPartialHelper:text withExpected:expected];
+    
+    text = @"Only terminated.";
+    expected = nil;
+    [self lastPartialHelper:text withExpected:expected];
+    
     text = @"First. Second partial";
     expected = @"Second partial";
     [self lastPartialHelper:text withExpected:expected];
     
     text = @"";
     expected = nil;
+    [self lastPartialHelper:text withExpected:expected];
+    
+    text = @"First with trailing whitespace and no second.    ";
+    expected = nil;
+    [self lastPartialHelper:text withExpected:expected];
+    
+    text = @"First. Second. Third";
+    expected = @"Third";
+    [self lastPartialHelper:text withExpected:expected];
+    
+    // drop whitespace before, but not after
+    text = @"First. Second.\n\n Third\n ";
+    expected = @"Third\n ";
     [self lastPartialHelper:text withExpected:expected];
 }
 

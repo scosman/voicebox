@@ -58,10 +58,30 @@
     return [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0;
 }
 
++(NSString*) trimLeadingWhitespaceAndNewlines:(NSString*)text {
+    // Why use this in lastPartialSentenceFromString?
+    // Leading white space could have been intentional (eg paragraph breaks).
+    // Leave the whitespace after in string. The ML is replacing this fragment, including trailing whitespace.
+    NSRange firstNonWhitespaceRange = [text rangeOfCharacterFromSet:[[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet]];
+    if (firstNonWhitespaceRange.location == NSNotFound ||
+        firstNonWhitespaceRange.location >= text.length) {
+        return @"";
+    }
+    return [text substringFromIndex:firstNonWhitespaceRange.location];
+}
+
 +(NSString*) lastPartialSentenceFromString:(NSString*)text {
+    if (text.length == 0) {
+        return nil;
+    }
+    
     NSRange lastSentenceEndRange = [text rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:SENTENCE_TERMINATORS_STRING] options:NSBackwardsSearch];
     
     if (lastSentenceEndRange.location == NSNotFound) {
+        return [VBStringUtils trimLeadingWhitespaceAndNewlines:text];
+    }
+    if (lastSentenceEndRange.location >= text.length) {
+        // period is last charater
         return nil;
     }
     
@@ -72,11 +92,7 @@
         return nil;
     }
     
-    // trim the whitespace before this sentence fragment starts, and keep it when we re-assemble.
-    // leading white space could have been intentional (paragraph breaks).
-    // leave the whitespace after. The ML is replacing this fragment, including trailing whitespace.
-    NSRange firstNonWhitespaceRange = [text rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:SENTENCE_TERMINATORS_STRING] invertedSet]];
-    return [stingAfterLastSentence substringFromIndex:firstNonWhitespaceRange.location];
+    return [VBStringUtils trimLeadingWhitespaceAndNewlines:stingAfterLastSentence];
 }
 
 @end
