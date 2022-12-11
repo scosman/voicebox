@@ -129,8 +129,8 @@
 
 #pragma - mark EnhanceViewSelectionDelegate
 
-- (void)didSelectEnhanceOption:(NSString *)selectedOption {
-    self.textView.text = selectedOption;
+- (void)didSelectEnhanceOption:(VBMagicEnhancerOption*)selectedOption {
+    self.textView.text = selectedOption.replacementText;
 }
 
 @end

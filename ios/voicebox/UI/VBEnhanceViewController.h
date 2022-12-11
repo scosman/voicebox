@@ -7,17 +7,19 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VBMagicEnhancer.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol EnhanceViewSelectionDelegate <NSObject>
-- (void)didSelectEnhanceOption:(NSString *)selectedOption;
+- (void)didSelectEnhanceOption:(VBMagicEnhancerOption *)selectedOption;
 @end
 
 @interface VBEnhanceViewController : UIViewController
 
 @property (nonatomic, weak) id<EnhanceViewSelectionDelegate> selectionDelegate;
 
--(void) showOptions:(NSArray<NSString*>*)options;
+-(void) showOptions:(NSArray<VBMagicEnhancerOption*>*)options;
 
 @end
 

@@ -12,7 +12,7 @@
 
 @interface VBEnhanceViewController ()
 
-@property (nonatomic, strong) NSArray<NSString*> *options, *optionsLoadedInView;
+@property (nonatomic, strong) NSArray<VBMagicEnhancerOption*> *options, *optionsLoadedInView;
 @property (nonatomic, weak) UILabel* loadingLabel;
 @property (nonatomic, weak) UIActivityIndicatorView* spinner;
 @property (nonatomic, weak) UIButton* closeBtn;
@@ -79,21 +79,18 @@
 }
 
 
--(void) selectOptionAction:(UIButton*)sender {
-    // TODO: passing content strings via button label? ugh.
-    NSString* selectedEnhancedContent = sender.titleLabel.text;
-    [self.selectionDelegate didSelectEnhanceOption:selectedEnhancedContent];
-    
+-(void) selectOptionAction:(VBMagicEnhancerOption*)optionSelected {
+    [self.selectionDelegate didSelectEnhanceOption:optionSelected];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void) showOptions:(NSArray<NSString*>*)options {
+-(void) showOptions:(NSArray<VBMagicEnhancerOption*>*)options {
     _options = options;
     [self updateState];
 }
 
 -(void) updateOptionsButtons {
-    NSArray<NSString*>* options = _options;
+    NSArray<VBMagicEnhancerOption*>* options = _options;
     
     @synchronized (self) {
         if (options == _optionsLoadedInView) {
@@ -110,11 +107,16 @@
     NSMutableArray* constraints = [[NSMutableArray alloc] initWithCapacity:(options.count*2 + 3)];
     NSLayoutYAxisAnchor* topAnchor = _optionsStackView.topAnchor;
     
-    for (NSString* option in options) {
-        VBButton* optionButton = [[VBButton alloc] initOptionButtonWithTitle:option];
+    for (VBMagicEnhancerOption* option in options) {
+        VBButton* optionButton = [[VBButton alloc] initOptionButtonWithTitle:option.buttonLabel];
         optionButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_optionsStackView addSubview:optionButton];
-        [optionButton addTarget:self action:@selector(selectOptionAction:) forControlEvents:UIControlEventPrimaryActionTriggered];
+        
+        __weak VBEnhanceViewController* weakSelf = self;
+        UIAction* buttonAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+            [weakSelf selectOptionAction:option];
+        }];
+        [optionButton addAction:buttonAction forControlEvents:UIControlEventPrimaryActionTriggered];
         
         [constraints addObjectsFromArray:@[
             [optionButton.topAnchor constraintLessThanOrEqualToSystemSpacingBelowAnchor:topAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
