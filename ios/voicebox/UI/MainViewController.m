@@ -72,16 +72,27 @@
     _magicButton = magicButton;
     
     [self updateButtonStates];
+    
+    UILayoutGuide* buttonBottomSpacer = [[UILayoutGuide alloc] init];
+    [self.view addLayoutGuide:buttonBottomSpacer];
 
-    const float buttonWidth = 160.0;
-    const float buttonHeight = 160.0;
+    const float buttonWidth = 164.0;
+    const float buttonHeight = buttonWidth;
     const float topPadding = 10.0;
-
+    const float bottomPadding = -20.0;
+    
     // Layout
+    
+    // set the exact height of the buttons, but make it a weak constraint so they shrink to fit if needed
+    NSLayoutConstraint* weakSpeakButtonHeightConstraint = [speakButton.heightAnchor constraintEqualToConstant:buttonHeight];
+    [weakSpeakButtonHeightConstraint setPriority:UILayoutPriorityDefaultLow];
+    NSLayoutConstraint* weakMagicButtonHeightConstraint = [magicButton.heightAnchor constraintEqualToConstant:buttonHeight];
+    [weakMagicButtonHeightConstraint setPriority:UILayoutPriorityDefaultLow];
+    
     NSArray<NSLayoutConstraint*>* constraints = @[
         // Text View
         [textView.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:topPadding],
-        [textView.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:-20.0],
+        [textView.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:bottomPadding],
         [textView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor],
         
         // Clear text button
@@ -93,14 +104,22 @@
         [speakButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [speakButton.leadingAnchor constraintEqualToSystemSpacingAfterAnchor:textView.trailingAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [speakButton.widthAnchor constraintEqualToConstant:buttonWidth],
-        [speakButton.heightAnchor constraintEqualToConstant:buttonHeight],
+        weakSpeakButtonHeightConstraint,
 
         // Magic button
         [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [magicButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [magicButton.widthAnchor constraintEqualToConstant:buttonWidth],
-        [magicButton.heightAnchor constraintEqualToConstant:buttonHeight],
+        weakMagicButtonHeightConstraint,
+    
+        // Ensure buttons are equal height. If they do shrink, they should match.
+        [speakButton.heightAnchor constraintEqualToAnchor:magicButton.heightAnchor],
+        
+        // Button spacer, grows to prevent buttons from stretching vertically
+        [buttonBottomSpacer.topAnchor constraintEqualToAnchor:magicButton.bottomAnchor],
+        [buttonBottomSpacer.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:bottomPadding],
     ];
+    
     [NSLayoutConstraint activateConstraints:constraints];
 
     [textView becomeFirstResponder];
