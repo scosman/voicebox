@@ -17,6 +17,7 @@
 
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) VBButton *speakButton, *magicButton;
+@property (nonatomic, weak) UIButton *clearTextButton;
 @property (nonatomic, strong) VBSpeechSynthesizer* speechSynthesizer;
 @property (nonatomic, strong) VBMagicEnhancer* enhancer;
 
@@ -49,6 +50,14 @@
     textView.text = @"cold";
 #endif
     _textView = textView;
+    
+    UIButton* clearTextButton = [UIButton buttonWithType:UIButtonTypeClose];
+    // scale for larger tap target
+    clearTextButton.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
+    clearTextButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [clearTextButton addTarget:self action:@selector(clearText:) forControlEvents:UIControlEventPrimaryActionTriggered];
+    [self.view addSubview:clearTextButton];
+    _clearTextButton = clearTextButton;
 
     VBButton* speakButton =  [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"person.wave.2.fill" andTitle:@"Speak"];
     speakButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -73,6 +82,10 @@
         [textView.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor],
         [textView.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:-20.0],
         [textView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor],
+        
+        // Clear text button
+        [clearTextButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor constant:-32.0],
+        [clearTextButton.trailingAnchor constraintEqualToAnchor:textView.trailingAnchor constant:-32.0],
 
         // Speak button
         [speakButton.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor],
@@ -90,6 +103,11 @@
     [NSLayoutConstraint activateConstraints:constraints];
 
     [textView becomeFirstResponder];
+}
+
+-(void) clearText:(UIButton*)sender {
+    self.textView.text = @"";
+    [self updateButtonStates];
 }
 
 -(void) speakText:(UIButton*)sender {
@@ -121,6 +139,7 @@
     BOOL hasText = self.textView.text.length > 0;
     self.speakButton.enabled = hasText;
     self.magicButton.enabled = hasText;
+    self.clearTextButton.hidden = !hasText;
 }
 
 #pragma - mark UITextViewDelegate
