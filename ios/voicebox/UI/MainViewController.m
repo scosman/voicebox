@@ -45,7 +45,9 @@
     textView.clipsToBounds = YES;
     textView.translatesAutoresizingMaskIntoConstraints = NO;
     textView.delegate = self;
-    textView.text = @"I cold";
+#if DEBUG
+    textView.text = @"cold";
+#endif
     _textView = textView;
 
     VBButton* speakButton =  [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"person.wave.2.fill" andTitle:@"Speak"];
