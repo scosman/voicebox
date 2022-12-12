@@ -74,7 +74,7 @@
     [self updateButtonStates];
 
     const float buttonWidth = 160.0;
-    const float buttonHeith = 160.0;
+    const float buttonHeight = 160.0;
     const float topPadding = 10.0;
 
     // Layout
@@ -93,13 +93,13 @@
         [speakButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [speakButton.leadingAnchor constraintEqualToSystemSpacingAfterAnchor:textView.trailingAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [speakButton.widthAnchor constraintEqualToConstant:buttonWidth],
-        [speakButton.heightAnchor constraintEqualToConstant:buttonHeith],
+        [speakButton.heightAnchor constraintEqualToConstant:buttonHeight],
 
         // Magic button
         [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [magicButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [magicButton.widthAnchor constraintEqualToConstant:buttonWidth],
-        [magicButton.heightAnchor constraintEqualToConstant:buttonHeith],
+        [magicButton.heightAnchor constraintEqualToConstant:buttonHeight],
     ];
     [NSLayoutConstraint activateConstraints:constraints];
 
