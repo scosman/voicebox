@@ -73,13 +73,14 @@
     
     [self updateButtonStates];
 
-    const float buttonWidth = 200.0;
-    const float buttonHeith = 150.0;
+    const float buttonWidth = 160.0;
+    const float buttonHeith = 160.0;
+    const float topPadding = 10.0;
 
     // Layout
     NSArray<NSLayoutConstraint*>* constraints = @[
         // Text View
-        [textView.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor],
+        [textView.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:topPadding],
         [textView.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:-20.0],
         [textView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor],
         
@@ -88,7 +89,7 @@
         [clearTextButton.trailingAnchor constraintEqualToAnchor:textView.trailingAnchor constant:-32.0],
 
         // Speak button
-        [speakButton.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor],
+        [speakButton.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:topPadding],
         [speakButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [speakButton.leadingAnchor constraintEqualToSystemSpacingAfterAnchor:textView.trailingAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [speakButton.widthAnchor constraintEqualToConstant:buttonWidth],
