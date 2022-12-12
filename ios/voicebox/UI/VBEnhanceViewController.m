@@ -104,9 +104,10 @@
         [oldView removeFromSuperview];
     }
     
-    NSMutableArray* constraints = [[NSMutableArray alloc] initWithCapacity:(options.count*2 + 3)];
-    NSLayoutYAxisAnchor* topAnchor = _optionsStackView.topAnchor;
+    NSMutableArray* constraints = [[NSMutableArray alloc] initWithCapacity:(options.count*2 + 8)];
+    NSLayoutYAxisAnchor* topAnchor;
     
+    VBButton *topButton, *bottonButton;
     for (VBMagicEnhancerOption* option in options) {
         VBButton* optionButton = [[VBButton alloc] initOptionButtonWithTitle:option.buttonLabel];
         optionButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -118,12 +119,17 @@
         }];
         [optionButton addAction:buttonAction forControlEvents:UIControlEventPrimaryActionTriggered];
         
-        [constraints addObjectsFromArray:@[
-            [optionButton.topAnchor constraintLessThanOrEqualToSystemSpacingBelowAnchor:topAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
-            [optionButton.widthAnchor constraintEqualToAnchor:_optionsStackView.widthAnchor]
-        ]];
+        [constraints addObject:[optionButton.widthAnchor constraintEqualToAnchor:_optionsStackView.widthAnchor]];
         
+        if (topAnchor) {
+            [constraints addObject:[optionButton.topAnchor constraintLessThanOrEqualToSystemSpacingBelowAnchor:topAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE]];
+        }
         topAnchor = optionButton.bottomAnchor;
+        
+        if (!topButton) {
+            topButton = optionButton;
+        }
+        bottonButton = optionButton;
     }
     
     
@@ -137,11 +143,31 @@
         [cancelBtn.centerXAnchor constraintEqualToAnchor:_optionsStackView.centerXAnchor],
     ]];
     
+    // center the set of buttons
+    if (topButton && bottonButton) {
+        UILayoutGuide* topSpaceGuide = [[UILayoutGuide alloc] init];
+        [self.view addLayoutGuide:topSpaceGuide];
+        UILayoutGuide* bottomSpaceGuide = [[UILayoutGuide alloc] init];
+        [self.view addLayoutGuide:bottomSpaceGuide];
+        [constraints addObjectsFromArray:@[
+            // space at top and botton equal
+            [topSpaceGuide.heightAnchor constraintEqualToAnchor:bottomSpaceGuide.heightAnchor],
+            
+            // Top spacing
+            [topSpaceGuide.topAnchor constraintEqualToAnchor:_optionsStackView.topAnchor],
+            [topButton.topAnchor constraintEqualToAnchor:topSpaceGuide.bottomAnchor],
+            
+            // Bottom spacing
+            [bottomSpaceGuide.bottomAnchor constraintEqualToAnchor:cancelBtn.topAnchor],
+            [bottonButton.bottomAnchor constraintEqualToAnchor:bottomSpaceGuide.topAnchor],
+        ]];
+    }
+    
     [NSLayoutConstraint activateConstraints:constraints];
 }
 
 -(void) updateState {
-    if (!_options) {
+    if (!_options || _options.count == 0) {
         [_spinner startAnimating];
         _spinner.hidden = NO;
         _loadingLabel.hidden = NO;
