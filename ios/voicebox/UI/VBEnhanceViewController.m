@@ -40,8 +40,9 @@
     [self.view addSubview:loadingLabel];
     _loadingLabel = loadingLabel;
     
-    // TODO -- bigger, more accessible!
     UIButton* closeBtn = [UIButton buttonWithType:UIButtonTypeClose];
+    // scale for larger tap target
+    closeBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
     closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
     [closeBtn addTarget:self action:@selector(closeButtonAction:) forControlEvents:UIControlEventPrimaryActionTriggered];
     [self.view addSubview:closeBtn];
