@@ -1,0 +1,19 @@
+name: Build and Test
+
+on: [push]
+
+jobs:
+  build_and_test:
+
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Select xcode
+        run: sudo xcode-select -switch /Applications/Xcode_14.0.1.app && /usr/bin/xcodebuild -version
+
+      - name: Copy app secrets template 
+        run: cp ios/voicebox/Util/AppSecrets.h.TEMPLATE ios/voicebox/Util/AppSecrets.h
+
+      - name: Build and test 
+        run: xcodebuild test -project ios/voicebox.xcodeproj -scheme voiceboxGithubTests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPad Pro (12.9-inch) (5th generation),OS=16.0' 
