@@ -16,10 +16,12 @@
 @interface MainViewController () <UITextViewDelegate, EnhanceViewSelectionDelegate>
 
 @property (nonatomic, weak) UITextView* textView;
+@property (nonatomic, weak) UILabel* voiceboxLabel;
 @property (nonatomic, weak) VBButton *speakButton, *magicButton;
 @property (nonatomic, weak) UIButton *clearTextButton;
 @property (nonatomic, strong) VBSpeechSynthesizer* speechSynthesizer;
 @property (nonatomic, strong) VBMagicEnhancer* enhancer;
+@property (nonatomic) BOOL hasShownIntroAnimation;
 
 @end
 
@@ -35,7 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor systemGroupedBackgroundColor];
+    self.view.backgroundColor = APP_BACKGROUND_UICOLOR;
 
     UITextView* textView = [[UITextView alloc] init];
     [self.view addSubview:textView];
@@ -51,8 +53,27 @@
 #endif
     _textView = textView;
     
+    UILabel* voiceboxLabel = [[UILabel alloc] init];
+    voiceboxLabel.font = [self logoFont];
+    voiceboxLabel.text = @"voicebox";
+    voiceboxLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:voiceboxLabel];
+    _voiceboxLabel = voiceboxLabel;
+    
+    // Animate logo on intro. Technically viewDidLoad can be called many times so guard.
+    if (!self.hasShownIntroAnimation) {
+        [self showLogoAnimation];
+    }
+    self.hasShownIntroAnimation = YES;
+    
+    // Animate logo on tap
+    UITapGestureRecognizer *tapLogoGesture = [[UITapGestureRecognizer alloc] init];
+    [tapLogoGesture addTarget:self action:@selector(showLogoAnimation)];
+    [voiceboxLabel addGestureRecognizer:tapLogoGesture];
+    voiceboxLabel.userInteractionEnabled = YES;
+    
     UIButton* clearTextButton = [UIButton buttonWithType:UIButtonTypeClose];
-    // scale for larger tap target
+    // scale for more accessible tap target
     clearTextButton.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
     clearTextButton.translatesAutoresizingMaskIntoConstraints = NO;
     [clearTextButton addTarget:self action:@selector(clearText:) forControlEvents:UIControlEventPrimaryActionTriggered];
@@ -90,8 +111,12 @@
     [weakMagicButtonHeightConstraint setPriority:UILayoutPriorityDefaultLow];
     
     NSArray<NSLayoutConstraint*>* constraints = @[
+        // Logo
+        [voiceboxLabel.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:8.0],
+        [voiceboxLabel.centerXAnchor constraintEqualToAnchor:textView.centerXAnchor],
+        
         // Text View
-        [textView.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:topPadding],
+        [textView.topAnchor constraintEqualToAnchor:voiceboxLabel.bottomAnchor constant:8.0],
         [textView.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:bottomPadding],
         [textView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor],
         
@@ -160,6 +185,21 @@
     self.speakButton.enabled = hasText;
     self.magicButton.enabled = hasText;
     self.clearTextButton.hidden = !hasText;
+}
+
+-(void) showLogoAnimation {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView transitionWithView:self.voiceboxLabel duration:0.4 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
+    });
+}
+
+-(UIFont*) logoFont {
+    // weird trick needed to get SF Pro Rounded
+    const float logoFontSize = 38.0;
+    UIFont* systemFont = [UIFont systemFontOfSize:logoFontSize weight:UIFontWeightLight];
+    UIFontDescriptor* sfRoundedFontDescriptor = [systemFont.fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
+    UIFont* roundedSystemFont = [UIFont fontWithDescriptor:sfRoundedFontDescriptor size:logoFontSize];
+    return roundedSystemFont ? roundedSystemFont : systemFont;
 }
 
 #pragma - mark UITextViewDelegate

@@ -10,4 +10,8 @@
 
 #define ACCESSIBLE_SYSTEM_SPACING_MULTIPLE 3.0
 
+// Colors
+#define APP_BACKGROUND_UICOLOR [UIColor colorWithRed:0.961 green:0.950 blue:0.922 alpha:1.0]
+#define ACTION_BUTTON_UICOLOR [UIColor colorWithRed:0.4 green:0.502 blue:0.694 alpha:1.0]
+
 #endif /* Constants_h */

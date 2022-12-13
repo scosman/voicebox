@@ -7,6 +7,8 @@
 
 #import "VBButton.h"
 
+#import "Constants.h"
+
 @implementation VBButton
 
 -(instancetype)initLargeSymbolButtonWithSystemImageNamed:(NSString*)systemImageName andTitle:(NSString*)title {
@@ -17,6 +19,7 @@
     config.imagePlacement = NSDirectionalRectEdgeTop;
     config.imagePadding = 16.0;
     config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:MAX([UIFont systemFontSize], 24.0)]}];
+    config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
     self.configuration = config;
     
     return self;
@@ -28,6 +31,7 @@
     UIButtonConfiguration* config = UIButtonConfiguration.filledButtonConfiguration;
     config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:MAX([UIFont systemFontSize], 24.0)]}];
     config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
+    config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
     self.configuration = config;
     
     return self;
@@ -39,6 +43,7 @@
     UIButtonConfiguration* config = UIButtonConfiguration.grayButtonConfiguration;
     config.attributedTitle = [[NSAttributedString alloc] initWithString:@"Cancel" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:MAX([UIFont systemFontSize], 24.0)]}];
     config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
+    config.baseForegroundColor = ACTION_BUTTON_UICOLOR;
     self.configuration = config;
     
     return self;
