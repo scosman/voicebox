@@ -33,7 +33,7 @@
     
     UILabel* loadingLabel = [[UILabel alloc] init];
     loadingLabel.text = [self randomLoadingLabel];
-    loadingLabel.font = [UIFont systemFontOfSize:MAX(18.0, [UIFont systemFontSize])];
+    loadingLabel.font = [UIFont systemFontOfSize:MAX(18.0, [UIFont labelFontSize])];
     loadingLabel.textColor = [UIColor systemGrayColor];
     loadingLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:loadingLabel];
