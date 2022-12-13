@@ -198,18 +198,18 @@
 const float logoFontSize = 38.0;
 
 -(NSAttributedString*) logoLabelAttributedString {
-    UIFont* logoFont = [self logoFont];
-    NSMutableAttributedString* logoString = [[NSMutableAttributedString alloc] initWithString:@"voicebox" attributes:@{NSFontAttributeName:logoFont}];
-    UIFontDescriptor* boldLogoFontDescriptor = [logoFont.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
-    UIFont* boldLogoFont = [UIFont fontWithDescriptor:boldLogoFontDescriptor size:logoFontSize];
-    [logoString addAttribute:NSFontAttributeName value:boldLogoFont range:NSMakeRange(0, 5)];
+    //UIFontWeightLight
+    NSMutableAttributedString* logoString = [[NSMutableAttributedString alloc] initWithString:@"voicebox" attributes:@{NSFontAttributeName:[self logoFontOfWeight:UIFontWeightLight]}];
+    
+    // Make "voice" semibold
+    [logoString addAttribute:NSFontAttributeName value:[self logoFontOfWeight:UIFontWeightSemibold] range:NSMakeRange(0, 5)];
     
     return logoString;
 }
 
--(UIFont*) logoFont {
+-(UIFont*) logoFontOfWeight:(UIFontWeight)weight {
     // weird trick needed to get SF Pro Rounded
-    UIFont* systemFont = [UIFont systemFontOfSize:logoFontSize weight:UIFontWeightLight];
+    UIFont* systemFont = [UIFont systemFontOfSize:logoFontSize weight:weight];
     UIFontDescriptor* sfRoundedFontDescriptor = [systemFont.fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
     UIFont* roundedSystemFont = [UIFont fontWithDescriptor:sfRoundedFontDescriptor size:logoFontSize];
     return roundedSystemFont ? roundedSystemFont : systemFont;
