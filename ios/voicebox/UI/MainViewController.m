@@ -54,19 +54,19 @@
     _textView = textView;
     
     UILabel* voiceboxLabel = [[UILabel alloc] init];
-    voiceboxLabel.font = [self logoFont];
-    voiceboxLabel.text = @"voicebox";
+    voiceboxLabel.attributedText = [self logoLabelAttributedString];
     voiceboxLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:voiceboxLabel];
     _voiceboxLabel = voiceboxLabel;
     
     // Animate logo on intro. Technically viewDidLoad can be called many times so guard.
     if (!self.hasShownIntroAnimation) {
+        self.voiceboxLabel.hidden = YES;
         [self showLogoAnimation];
     }
     self.hasShownIntroAnimation = YES;
     
-    // Animate logo on tap
+    // Animate logo on tap, just for fun
     UITapGestureRecognizer *tapLogoGesture = [[UITapGestureRecognizer alloc] init];
     [tapLogoGesture addTarget:self action:@selector(showLogoAnimation)];
     [voiceboxLabel addGestureRecognizer:tapLogoGesture];
@@ -189,13 +189,26 @@
 
 -(void) showLogoAnimation {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView transitionWithView:self.voiceboxLabel duration:0.4 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
+        [UIView transitionWithView:self.voiceboxLabel duration:0.4 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
+            self.voiceboxLabel.hidden = NO;
+        } completion:nil];
     });
+}
+
+const float logoFontSize = 38.0;
+
+-(NSAttributedString*) logoLabelAttributedString {
+    UIFont* logoFont = [self logoFont];
+    NSMutableAttributedString* logoString = [[NSMutableAttributedString alloc] initWithString:@"voicebox" attributes:@{NSFontAttributeName:logoFont}];
+    UIFontDescriptor* boldLogoFontDescriptor = [logoFont.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+    UIFont* boldLogoFont = [UIFont fontWithDescriptor:boldLogoFontDescriptor size:logoFontSize];
+    [logoString addAttribute:NSFontAttributeName value:boldLogoFont range:NSMakeRange(0, 5)];
+    
+    return logoString;
 }
 
 -(UIFont*) logoFont {
     // weird trick needed to get SF Pro Rounded
-    const float logoFontSize = 38.0;
     UIFont* systemFont = [UIFont systemFontOfSize:logoFontSize weight:UIFontWeightLight];
     UIFontDescriptor* sfRoundedFontDescriptor = [systemFont.fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
     UIFont* roundedSystemFont = [UIFont fontWithDescriptor:sfRoundedFontDescriptor size:logoFontSize];
