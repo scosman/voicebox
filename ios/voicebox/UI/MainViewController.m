@@ -17,7 +17,7 @@
 
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) UILabel* voiceboxLabel;
-@property (nonatomic, weak) VBButton *speakButton, *magicButton;
+@property (nonatomic, weak) VBButton *speakButton, *magicButton, *listenButton;
 @property (nonatomic, weak) UIButton *clearTextButton;
 @property (nonatomic, strong) VBSpeechSynthesizer* speechSynthesizer;
 @property (nonatomic, strong) VBMagicEnhancer* enhancer;
@@ -38,7 +38,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = APP_BACKGROUND_UICOLOR;
-
+    
     UITextView* textView = [[UITextView alloc] init];
     [self.view addSubview:textView];
     // Font side, at least 32, larger if system font is huge
@@ -79,7 +79,7 @@
     [clearTextButton addTarget:self action:@selector(clearText:) forControlEvents:UIControlEventPrimaryActionTriggered];
     [self.view addSubview:clearTextButton];
     _clearTextButton = clearTextButton;
-
+    
     VBButton* speakButton =  [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"person.wave.2.fill" andTitle:@"Speak"];
     speakButton.translatesAutoresizingMaskIntoConstraints = NO;
     [speakButton addTarget:self action:@selector(speakText:) forControlEvents:UIControlEventPrimaryActionTriggered];
@@ -92,11 +92,17 @@
     [self.view addSubview:magicButton];
     _magicButton = magicButton;
     
+    VBButton* listenButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"ear" andTitle:@"Listen"];
+    listenButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [listenButton addTarget:self action:@selector(listenButonTap:) forControlEvents:UIControlEventPrimaryActionTriggered];
+    [self.view addSubview:listenButton];
+    _listenButton = listenButton;
+    
     [self updateButtonStates];
     
     UILayoutGuide* buttonBottomSpacer = [[UILayoutGuide alloc] init];
     [self.view addLayoutGuide:buttonBottomSpacer];
-
+    
     const float buttonWidth = 164.0;
     const float buttonHeight = buttonWidth;
     const float topPadding = 10.0;
@@ -109,6 +115,8 @@
     [weakSpeakButtonHeightConstraint setPriority:UILayoutPriorityDefaultLow];
     NSLayoutConstraint* weakMagicButtonHeightConstraint = [magicButton.heightAnchor constraintEqualToConstant:buttonHeight];
     [weakMagicButtonHeightConstraint setPriority:UILayoutPriorityDefaultLow];
+    NSLayoutConstraint* weakListenButtonHeightConstraint = [listenButton.heightAnchor constraintEqualToConstant:buttonHeight];
+    [weakListenButtonHeightConstraint setPriority:UILayoutPriorityDefaultLow];
     
     NSArray<NSLayoutConstraint*>* constraints = @[
         // Logo
@@ -123,30 +131,37 @@
         // Clear text button
         [clearTextButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor constant:-32.0],
         [clearTextButton.trailingAnchor constraintEqualToAnchor:textView.trailingAnchor constant:-32.0],
-
+        
         // Speak button
         [speakButton.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:topPadding],
         [speakButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [speakButton.leadingAnchor constraintEqualToSystemSpacingAfterAnchor:textView.trailingAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [speakButton.widthAnchor constraintEqualToConstant:buttonWidth],
         weakSpeakButtonHeightConstraint,
-
+        
         // Magic button
         [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [magicButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [magicButton.widthAnchor constraintEqualToConstant:buttonWidth],
         weakMagicButtonHeightConstraint,
-    
+        
+        // Listen button
+        [listenButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:magicButton.bottomAnchor multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
+        [listenButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
+        [listenButton.widthAnchor constraintEqualToConstant:buttonWidth],
+        weakListenButtonHeightConstraint,
+        
         // Ensure buttons are equal height. If they do shrink, they should match.
         [speakButton.heightAnchor constraintEqualToAnchor:magicButton.heightAnchor],
+        [listenButton.heightAnchor constraintEqualToAnchor:magicButton.heightAnchor],
         
         // Button spacer, grows to prevent buttons from stretching vertically
-        [buttonBottomSpacer.topAnchor constraintEqualToAnchor:magicButton.bottomAnchor],
+        [buttonBottomSpacer.topAnchor constraintEqualToAnchor:listenButton.bottomAnchor],
         [buttonBottomSpacer.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:bottomPadding],
     ];
     
     [NSLayoutConstraint activateConstraints:constraints];
-
+    
     [textView becomeFirstResponder];
 }
 
@@ -178,6 +193,10 @@
             [enhanceVc showOptions:options];
         });
     }];
+}
+
+-(void) listenButonTap:(UIButton*)sender {
+    
 }
 
 -(void) updateButtonStates {
