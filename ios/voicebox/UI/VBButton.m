@@ -22,6 +22,9 @@
     config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
     self.configuration = config;
     
+    // handle updating when disabled/highlighed
+    self.configurationUpdateHandler = [VBButton actionButtonColorConfigUpdateHandler];
+    
     return self;
 }
 
@@ -33,6 +36,9 @@
     config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
     config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
     self.configuration = config;
+    
+    // handle updating when disabled/highlighed
+    self.configurationUpdateHandler = [VBButton actionButtonColorConfigUpdateHandler];
     
     return self;
 }
@@ -47,6 +53,20 @@
     self.configuration = config;
     
     return self;
+}
+
++(void(^)(UIButton*)) actionButtonColorConfigUpdateHandler {
+    return ^(UIButton* button){
+        UIButtonConfiguration* config = button.configuration;
+        config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
+        if (!button.isEnabled) {
+            config.background.backgroundColor = ACTION_BUTTON_DISABLED_UICOLOR;
+        }
+        if (button.isHighlighted) {
+            config.background.backgroundColor = ACTION_BUTTON_HIGHLIGHT_UICOLOR;
+        }
+        button.configuration = config;
+    };;
 }
 
 @end
