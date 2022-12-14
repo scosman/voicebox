@@ -9,6 +9,12 @@
 
 #import "Constants.h"
 
+@interface VBButton ()
+
+@property (nonatomic, strong) UIColor *backgroundColor, *disabledBgColor, *highlightBgColor;
+
+@end
+
 @implementation VBButton
 
 -(instancetype)initLargeSymbolButtonWithSystemImageNamed:(NSString*)systemImageName andTitle:(NSString*)title {
@@ -19,11 +25,9 @@
     config.imagePlacement = NSDirectionalRectEdgeTop;
     config.imagePadding = 8.0;
     config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:MAX([UIFont labelFontSize], 24.0)]}];
-    config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
     self.configuration = config;
     
-    // handle updating when disabled/highlighed
-    self.configurationUpdateHandler = [VBButton actionButtonColorConfigUpdateHandler];
+    [self setupStandardActionButtonColor];
     
     return self;
 }
@@ -36,9 +40,8 @@
     config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
     config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
     self.configuration = config;
-    
-    // handle updating when disabled/highlighed
-    self.configurationUpdateHandler = [VBButton actionButtonColorConfigUpdateHandler];
+
+    [self setupStandardActionButtonColor];
     
     return self;
 }
@@ -55,16 +58,26 @@
     return self;
 }
 
-+(void(^)(UIButton*)) actionButtonColorConfigUpdateHandler {
+-(void) setupStandardActionButtonColor {
+    self.backgroundColor = ACTION_BUTTON_UICOLOR;
+    self.disabledBgColor = ACTION_BUTTON_DISABLED_UICOLOR;
+    self.highlightBgColor = ACTION_BUTTON_HIGHLIGHT_UICOLOR;
+    self.configurationUpdateHandler = [self actionButtonColorConfigUpdateHandler];
+}
+
+-(void(^)(UIButton*)) actionButtonColorConfigUpdateHandler {
+    __weak VBButton* weakSelf = self;
     return ^(UIButton* button){
         UIButtonConfiguration* config = button.configuration;
-        config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
+        
         if (!button.isEnabled) {
-            config.background.backgroundColor = ACTION_BUTTON_DISABLED_UICOLOR;
+            config.background.backgroundColor = weakSelf.disabledBgColor;
+        } else if (button.isHighlighted) {
+            config.background.backgroundColor = weakSelf.highlightBgColor;
+        } else {
+            config.background.backgroundColor = weakSelf.backgroundColor;
         }
-        if (button.isHighlighted) {
-            config.background.backgroundColor = ACTION_BUTTON_HIGHLIGHT_UICOLOR;
-        }
+        
         button.configuration = config;
     };;
 }
