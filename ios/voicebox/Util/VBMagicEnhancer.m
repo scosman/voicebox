@@ -41,7 +41,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
 }
 
 -(void) requestAndBuildOptions:(NSString*)prompt withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSError* err;
         NSMutableArray<VBMagicEnhancerOption*>* options = [self requestAndBuildOptionsSyncronous:prompt withOriginalText:(NSString*)originalText withMode:mode withError:&err];
         
