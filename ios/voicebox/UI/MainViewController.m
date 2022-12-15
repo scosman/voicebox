@@ -169,12 +169,12 @@
     // Load suggestions from the great ML in the cloud
     NSString* fullText = self.textView.text;
     [self.enhancer enhance:fullText onComplete:^(NSArray * _Nonnull options, NSError * _Nonnull error) {
-        if (error) {
-            // TODO: user visible error handling
-            [enhanceVc dismissViewControllerAnimated:YES completion:nil];
-            return;
-        }
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (error || options.count == 0) {
+                // TODO: user visible error handling
+                [enhanceVc dismissViewControllerAnimated:YES completion:nil];
+                return;
+            }
             [enhanceVc showOptions:options];
         });
     }];
