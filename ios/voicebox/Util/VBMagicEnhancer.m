@@ -7,8 +7,8 @@
 
 #import "VBMagicEnhancer.h"
 
-#import "AppSecrets.h"
 #import "VBStringUtils.h"
+#import "OpenApiRequest.h"
 
 typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     kModeTextExpansion,
@@ -37,78 +37,36 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
         return;;
     }
     
-    [self openAiGptRequest:prompt withOriginalText:text withMode:mode onComplete:complete];
+    [self requestAndBuildOptions:prompt withOriginalText:text withMode:mode onComplete:complete];
 }
 
-/*
- TODO - Lots to fix here. Getting it up for quick prototyping, but no where near ship worthy.
-  - completion block format is fragile AF. Any early returns hang app. Replace with syncronous, and dispatch calls background. Return array/error directly.
-  - Try the Open API edit endpoint
-  - use "n" param of open API endpoint, and structured response instead of parsing json from plaintext
-  - add timeout to request
- */
--(void) openAiGptRequest:(NSString*)prompt withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete {
-    // TODO: none of these are tuned, just defaults
-    NSDictionary* bodyPayloadData = @{
-        @"model": @"text-davinci-003",
-        @"prompt": prompt,
-        @"temperature": @0,
-        @"max_tokens": @245,
-        @"top_p": @1,
-        @"frequency_penalty": @0,
-        @"presence_penalty": @0
-    };
-    
-    NSError* error;
-    NSData* bodyPayloadJsonData = [NSJSONSerialization dataWithJSONObject:bodyPayloadData options:NSJSONWritingPrettyPrinted error:&error];
-    if (error) {
-        complete(nil, error);
-    }
-    
-    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.openai.com/v1/completions"]];
-
-    // POST body
-    [urlRequest setHTTPMethod:@"POST"];
-    [urlRequest setHTTPBody:bodyPayloadJsonData];
-    
-    // Headers
-    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    NSString* authBearerKey = [NSString stringWithFormat:@"Bearer %@", OPEN_API_KEY];
-    [urlRequest setValue:authBearerKey forHTTPHeaderField:@"Authorization"];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSArray* stringOptions;
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        if(httpResponse.statusCode != 200)
-        {
-            NSLog(@"Status Code Error: %ld", (long)httpResponse.statusCode);
-        } else {
-            NSError *parseError = nil;
-            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
-            NSString* responseJSONString = responseDictionary[@"choices"][0][@"text"];
-            if (!parseError && responseJSONString) {
-                NSLog(@"The payload response is - %@", responseJSONString);
-                NSData* jsonData = [responseJSONString dataUsingEncoding:NSUTF8StringEncoding];
-                stringOptions = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&parseError];
-                NSLog(@"The options are - %@", stringOptions);
-            }
-            NSLog(@"The response is - %@",responseDictionary);
-        }
+-(void) requestAndBuildOptions:(NSString*)prompt withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError* err;
+        NSMutableArray<VBMagicEnhancerOption*>* options = [self requestAndBuildOptionsSyncronous:prompt withOriginalText:(NSString*)originalText withMode:mode withError:&err];
         
-        if (!stringOptions) {
-            complete(nil,  [NSError errorWithDomain:@"net.scosman.voicebox.openai.errors" code:91111 userInfo:@{NSLocalizedDescriptionKey:@"Issue with OpenAI API."}]);
-        }
-        else {
-            NSMutableArray<VBMagicEnhancerOption*>* options = [[NSMutableArray alloc] initWithCapacity:stringOptions.count];
-            for (NSString* stringOption in stringOptions) {
-                VBMagicEnhancerOption* option = [self optionForText:originalText withSelectedOption:stringOption withMode:mode];
-                [options addObject:option];
-            }
+        if (err) {
+            complete(nil, err);
+        } else {
             complete(options, nil);
         }
-    }];
-    [dataTask resume];
+    });
+}
+
+-(NSMutableArray<VBMagicEnhancerOption*>*) requestAndBuildOptionsSyncronous:(NSString*)prompt withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode withError:(NSError**)error {
+    OpenApiRequest* apiRequest = [[OpenApiRequest alloc] initWithPrompt:prompt];
+    
+    NSArray<NSString*>* stringOptions = [apiRequest sendSynchronousRequest:error];
+    if (*error) {
+        return nil;
+    }
+    
+    NSMutableArray<VBMagicEnhancerOption*>* options = [[NSMutableArray alloc] initWithCapacity:stringOptions.count];
+    for (NSString* stringOption in stringOptions) {
+        VBMagicEnhancerOption* option = [self optionForText:originalText withSelectedOption:stringOption withMode:mode];
+        [options addObject:option];
+    }
+    return options;
 }
 
 -(NSString*) escapeDoubleQuotes:(NSString*)text {
