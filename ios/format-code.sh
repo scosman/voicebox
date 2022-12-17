@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# formats the .m and .h files (limited to ios/voicebox"
+# formats the .m and .h files (limited to ios/voicebox)
 
 # get root git directory for reference -- allows us to run from other directories
 ROOT_DIRECTORY="$(git rev-parse --show-toplevel)"
