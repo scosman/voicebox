@@ -2,7 +2,26 @@
 
 [![Build and Test](https://github.com/scosman/voicebox/actions/workflows/test.yml/badge.svg)](https://github.com/scosman/voicebox/actions/workflows/test.yml)
 
-`say 'a little bit louder now'`
+# Mission
+
+Explore using technology to aid people who lack both the ability to speak and fine motor control. This is common with cerebral palsy. 
+
+Our goal is to find systems which make a significant impact to some part of their life, and can be scaled to help many people. If explorations are successful, we will ship apps and/or tools to make this work widely accessible.
+
+Success for this mission is a solution **many** people use **often** which is **much better than prior methods**. To achieve that, we ensure broadly useful, easily available (eg: App Store), easy to learn (consumer grade usability, in-app coaching), free, and marketed to reach the people who need it. For this project, we’d rather fail at this ambitious mission, than compromise and ship something incremental or inaccessible. 
+
+# Areas of Exploration
+
+### 1) Realtime conversation 
+
+- Allow people with cerebral palsy to participate in conversation in real time. Precision of wording is flexible, speed of communicating their ideas is critical. We want them to be involved at the pace of a typical conversation, with full expressiveness.
+- Explorations include: ML-LLM autocomplete, ML-LLM prediction/synthesis, ML grammar and expression tools, speech to text, text to speech, and novel combinations of the above.
+   
+### 2) Novel UIs for text entry and system control
+
+- Build novel UIs that better accommodate lack of fine motor control. Leverage the dynamic screens of mobile devices, to allow typing and system control without moving your hands. Make accessible switch systems more powerful and learnable with consumer grade design.
+- Explorations include: 2-switch UIs, 1-switch UIs, modal UIs, tree-based selection, ML predictions, consumer-grade onboarding.
+
 
 ## iOS Build instructions
 
