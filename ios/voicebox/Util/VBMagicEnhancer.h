@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VBMagicEnhancer : NSObject
 
--(void) enhance:(NSString*)text onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete;
+- (void)enhance:(NSString*)text onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete;
 
 @end
 

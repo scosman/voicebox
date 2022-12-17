@@ -11,9 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VBStringUtils : NSObject
 
-+(BOOL) endsInCompleteSentence:(NSString*)text;
-+(NSString*) truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:(NSString*)firstString withSecondString:(NSString*)secondString;
-+(NSString*) lastPartialSentenceFromString:(NSString*)text;
++ (BOOL)endsInCompleteSentence:(NSString*)text;
++ (NSString*)truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:(NSString*)firstString withSecondString:(NSString*)secondString;
++ (NSString*)lastPartialSentenceFromString:(NSString*)text;
 
 @end
 

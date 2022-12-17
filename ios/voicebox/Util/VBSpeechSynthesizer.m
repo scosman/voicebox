@@ -7,8 +7,8 @@
 
 #import "VBSpeechSynthesizer.h"
 
-#import <UIKit/UIKit.h>
 #import <AVFoundation/AVSpeechSynthesis.h>
+#import <UIKit/UIKit.h>
 
 @interface VBSpeechSynthesizer ()
 
@@ -18,38 +18,41 @@
 
 @implementation VBSpeechSynthesizer
 
--(instancetype)init {
+- (instancetype)init
+{
     self = [super init];
-    
+
     // register memory warning listener
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMemoryWarning:) name: UIApplicationDidReceiveMemoryWarningNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+
     return self;
 }
 
--(void) speak:(NSString*)textToSpeak {
+- (void)speak:(NSString*)textToSpeak
+{
     AVSpeechUtterance* utterance = [[AVSpeechUtterance alloc] initWithString:textToSpeak];
-    
+
     // TODO -- slow down the default utterance a bit for making it clearer
 
     // TODO -- specify voice. List all with AVSpeechSynthesisVoice.speechVoices, find
     // highest quality matching curent locale. Save result for next time.
-    AVSpeechSynthesisVoice* voice = [[AVSpeechSynthesisVoice alloc] init];;
+    AVSpeechSynthesisVoice* voice = [[AVSpeechSynthesisVoice alloc] init];
+    ;
     utterance.voice = voice;
-    
+
     // Create a speech synthesizer if not available. May be removed under memory presure so always check.
     if (!_avSpeechSynthesizer) {
-        @synchronized ((self)) {
+        @synchronized((self)) {
             if (!_avSpeechSynthesizer) {
                 _avSpeechSynthesizer = [[AVSpeechSynthesizer alloc] init];
             }
         }
     }
-    
+
     [_avSpeechSynthesizer speakUtterance:utterance];
 }
 
-- (void) handleMemoryWarning:(NSNotification *)notification
+- (void)handleMemoryWarning:(NSNotification*)notification
 {
     _avSpeechSynthesizer = nil;
 }
