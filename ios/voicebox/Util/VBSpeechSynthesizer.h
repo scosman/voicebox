@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VBSpeechSynthesizer : NSObject
 
--(void) speak:(NSString*)textToSpeak;
+- (void)speak:(NSString*)textToSpeak;
 
 @end
 

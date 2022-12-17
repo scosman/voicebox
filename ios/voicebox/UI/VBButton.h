@@ -11,10 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VBButton : UIButton
 
--(instancetype)initLargeSymbolButtonWithSystemImageNamed:(NSString*)systemImageName andTitle:(NSString*)title;
+- (instancetype)initLargeSymbolButtonWithSystemImageNamed:(NSString*)systemImageName andTitle:(NSString*)title;
 
--(instancetype)initOptionButtonWithTitle:(NSString*)title;
--(instancetype)initOptionCancelButton;
+- (instancetype)initOptionButtonWithTitle:(NSString*)title;
+- (instancetype)initOptionCancelButton;
 
 @end
 

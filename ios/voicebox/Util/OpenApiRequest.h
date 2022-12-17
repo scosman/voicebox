@@ -11,8 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OpenApiRequest : NSObject
 
--(instancetype) initWithPrompt:(NSString*)prompt;
--(NSArray<NSString*>*) sendSynchronousRequest:(NSError**)error;
+- (instancetype)initWithPrompt:(NSString*)prompt;
+- (NSArray<NSString*>*)sendSynchronousRequest:(NSError**)error;
 
 @end
 
