@@ -22,12 +22,13 @@ Success for this mission is a solution **many** people use **often** which is **
 - Build novel UIs that better accommodate lack of fine motor control. Leverage the dynamic screens of mobile devices, to allow typing and system control without moving your hands. Make accessible switch systems more powerful and learnable with consumer grade design.
 - Explorations include: 2-switch UIs, 1-switch UIs, modal UIs, tree-based selection, ML predictions, consumer-grade onboarding.
 
+# Development
 
-## iOS Build instructions
+### iOS Build instructions
 
 To build this project you must have an OpenAPI key, which isn't included in the repo. Make a copy of `/ios/voicebox/Utils/AppSecrets.h.TEMPLATE` in the location `/ios/voicebox/Utils/AppSecrets.h`, then paste in your real API key. 
 
-## iOS submission instructions
+### iOS Formatting Requirements
 
 Any commits should be formatted with clang-format. Run `ios/format-code.sh` to format to project standards. The script `check-format.sh` checks for compliance with formatting standards. Copy the git hook in `ios/voicebox/Git Hooks` to your `.git/hooks` directory to ensure it's not missed.
 
