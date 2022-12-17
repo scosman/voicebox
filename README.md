@@ -10,5 +10,5 @@ To build this project you must have an OpenAPI key, which isn't included in the 
 
 ## iOS submission instructions
 
-Any commits should be formatted with clang-format. Run `ios/format-code.sh` to format to project standards.
+Any commits should be formatted with clang-format. Run `ios/format-code.sh` to format to project standards. The script `check-format.sh` checks for compliance with formatting standards. Copy the git hook in `ios/voicebox/Git Hooks` to your `.git/hooks` directory to ensure it's not missed.
 
