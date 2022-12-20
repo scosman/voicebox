@@ -4,7 +4,7 @@
 
 # Mission
 
-Explore using technology to aid people who lack both the ability to speak and fine motor control. This is common with cerebral palsy. 
+Mission: Explore using technology to aid people who lack both the ability to speak and fine motor control. This is common with cerebral palsy. 
 
 Our goal is to find systems which make a significant impact to some part of their life, and can be scaled to help many people. If explorations are successful, we will ship apps and/or tools to make this work widely accessible.
 
