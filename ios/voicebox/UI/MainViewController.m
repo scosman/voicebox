@@ -18,9 +18,10 @@
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) UILabel* voiceboxLabel;
 @property (nonatomic, weak) VBButton *speakButton, *magicButton;
-@property (nonatomic, weak) UIButton* clearTextButton;
+@property (nonatomic, weak) UIButton* clearRestoreTextButton;
 @property (nonatomic, strong) VBSpeechSynthesizer* speechSynthesizer;
 @property (nonatomic, strong) VBMagicEnhancer* enhancer;
+@property (nonatomic, strong) NSString* bodyBeforeLastTextboxClear;
 @property (nonatomic) BOOL hasShownIntroAnimation;
 
 @end
@@ -74,13 +75,13 @@
     [voiceboxLabel addGestureRecognizer:tapLogoGesture];
     voiceboxLabel.userInteractionEnabled = YES;
 
-    UIButton* clearTextButton = [UIButton buttonWithType:UIButtonTypeClose];
+    UIButton* clearRestoreTextButton = [UIButton buttonWithType:UIButtonTypeClose];
     // scale for more accessible tap target
-    clearTextButton.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
-    clearTextButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [clearTextButton addTarget:self action:@selector(clearText:) forControlEvents:UIControlEventPrimaryActionTriggered];
-    [self.view addSubview:clearTextButton];
-    _clearTextButton = clearTextButton;
+    clearRestoreTextButton.transform = [self scaleTransformForClearButton:CGAffineTransformIdentity];
+    clearRestoreTextButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [clearRestoreTextButton addTarget:self action:@selector(clearRestoreText:) forControlEvents:UIControlEventPrimaryActionTriggered];
+    [self.view addSubview:clearRestoreTextButton];
+    _clearRestoreTextButton = clearRestoreTextButton;
 
     VBButton* speakButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"person.wave.2.fill" andTitle:@"Speak"];
     speakButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -126,10 +127,10 @@
         [textView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor],
 
         // Clear text button
-        [clearTextButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor
-                                                     constant:-32.0],
-        [clearTextButton.trailingAnchor constraintEqualToAnchor:textView.trailingAnchor
-                                                       constant:-32.0],
+        [clearRestoreTextButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor
+                                                            constant:-32.0],
+        [clearRestoreTextButton.trailingAnchor constraintEqualToAnchor:textView.trailingAnchor
+                                                              constant:-32.0],
 
         // Speak button
         [speakButton.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor
@@ -161,9 +162,16 @@
     [textView becomeFirstResponder];
 }
 
-- (void)clearText:(UIButton*)sender
+- (void)clearRestoreText:(UIButton*)sender
 {
-    self.textView.text = @"";
+    if (self.textView.text.length > 0) {
+        // clear text if text view not empty. Save text so it can be restored.
+        self.bodyBeforeLastTextboxClear = self.textView.text;
+        self.textView.text = @"";
+    } else if (self.bodyBeforeLastTextboxClear.length > 0) {
+        // button is in "restore" mode, restore prior body text
+        self.textView.text = self.bodyBeforeLastTextboxClear;
+    }
     [self updateButtonStates];
 }
 
@@ -200,7 +208,28 @@
     BOOL hasText = self.textView.text.length > 0;
     self.speakButton.enabled = hasText;
     self.magicButton.enabled = hasText;
-    self.clearTextButton.hidden = !hasText;
+
+    // hide "clear" button if no text, and no text to restore
+    BOOL canRestoreText = !hasText && self.bodyBeforeLastTextboxClear.length > 0;
+    self.clearRestoreTextButton.hidden = !hasText && !canRestoreText;
+
+    // rotate clear "X" into plus sign if button is in "restore" mode
+    CGAffineTransform rotateTransform = CGAffineTransformIdentity;
+    if (canRestoreText) {
+        rotateTransform = CGAffineTransformMakeRotation(0.785398); // 45 degrees in rads
+    }
+    CGAffineTransform expectedTransform = [self scaleTransformForClearButton:rotateTransform];
+    if (!CGAffineTransformEqualToTransform(self.clearRestoreTextButton.transform, expectedTransform)) {
+        [UIView animateWithDuration:0.4
+                         animations:^{
+                             self.clearRestoreTextButton.transform = expectedTransform;
+                         }];
+    }
+}
+
+- (CGAffineTransform)scaleTransformForClearButton:(CGAffineTransform)ogTransform
+{
+    return CGAffineTransformScale(ogTransform, 1.5, 1.5);
 }
 
 - (void)showLogoAnimation
@@ -242,6 +271,7 @@ const float logoFontSize = 38.0;
 
 - (void)textViewDidChange:(UITextView*)textView
 {
+    self.bodyBeforeLastTextboxClear = nil;
     [self updateButtonStates];
 }
 
