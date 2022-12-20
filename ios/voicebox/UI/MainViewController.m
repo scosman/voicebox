@@ -97,21 +97,25 @@
 
     [self updateButtonStates];
 
+    UILayoutGuide* buttonTopSpacer = [[UILayoutGuide alloc] init];
+    [self.view addLayoutGuide:buttonTopSpacer];
     UILayoutGuide* buttonBottomSpacer = [[UILayoutGuide alloc] init];
     [self.view addLayoutGuide:buttonBottomSpacer];
 
     const float buttonWidth = 164.0;
     const float buttonHeight = buttonWidth;
-    const float topPadding = 10.0;
     const float bottomPadding = -20.0;
 
     // Layout
 
     // set the exact height of the buttons, but make it a weak constraint so they shrink to fit if needed
     NSLayoutConstraint* weakSpeakButtonHeightConstraint = [speakButton.heightAnchor constraintEqualToConstant:buttonHeight];
-    [weakSpeakButtonHeightConstraint setPriority:UILayoutPriorityDefaultLow];
+    [weakSpeakButtonHeightConstraint setPriority:UILayoutPriorityDefaultHigh];
     NSLayoutConstraint* weakMagicButtonHeightConstraint = [magicButton.heightAnchor constraintEqualToConstant:buttonHeight];
-    [weakMagicButtonHeightConstraint setPriority:UILayoutPriorityDefaultLow];
+    [weakMagicButtonHeightConstraint setPriority:UILayoutPriorityDefaultHigh];
+    // add some padding above the buttons so they align to textbox, but only if there's room
+    NSLayoutConstraint* weakTopPaddingHeightConstraint = [buttonTopSpacer.heightAnchor constraintEqualToAnchor:voiceboxLabel.heightAnchor];
+    [weakTopPaddingHeightConstraint setPriority:UILayoutPriorityDefaultLow];
 
     NSArray<NSLayoutConstraint*>* constraints = @[
         // Logo
@@ -132,9 +136,12 @@
         [clearRestoreTextButton.trailingAnchor constraintEqualToAnchor:textView.trailingAnchor
                                                               constant:-32.0],
 
+        // Space above speak button, space permitting with weak height constraint
+        [buttonTopSpacer.topAnchor constraintEqualToAnchor:voiceboxLabel.topAnchor],
+        weakTopPaddingHeightConstraint,
+
         // Speak button
-        [speakButton.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor
-                                              constant:topPadding],
+        [speakButton.topAnchor constraintEqualToAnchor:buttonTopSpacer.bottomAnchor],
         [speakButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [speakButton.leadingAnchor constraintEqualToSystemSpacingAfterAnchor:textView.trailingAnchor
                                                                   multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
