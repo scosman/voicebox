@@ -12,6 +12,7 @@
 
 // Colors
 #define APP_BACKGROUND_UICOLOR [UIColor colorWithRed:0.961 green:0.950 blue:0.922 alpha:1.0]
+#define BLACK_TEXT_UICOLOR [UIColor colorWithRed:0.1216 green:0.1216 blue:0.098 alpha:1.0]
 #define ACTION_BUTTON_UICOLOR [UIColor colorWithRed:0.4 green:0.502 blue:0.694 alpha:1.0]
 #define ACTION_BUTTON_HIGHLIGHT_UICOLOR [UIColor colorWithRed:0.32 green:0.402 blue:0.555 alpha:1.0]
 #define ACTION_BUTTON_DISABLED_UICOLOR [[UIColor systemGray4Color] colorWithAlphaComponent:0.6]

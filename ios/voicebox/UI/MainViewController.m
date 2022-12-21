@@ -46,6 +46,7 @@
     [self.view addSubview:textView];
     // Font side, at least 32, larger if system font is huge
     textView.font = [UIFont systemFontOfSize:MAX([UIFont systemFontSize], 38.0)];
+    textView.textColor = BLACK_TEXT_UICOLOR;
     textView.textContainerInset = UIEdgeInsetsMake(23, 25, 23, 25);
     textView.layer.cornerRadius = 25;
     textView.clipsToBounds = YES;
@@ -58,6 +59,7 @@
 
     UILabel* voiceboxLabel = [[UILabel alloc] init];
     voiceboxLabel.attributedText = [self logoLabelAttributedString];
+    voiceboxLabel.textColor = BLACK_TEXT_UICOLOR;
     voiceboxLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:voiceboxLabel];
     _voiceboxLabel = voiceboxLabel;
