@@ -12,4 +12,4 @@ jobs:
         clang-format-version: '13'
         check-path: 'ios/voicebox'
         fallback-style: 'WebKit'
-        include-regex: '^.*\.((((c|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|proto|cu|m))$'
+        include-regex: ^.*\.((((c|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|proto|cu|m))$
