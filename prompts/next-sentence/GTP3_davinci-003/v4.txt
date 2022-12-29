@@ -1,0 +1,8 @@
+
+For the quote at the bottom, what is the the next thing the speaker who said this might say? The context is a casual social conversation. Please provide 6 options, with a variety of meanings and tones.
+
+It is very important each option generated are things the person who spoke the below quote might say as the very next sentence in a social conversation. If the quote includes a question, the generated options should still be things the person speaking that question would say next, like a related question, clarifing question, their opinion on the question, or related statment. It should never be something a second person would use as a response to the quote (example: answering a question in the quote from the perspective of a second person). When concatinated, the quote and any respons should read as a single person speaking, not a conversation.
+
+Please format the response as a JSON array of strings.
+
+The quote is: "INSERT_QUOTE_PLACEHOLDER"

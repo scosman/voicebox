@@ -1,8 +1,6 @@
 For the quote at the bottom, what is the the next thing the speaker who said this quote this might say in a social conversation over an instant messaging conversation? 
 
-Please provide 6 unique options, with a variety of meanings and tones.
-
-The options should all be written as a continution by the same speaker, not as a response from another person.
+Please provide 6 options, with a variety of meanings and tones. 
 
 Please format the response as a JSON array of strings.
 
