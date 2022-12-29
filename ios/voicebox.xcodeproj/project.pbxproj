@@ -25,6 +25,18 @@
 		E0BBF209293EEE9100FB7FF9 /* voiceboxTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF208293EEE9100FB7FF9 /* voiceboxTests.m */; };
 		E0BBF213293EEE9100FB7FF9 /* voiceboxUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF212293EEE9100FB7FF9 /* voiceboxUITests.m */; };
 		E0BBF215293EEE9100FB7FF9 /* voiceboxUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF214293EEE9100FB7FF9 /* voiceboxUITestsLaunchTests.m */; };
+		E0CE98AD295D393B00FF9CA5 /* ggml-base.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */; };
+		E0CE98AE295D393B00FF9CA5 /* ggml-base.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */; };
+		E0CE98AF295D393B00FF9CA5 /* ggml-base.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */; };
+		E0CE98B0295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; settings = {COMPILER_FLAGS = "-DGGML_USE_ACCELERATE"; }; };
+		E0CE98B1295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; };
+		E0CE98B2295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; };
+		E0CE98B3295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; };
+		E0CE98B4295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; };
+		E0CE98B5295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; };
+		E0CE98B8295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
+		E0CE98B9295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
+		E0CE98BA295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +90,13 @@
 		E0BBF20E293EEE9100FB7FF9 /* voiceboxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = voiceboxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0BBF212293EEE9100FB7FF9 /* voiceboxUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = voiceboxUITests.m; sourceTree = "<group>"; };
 		E0BBF214293EEE9100FB7FF9 /* voiceboxUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = voiceboxUITestsLaunchTests.m; sourceTree = "<group>"; };
+		E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "ggml-base.en.bin"; sourceTree = "<group>"; };
+		E0CE98A9295D393B00FF9CA5 /* whisper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = whisper.h; sourceTree = "<group>"; };
+		E0CE98AA295D393B00FF9CA5 /* ggml.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ggml.c; sourceTree = "<group>"; };
+		E0CE98AB295D393B00FF9CA5 /* whisper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = whisper.cpp; sourceTree = "<group>"; };
+		E0CE98AC295D393B00FF9CA5 /* ggml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ggml.h; sourceTree = "<group>"; };
+		E0CE98B6295D398700FF9CA5 /* ListenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListenViewController.h; sourceTree = "<group>"; };
+		E0CE98B7295D398700FF9CA5 /* ListenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListenViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +133,8 @@
 				E049ED44293FFB93002080BD /* VBEnhanceViewController.m */,
 				E0BBF1F2293EEE9000FB7FF9 /* MainViewController.h */,
 				E0BBF1F3293EEE9000FB7FF9 /* MainViewController.m */,
+				E0CE98B6295D398700FF9CA5 /* ListenViewController.h */,
+				E0CE98B7295D398700FF9CA5 /* ListenViewController.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -166,6 +187,7 @@
 		E0BBF1EB293EEE9000FB7FF9 /* voicebox */ = {
 			isa = PBXGroup;
 			children = (
+				E0CE98A7295D393B00FF9CA5 /* Whisper */,
 				E049ED472943A4B2002080BD /* Prompts */,
 				E049ED3A293FCC38002080BD /* UI */,
 				E049ED3E293FCC5D002080BD /* Util */,
@@ -198,6 +220,18 @@
 				E0BBF214293EEE9100FB7FF9 /* voiceboxUITestsLaunchTests.m */,
 			);
 			path = voiceboxUITests;
+			sourceTree = "<group>";
+		};
+		E0CE98A7295D393B00FF9CA5 /* Whisper */ = {
+			isa = PBXGroup;
+			children = (
+				E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */,
+				E0CE98A9295D393B00FF9CA5 /* whisper.h */,
+				E0CE98AA295D393B00FF9CA5 /* ggml.c */,
+				E0CE98AB295D393B00FF9CA5 /* whisper.cpp */,
+				E0CE98AC295D393B00FF9CA5 /* ggml.h */,
+			);
+			path = Whisper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,6 +341,7 @@
 				E049ED492943A6A2002080BD /* text-expansion.txt in Resources */,
 				E0BBF1FC293EEE9100FB7FF9 /* LaunchScreen.storyboard in Resources */,
 				E0BBF1F9293EEE9100FB7FF9 /* Assets.xcassets in Resources */,
+				E0CE98AD295D393B00FF9CA5 /* ggml-base.en.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +349,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0CE98AE295D393B00FF9CA5 /* ggml-base.en.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +357,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0CE98AF295D393B00FF9CA5 /* ggml-base.en.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,12 +370,15 @@
 			files = (
 				E04A3321294A347300EF6628 /* OpenApiRequest.m in Sources */,
 				E0BBF1F4293EEE9000FB7FF9 /* MainViewController.m in Sources */,
+				E0CE98B3295D393B00FF9CA5 /* whisper.cpp in Sources */,
 				E049ED41293FCC5D002080BD /* VBMagicEnhancer.m in Sources */,
+				E0CE98B0295D393B00FF9CA5 /* ggml.c in Sources */,
 				E049ED3D293FCC38002080BD /* VBButton.m in Sources */,
 				E049ED4F2944B833002080BD /* VBStringUtils.m in Sources */,
 				E049ED45293FFB93002080BD /* VBEnhanceViewController.m in Sources */,
 				E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */,
 				E0BBF1FF293EEE9100FB7FF9 /* main.m in Sources */,
+				E0CE98B8295D398700FF9CA5 /* ListenViewController.m in Sources */,
 				E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */,
 				E0BBF1F1293EEE9000FB7FF9 /* SceneDelegate.m in Sources */,
 			);
@@ -349,7 +389,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E049ED512944B986002080BD /* stringUtliTests.m in Sources */,
+				E0CE98B9295D398700FF9CA5 /* ListenViewController.m in Sources */,
 				E0BBF209293EEE9100FB7FF9 /* voiceboxTests.m in Sources */,
+				E0CE98B4295D393B00FF9CA5 /* whisper.cpp in Sources */,
+				E0CE98B1295D393B00FF9CA5 /* ggml.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,7 +401,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0BBF213293EEE9100FB7FF9 /* voiceboxUITests.m in Sources */,
+				E0CE98BA295D398700FF9CA5 /* ListenViewController.m in Sources */,
 				E0BBF215293EEE9100FB7FF9 /* voiceboxUITestsLaunchTests.m in Sources */,
+				E0CE98B5295D393B00FF9CA5 /* whisper.cpp in Sources */,
+				E0CE98B2295D393B00FF9CA5 /* ggml.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

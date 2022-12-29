@@ -8,6 +8,7 @@
 #import "MainViewController.h"
 
 #import "Constants.h"
+#import "ListenViewController.h"
 #import "VBButton.h"
 #import "VBEnhanceViewController.h"
 #import "VBMagicEnhancer.h"
@@ -17,7 +18,7 @@
 
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) UILabel* voiceboxLabel;
-@property (nonatomic, weak) VBButton *speakButton, *magicButton;
+@property (nonatomic, weak) VBButton *speakButton, *magicButton, *listenButton;
 @property (nonatomic, weak) UIButton* clearRestoreTextButton;
 @property (nonatomic, strong) VBSpeechSynthesizer* speechSynthesizer;
 @property (nonatomic, strong) VBMagicEnhancer* enhancer;
@@ -91,6 +92,12 @@
     [self.view addSubview:speakButton];
     _speakButton = speakButton;
 
+    VBButton* listenButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"ear" andTitle:@"Listen"];
+    listenButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [listenButton addTarget:self action:@selector(launchListen:) forControlEvents:UIControlEventPrimaryActionTriggered];
+    [self.view addSubview:listenButton];
+    _listenButton = listenButton;
+
     VBButton* magicButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"wand.and.stars" andTitle:@"Enhance"];
     magicButton.translatesAutoresizingMaskIntoConstraints = NO;
     [magicButton addTarget:self action:@selector(enhanceText:) forControlEvents:UIControlEventPrimaryActionTriggered];
@@ -113,6 +120,8 @@
     // set the exact height of the buttons, but make it a weak constraint so they shrink to fit if needed
     NSLayoutConstraint* weakSpeakButtonHeightConstraint = [speakButton.heightAnchor constraintEqualToConstant:buttonHeight];
     [weakSpeakButtonHeightConstraint setPriority:UILayoutPriorityDefaultHigh];
+    NSLayoutConstraint* weakListenButtonHeightConstraint = [listenButton.heightAnchor constraintEqualToConstant:buttonHeight];
+    [weakListenButtonHeightConstraint setPriority:UILayoutPriorityDefaultHigh];
     NSLayoutConstraint* weakMagicButtonHeightConstraint = [magicButton.heightAnchor constraintEqualToConstant:buttonHeight];
     [weakMagicButtonHeightConstraint setPriority:UILayoutPriorityDefaultHigh];
     // add some padding above the buttons so they align to textbox, but only if there's room
@@ -150,8 +159,15 @@
         [speakButton.widthAnchor constraintEqualToConstant:buttonWidth],
         weakSpeakButtonHeightConstraint,
 
+        // Listen button
+        [listenButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor
+                                                               multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
+        [listenButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
+        [listenButton.widthAnchor constraintEqualToConstant:buttonWidth],
+        weakListenButtonHeightConstraint,
+
         // Magic button
-        [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor
+        [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:listenButton.bottomAnchor
                                                               multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [magicButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [magicButton.widthAnchor constraintEqualToConstant:buttonWidth],
@@ -159,6 +175,7 @@
 
         // Ensure buttons are equal height. If they do shrink, they should match.
         [speakButton.heightAnchor constraintEqualToAnchor:magicButton.heightAnchor],
+        [listenButton.heightAnchor constraintEqualToAnchor:magicButton.heightAnchor],
 
         // Button spacer, grows to prevent buttons from stretching vertically
         [buttonBottomSpacer.topAnchor constraintEqualToAnchor:magicButton.bottomAnchor],
@@ -188,6 +205,13 @@
 {
     NSString* textToSpeak = self.textView.text;
     [self.speechSynthesizer speak:textToSpeak];
+}
+
+- (void)launchListen:(UIButton*)sender
+{
+    ListenViewController* listenVc = [[ListenViewController alloc] init];
+    listenVc.modalPresentationStyle = UIModalPresentationPageSheet;
+    [self presentViewController:listenVc animated:YES completion:nil];
 }
 
 - (void)enhanceText:(UIButton*)sender
