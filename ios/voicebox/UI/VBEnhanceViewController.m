@@ -199,8 +199,7 @@
         @"Enhance, enhance, enhance...",
         @"Magic incoming...",
         @"Talking to the machines...",
-        @"Calling an intern, one sec...",
-        @"Making stuff up..."
+        @"Calling an intern..."
     ];
 
     return labelOptions[arc4random() % labelOptions.count];
