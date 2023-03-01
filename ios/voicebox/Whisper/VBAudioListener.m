@@ -26,7 +26,6 @@ typedef struct
     int ggwaveId;
     bool isCapturing;
     bool isTranscribing;
-    bool isRealtime;
 
     AudioQueueRef queue;
     AudioStreamBasicDescription dataFormat;
@@ -38,7 +37,7 @@ typedef struct
 
     struct whisper_context* ctx;
 
-    void* vc;
+    void* listener;
 } StateInp;
 
 
@@ -63,6 +62,7 @@ typedef struct
     return sharedInstance;
 }
 
+// TODO Pre-load this earlier for shared instance, so listen button is faster. May not matter on release builds though.
 -(instancetype)init {
     self = [super init];
     if (self) {
@@ -144,7 +144,6 @@ typedef struct
     stateInp.audioBufferF32 = malloc(MAX_AUDIO_SEC * SAMPLE_RATE * sizeof(float));
 
     stateInp.isTranscribing = false;
-    stateInp.isRealtime = true;
     
     // TODO - might already be capturing!
     [self startCapturing];
@@ -176,7 +175,7 @@ typedef struct
         NSLog(@"Start capturing");
         
         blockSelf->stateInp.n_samples = 0;
-        blockSelf->stateInp.vc = (__bridge void*)(self);
+        blockSelf->stateInp.listener = (__bridge void*)(self);
         
         OSStatus status = AudioQueueNewInput(&blockSelf->stateInp.dataFormat,
                                              AudioInputCallback,
@@ -206,18 +205,9 @@ typedef struct
     });
 }
 
-// TODO no sender
-// Start needs to ser
-- (IBAction)onRealtime:(id)sender
+- (IBAction)onTranscribe
 {
-    stateInp.isRealtime = !stateInp.isRealtime;
-
-    NSLog(@"Realtime: %@", stateInp.isRealtime ? @"ON" : @"OFF");
-}
-
-// TODO Delete this
-- (IBAction)onTranscribe:(id)sender
-{
+    // TODO -- this guard system isn't ideal. Caller using main thread so works, but ugh.
     if (stateInp.isTranscribing) {
         return;
     }
@@ -249,7 +239,7 @@ typedef struct
         params.n_threads = max_threads;
         params.offset_ms = 0;
         params.no_context = true;
-        params.single_segment = self->stateInp.isRealtime;
+        params.single_segment = true;
 
         CFTimeInterval startTime = CACurrentMediaTime();
 
@@ -280,13 +270,11 @@ typedef struct
         // log processing time
         NSLog(@"[recording time:  %5.3f s] [processing time: %5.3f s]", tRecording, endTime - startTime);
 
-        // TODO remove dispatch
-        // dispatch the result to the main thread
-        //dispatch_async(dispatch_get_main_queue(), ^{
-            //weakSelf.closedCaptioningLabel.text = result;
+        // dispatch needed as using the main thread as bad sync mechanism for `isTranscribing`
+        dispatch_async(dispatch_get_main_queue(), ^{
             [self distributeStateUpdate:true segments:segments];
             self->stateInp.isTranscribing = false;
-        //});
+        });
     });
 }
 
@@ -318,7 +306,7 @@ void AudioInputCallback(void* inUserData,
         NSLog(@"Too much audio data, ignoring");
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            VBAudioListener* listener = (__bridge VBAudioListener*)(stateInp->vc);
+            VBAudioListener* listener = (__bridge VBAudioListener*)(stateInp->listener);
             [listener stopCapturing];
         });
 
@@ -334,13 +322,11 @@ void AudioInputCallback(void* inUserData,
     // put the buffer back in the queue
     AudioQueueEnqueueBuffer(stateInp->queue, inBuffer, 0, NULL);
 
-    if (stateInp->isRealtime) {
-        // dipatch onTranscribe() to the main thread
-        dispatch_async(dispatch_get_main_queue(), ^{
-            VBAudioListener* listener = (__bridge VBAudioListener*)(stateInp->vc);
-            [listener onTranscribe:nil];
-        });
-    }
+    // dipatch onTranscribe() to the main thread
+    dispatch_async(dispatch_get_main_queue(), ^{
+        VBAudioListener* listener = (__bridge VBAudioListener*)(stateInp->listener);
+        [listener onTranscribe];
+    });
 }
 
 @end
