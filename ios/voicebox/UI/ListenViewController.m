@@ -93,6 +93,11 @@
     });
 }
 
+- (void)dealloc
+{
+    [[VBAudioListener sharedInstance] deregisterDelegate:self];
+}
+
 - (void)closeButtonAction:(UIButton*)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];

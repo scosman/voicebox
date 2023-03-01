@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(VBAudioListener*) sharedInstance;
 
 -(void) registerDelegate:(id <VBAudioListenerDelegate>)delegate;
+-(void) deregisterDelegate:(id <VBAudioListenerDelegate>)delegate;
 -(void) startListening;
 -(void)stopCapturing;
 

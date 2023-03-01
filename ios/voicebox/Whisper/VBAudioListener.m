@@ -46,7 +46,7 @@ typedef struct
     StateInp stateInp;
 }
 
-@property (nonatomic, weak) id <VBAudioListenerDelegate> delegate;
+@property (nonatomic, strong) NSHashTable *delegates;
 
 @end
 
@@ -66,6 +66,8 @@ typedef struct
 -(instancetype)init {
     self = [super init];
     if (self) {
+        _delegates = [NSHashTable weakObjectsHashTable];
+        
         // whisper.cpp initialization
         
         /* From rough experimentation, the base model seems to work well enough, so sticking to that
@@ -99,9 +101,18 @@ typedef struct
 }
 
 -(void) registerDelegate:(id <VBAudioListenerDelegate>)delegate {
-    // TODO NSNotification Center
-    self.delegate = delegate;
-    // TODO send latest state on register to just this delegate
+    [_delegates addObject:delegate];
+}
+
+-(void) deregisterDelegate:(id <VBAudioListenerDelegate>)delegate {
+    [_delegates removeObject:delegate];
+}
+
+-(void) distributeStateUpdate:(bool)running segments:(nullable NSArray<NSString*>*)segments
+{
+    for (id <VBAudioListenerDelegate>delegate in _delegates) {
+        [delegate stateUpdate:running segments:segments];
+    }
 }
 
 - (void)setupAudioFormat:(AudioStreamBasicDescription*)format
@@ -121,7 +132,7 @@ typedef struct
 {
     if (stateInp.ctx == NULL) {
         // initialization failed
-        [_delegate stateUpdate:false segments:nil];
+        [self distributeStateUpdate:false segments:nil];
         return;
     }
     
@@ -191,7 +202,7 @@ typedef struct
             [self stopCapturing];
         }
         bool running = status == 0;
-        [blockSelf.delegate stateUpdate:running segments:nil];
+        [blockSelf distributeStateUpdate:running segments:nil];
     });
 }
 
@@ -246,7 +257,7 @@ typedef struct
 
         if (whisper_full(self->stateInp.ctx, params, self->stateInp.audioBufferF32, self->stateInp.n_samples) != 0) {
             NSLog(@"Failed to run the model");
-            [_delegate stateUpdate:false segments:nil];
+            [self distributeStateUpdate:false segments:nil];
 
             return;
         }
@@ -273,7 +284,7 @@ typedef struct
         // dispatch the result to the main thread
         //dispatch_async(dispatch_get_main_queue(), ^{
             //weakSelf.closedCaptioningLabel.text = result;
-            [_delegate stateUpdate:true segments:segments];
+            [self distributeStateUpdate:true segments:segments];
             self->stateInp.isTranscribing = false;
         //});
     });
