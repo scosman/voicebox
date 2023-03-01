@@ -3,6 +3,7 @@
 //  voicebox
 //
 //  Created by Steve Cosman on 2022-12-28.
+//  Modified from example available here with MIT licence: https://github.com/ggerganov/whisper.cpp
 //
 
 #import "ListenViewController.h"
@@ -16,7 +17,7 @@
 #define NUM_BYTES_PER_BUFFER 16 * 1024
 
 #define NUM_BUFFERS 3
-#define MAX_AUDIO_SEC 30
+#define MAX_AUDIO_SEC 120
 #define SAMPLE_RATE 16000
 
 struct whisper_context;
@@ -143,8 +144,17 @@ typedef struct
 {
     // whisper.cpp initialization
     {
-        // load the model
+        /* From rough experimentation, the base model seems to work well enough, so sticking to that
+         * for now. The small model works too, with similar CPU but double the memory, and slower
+         * processing time (CPU probably isn't telling whole story).
+         * Next step to test on a device. Not sure if we're getting ANE acceleration, and how an iPad's
+         * microphone comares to macbook.
+         *
+         * If you want to play with this, add the models to "Copy Bundle Resources" step of build.
+         */
+        // load the "base" whisper model
         NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-base.en" ofType:@"bin"];
+        // NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-small.en" ofType:@"bin"];
 
         // check if the model exists
         if (![[NSFileManager defaultManager] fileExistsAtPath:modelPath]) {
