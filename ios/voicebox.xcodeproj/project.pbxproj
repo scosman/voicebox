@@ -37,6 +37,7 @@
 		E0CE98B8295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
 		E0CE98B9295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
 		E0CE98BA295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
+		E0FE7D7A29AFB62000762C36 /* VBAudioListener.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7D7929AFB62000762C36 /* VBAudioListener.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,8 @@
 		E0CE98AC295D393B00FF9CA5 /* ggml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ggml.h; sourceTree = "<group>"; };
 		E0CE98B6295D398700FF9CA5 /* ListenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListenViewController.h; sourceTree = "<group>"; };
 		E0CE98B7295D398700FF9CA5 /* ListenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListenViewController.m; sourceTree = "<group>"; };
+		E0FE7D7829AFB62000762C36 /* VBAudioListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBAudioListener.h; sourceTree = "<group>"; };
+		E0FE7D7929AFB62000762C36 /* VBAudioListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBAudioListener.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +233,8 @@
 				E0CE98AA295D393B00FF9CA5 /* ggml.c */,
 				E0CE98AB295D393B00FF9CA5 /* whisper.cpp */,
 				E0CE98AC295D393B00FF9CA5 /* ggml.h */,
+				E0FE7D7829AFB62000762C36 /* VBAudioListener.h */,
+				E0FE7D7929AFB62000762C36 /* VBAudioListener.m */,
 			);
 			path = Whisper;
 			sourceTree = "<group>";
@@ -380,6 +385,7 @@
 				E0BBF1FF293EEE9100FB7FF9 /* main.m in Sources */,
 				E0CE98B8295D398700FF9CA5 /* ListenViewController.m in Sources */,
 				E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */,
+				E0FE7D7A29AFB62000762C36 /* VBAudioListener.m in Sources */,
 				E0BBF1F1293EEE9000FB7FF9 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
