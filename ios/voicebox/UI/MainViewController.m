@@ -46,7 +46,8 @@
     UITextView* textView = [[UITextView alloc] init];
     [self.view addSubview:textView];
     // Font side, at least 32, larger if system font is huge
-    textView.font = [UIFont systemFontOfSize:MAX([UIFont systemFontSize], 38.0)];
+    CGFloat textFontSize = IS_IPAD ? 38.0 : 24.0;
+    textView.font = [UIFont systemFontOfSize:MAX([UIFont systemFontSize], textFontSize)];
     textView.textColor = BLACK_TEXT_UICOLOR;
     textView.textContainerInset = UIEdgeInsetsMake(23, 25, 23, 25);
     textView.layer.cornerRadius = 25;
@@ -111,7 +112,7 @@
     UILayoutGuide* buttonBottomSpacer = [[UILayoutGuide alloc] init];
     [self.view addLayoutGuide:buttonBottomSpacer];
 
-    const float buttonWidth = 164.0;
+    const float buttonWidth = IS_IPAD ? 164.0 : 100.0;
     const float buttonHeight = buttonWidth;
     const float bottomPadding = -20.0;
 

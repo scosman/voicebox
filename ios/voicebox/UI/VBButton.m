@@ -25,7 +25,8 @@
         config.image = [UIImage systemImageNamed:systemImageName withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:28.0]];
         config.imagePlacement = NSDirectionalRectEdgeTop;
         config.imagePadding = 8.0;
-        config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:MAX([UIFont labelFontSize], 24.0)] }];
+        CGFloat fontSize = IS_IPAD ? 24.0 : 16.0;
+        config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:MAX([UIFont labelFontSize], fontSize)] }];
         self.configuration = config;
 
         [self setupStandardActionButtonColor];
