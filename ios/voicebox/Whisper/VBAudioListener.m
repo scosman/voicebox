@@ -56,11 +56,6 @@ static VBAudioListener *sharedInstance = nil;
 
 + (VBAudioListener*)sharedInstance
 {
-    /*static dispatch_once_t onceToken;
-    static
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
-    });*/
     @synchronized(VBAudioListener.class) {
         if (!sharedInstance) {
             sharedInstance = [[self alloc] init];
@@ -100,7 +95,6 @@ static VBAudioListener *sharedInstance = nil;
          */
         // load the "base" whisper model
         NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-base.en" ofType:@"bin"];
-        // NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-small.en" ofType:@"bin"];
 
         // check if the model exists
         if (![[NSFileManager defaultManager] fileExistsAtPath:modelPath]) {
