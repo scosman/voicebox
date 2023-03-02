@@ -19,4 +19,6 @@
 
 #define OPEN_AI_API_TIMEOUT_SECONDS 12.0
 
+#define IS_IPAD ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+
 #endif /* Constants_h */
