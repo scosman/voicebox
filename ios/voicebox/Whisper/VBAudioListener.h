@@ -16,7 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VBAudioListener : NSObject
 
+// Shared instance, which can be cleared out of memory under memory pressure, or app backgrounding
 +(VBAudioListener*) sharedInstance;
++(void) releaseSharedInstance;
 
 -(void) registerDelegate:(id <VBAudioListenerDelegate>)delegate;
 -(void) deregisterDelegate:(id <VBAudioListenerDelegate>)delegate;

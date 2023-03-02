@@ -16,7 +16,7 @@
 
 #define NUM_BUFFERS 3
 #define MAX_AUDIO_SEC 120
-#define SAMPLE_RATE 16000
+#define SAMPLE_RATE WHISPER_SAMPLE_RATE
 
 struct whisper_context;
 
@@ -37,7 +37,7 @@ typedef struct
 
     struct whisper_context* ctx;
 
-    void* listener;
+    __weak VBAudioListener* listener;
 } StateInp;
 
 
@@ -46,20 +46,41 @@ typedef struct
 }
 
 @property (nonatomic, strong) NSHashTable *delegates;
+@property bool shutdownStarted;
 
 @end
 
 @implementation VBAudioListener
 
+static VBAudioListener *sharedInstance = nil;
+
 + (VBAudioListener*)sharedInstance
 {
-    static VBAudioListener *sharedInstance = nil;
-    static dispatch_once_t onceToken;
+    /*static dispatch_once_t onceToken;
+    static
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
-    });
+    });*/
+    @synchronized(VBAudioListener.class) {
+        if (!sharedInstance) {
+            sharedInstance = [[self alloc] init];
+        }
+        
+        return sharedInstance;
+    }
+}
 
-    return sharedInstance;
++(void)releaseSharedInstance {
+    @synchronized(VBAudioListener.class) {
+        if (sharedInstance) {
+            // set state so delayed callbacks don't accidentially "restart" server
+            sharedInstance.shutdownStarted = true;
+            // helps memory get cleared sooner, prior to callbacks
+            sharedInstance->stateInp.listener = nil;
+            [sharedInstance stopCapturing];
+            sharedInstance = nil;
+        }
+    }
 }
 
 // TODO Pre-load this earlier for shared instance, so listen button is faster. May not matter on release builds though.
@@ -100,6 +121,12 @@ typedef struct
     return self;
 }
 
+-(void)dealloc {
+    whisper_free(stateInp.ctx);
+    free(stateInp.audioBufferI16);
+    free(stateInp.audioBufferF32);
+}
+
 -(void) registerDelegate:(id <VBAudioListenerDelegate>)delegate {
     [_delegates addObject:delegate];
 }
@@ -111,7 +138,11 @@ typedef struct
 -(void) distributeStateUpdate:(bool)running segments:(nullable NSArray<NSString*>*)segments
 {
     for (id <VBAudioListenerDelegate>delegate in _delegates) {
-        [delegate stateUpdate:running segments:segments];
+        if (self.shutdownStarted) {
+            [delegate stateUpdate:false segments:nil];
+        } else {
+            [delegate stateUpdate:running segments:segments];
+        }
     }
 }
 
@@ -140,8 +171,12 @@ typedef struct
     [self setupAudioFormat:&stateInp.dataFormat];
 
     stateInp.n_samples = 0;
-    stateInp.audioBufferI16 = malloc(MAX_AUDIO_SEC * SAMPLE_RATE * sizeof(int16_t));
-    stateInp.audioBufferF32 = malloc(MAX_AUDIO_SEC * SAMPLE_RATE * sizeof(float));
+    if (!stateInp.audioBufferI16) {
+        stateInp.audioBufferI16 = malloc(MAX_AUDIO_SEC * SAMPLE_RATE * sizeof(int16_t));
+    }
+    if (!stateInp.audioBufferF32) {
+        stateInp.audioBufferF32 = malloc(MAX_AUDIO_SEC * SAMPLE_RATE * sizeof(float));
+    }
 
     stateInp.isTranscribing = false;
     
@@ -164,6 +199,8 @@ typedef struct
         }
         
         AudioQueueDispose(blockSelf->stateInp.queue, true);
+        
+        [self distributeStateUpdate:false segments:nil];
     });
 }
 
@@ -175,7 +212,9 @@ typedef struct
         NSLog(@"Start capturing");
         
         blockSelf->stateInp.n_samples = 0;
-        blockSelf->stateInp.listener = (__bridge void*)(self);
+        
+        __weak VBAudioListener* weakself = blockSelf;
+        blockSelf->stateInp.listener = weakself;
         
         OSStatus status = AudioQueueNewInput(&blockSelf->stateInp.dataFormat,
                                              AudioInputCallback,
@@ -237,6 +276,7 @@ typedef struct
         params.translate = false;
         params.language = "en";
         params.n_threads = max_threads;
+        // TODO: think we're processing whole thing each time?
         params.offset_ms = 0;
         params.no_context = true;
         params.single_segment = true;
@@ -245,10 +285,10 @@ typedef struct
 
         whisper_reset_timings(self->stateInp.ctx);
 
-        if (whisper_full(self->stateInp.ctx, params, self->stateInp.audioBufferF32, self->stateInp.n_samples) != 0) {
+        int whisperStatus = whisper_full(self->stateInp.ctx, params, self->stateInp.audioBufferF32, self->stateInp.n_samples);
+        if (whisperStatus != 0) {
             NSLog(@"Failed to run the model");
             [self distributeStateUpdate:false segments:nil];
-
             return;
         }
 
@@ -306,7 +346,7 @@ void AudioInputCallback(void* inUserData,
         NSLog(@"Too much audio data, ignoring");
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            VBAudioListener* listener = (__bridge VBAudioListener*)(stateInp->listener);
+            VBAudioListener* listener = stateInp->listener;
             [listener stopCapturing];
         });
 
@@ -324,7 +364,7 @@ void AudioInputCallback(void* inUserData,
 
     // dipatch onTranscribe() to the main thread
     dispatch_async(dispatch_get_main_queue(), ^{
-        VBAudioListener* listener = (__bridge VBAudioListener*)(stateInp->listener);
+        VBAudioListener* listener = stateInp->listener;
         [listener onTranscribe];
     });
 }

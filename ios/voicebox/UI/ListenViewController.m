@@ -101,7 +101,9 @@
 - (void)closeButtonAction:(UIButton*)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-    [[VBAudioListener sharedInstance] stopCapturing];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[VBAudioListener sharedInstance] stopCapturing];
+    });
 }
 
 - (void)stateUpdate:(bool)running segments:(NSArray<NSString*>*)segments
@@ -109,7 +111,8 @@
     __weak ListenViewController* weakself = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (!running) {
-            weakself.loadingLabel.text = @"Error starting listening";
+            // TODO -- better UI (hide spinner, dismiss modal). This can happen after moving app to background and forground again.
+            weakself.loadingLabel.text = @"Listening stopped.";
             return;
         }
 

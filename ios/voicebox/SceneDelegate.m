@@ -7,6 +7,7 @@
 
 #import "SceneDelegate.h"
 #import "MainViewController.h"
+#import "VBAudioListener.h"
 
 @interface SceneDelegate ()
 
@@ -53,6 +54,14 @@
 {
     // Called as the scene transitions from the background to the foreground.
     // Use this method to undo the changes made on entering the background.
+
+    // only for primary window scene
+    if ([scene isKindOfClass:[UIWindowScene class]]) {
+        // Preload whisper model in background
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            [VBAudioListener sharedInstance];
+        });
+    };
 }
 
 - (void)sceneDidEnterBackground:(UIScene*)scene
@@ -60,6 +69,12 @@
     // Called as the scene transitions from the foreground to the background.
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
+
+    // only for primary window scene
+    if ([scene isKindOfClass:[UIWindowScene class]]) {
+        // Release whisper (500MB+ of memory)
+        [VBAudioListener releaseSharedInstance];
+    };
 }
 
 @end
