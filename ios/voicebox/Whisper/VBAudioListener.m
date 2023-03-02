@@ -26,6 +26,7 @@ typedef struct
     int ggwaveId;
     bool isCapturing;
     bool isTranscribing;
+    bool shutdownStarted;
 
     AudioQueueRef queue;
     AudioStreamBasicDescription dataFormat;
@@ -46,7 +47,6 @@ typedef struct
 }
 
 @property (nonatomic, strong) NSHashTable *delegates;
-@property bool shutdownStarted;
 
 @end
 
@@ -74,7 +74,7 @@ static VBAudioListener *sharedInstance = nil;
     @synchronized(VBAudioListener.class) {
         if (sharedInstance) {
             // set state so delayed callbacks don't accidentially "restart" server
-            sharedInstance.shutdownStarted = true;
+            sharedInstance->stateInp.shutdownStarted = true;
             // helps memory get cleared sooner, prior to callbacks
             sharedInstance->stateInp.listener = nil;
             [sharedInstance stopCapturing];
@@ -83,7 +83,6 @@ static VBAudioListener *sharedInstance = nil;
     }
 }
 
-// TODO Pre-load this earlier for shared instance, so listen button is faster. May not matter on release builds though.
 -(instancetype)init {
     self = [super init];
     if (self) {
@@ -125,6 +124,9 @@ static VBAudioListener *sharedInstance = nil;
     whisper_free(stateInp.ctx);
     free(stateInp.audioBufferI16);
     free(stateInp.audioBufferF32);
+    for (int i = 0; i < NUM_BUFFERS; i++) {
+        AudioQueueFreeBuffer(stateInp.queue, stateInp.buffers[i]);
+    }
 }
 
 -(void) registerDelegate:(id <VBAudioListenerDelegate>)delegate {
@@ -138,7 +140,7 @@ static VBAudioListener *sharedInstance = nil;
 -(void) distributeStateUpdate:(bool)running segments:(nullable NSArray<NSString*>*)segments
 {
     for (id <VBAudioListenerDelegate>delegate in _delegates) {
-        if (self.shutdownStarted) {
+        if (stateInp.shutdownStarted) {
             [delegate stateUpdate:false segments:nil];
         } else {
             [delegate stateUpdate:running segments:segments];
@@ -318,9 +320,6 @@ static VBAudioListener *sharedInstance = nil;
     });
 }
 
-
-// TODO needed?
-
 //
 // Callback implementation
 //
@@ -335,6 +334,10 @@ void AudioInputCallback(void* inUserData,
 
     if (!stateInp->isCapturing) {
         NSLog(@"Not capturing, ignoring audio");
+        return;
+    }
+    
+    if (stateInp->shutdownStarted) {
         return;
     }
 
