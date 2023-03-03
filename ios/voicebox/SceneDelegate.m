@@ -55,13 +55,17 @@
     // Called as the scene transitions from the background to the foreground.
     // Use this method to undo the changes made on entering the background.
 
-    // only for primary window scene
+    // Pre-warm the whisper model in the background
+    // When: only for primary window scene, and only in debug mode.
+    // This is fast on release builds, and saves us allocating 500MB of memory if we aren't using it.
+    // But debugging is painful without this.
+#if DEBUG
     if ([scene isKindOfClass:[UIWindowScene class]]) {
-        // Preload whisper model in background
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             [VBAudioListener sharedInstance];
         });
     };
+#endif
 }
 
 - (void)sceneDidEnterBackground:(UIScene*)scene
