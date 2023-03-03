@@ -5,23 +5,79 @@
 //  Created by Steve Cosman on 2022-12-14.
 //
 
-#import "OpenApiRequest.h"
+#import "OpenAiApiRequest.h"
 
 #import "AppSecrets.h"
 #import "Constants.h"
 
-@interface OpenApiRequest ()
+#define OPEN_API_ROLE_PARAM @"role"
+#define OPEN_API_CONTENT_PARAM @"content"
 
-@property (nonatomic, strong) NSString* prompt;
+@implementation ChatGptMessage
+@end
+
+@implementation ChatGptRequest
+@end
+
+@interface OpenAiApiRequest ()
+
+@property (nonatomic, strong) NSDictionary* bodyPayload;
+@property (nonatomic, strong) NSString* apiUrl;
 
 @end
 
-@implementation OpenApiRequest
+@implementation OpenAiApiRequest
 
-- (instancetype)initWithPrompt:(NSString*)prompt
+- (instancetype)initGtp3WithPrompt:(NSString*)prompt
 {
     self = [super init];
-    self.prompt = prompt;
+    if (self) {
+        self.apiUrl = @"https://api.openai.com/v1/completions";
+        // TODO: none of these are tuned, just defaults
+        self.bodyPayload = @{
+            @"model" : @"text-davinci-003",
+            @"prompt" : prompt,
+            @"temperature" : @0,
+            @"max_tokens" : @245,
+            @"top_p" : @1,
+            @"frequency_penalty" : @0,
+            @"presence_penalty" : @0
+        };
+    }
+    return self;
+}
+
+- (instancetype)initChatGtpWithRequest:(ChatGptRequest*)request
+{
+    self = [super init];
+    if (self) {
+        self.apiUrl = @"https://api.openai.com/v1/chat/completions";
+        NSMutableDictionary* bodyPayload = [[NSMutableDictionary alloc] init];
+        bodyPayload[@"model"] = @"gpt-3.5-turbo";
+
+        // build system directive message
+        NSMutableArray<NSDictionary*>* apiMessageSet = [[NSMutableArray alloc] init];
+        [apiMessageSet addObject:@{ OPEN_API_ROLE_PARAM : @"system", OPEN_API_CONTENT_PARAM : request.systemDirective }];
+
+        // Build set of messages
+        for (ChatGptMessage* message in request.messages) {
+            NSString* role;
+            switch (message.roll) {
+            case kChatGptRollUser:
+                role = @"user";
+                break;
+            case kChatGptRollAssistant:
+                role = @"assistant";
+                break;
+            default:
+                NSLog(@"invalid role");
+                return nil;
+            }
+            [apiMessageSet addObject:@{ OPEN_API_ROLE_PARAM : role, OPEN_API_CONTENT_PARAM : message.content }];
+        }
+        bodyPayload[@"messages"] = apiMessageSet;
+        self.bodyPayload = bodyPayload;
+    }
     return self;
 }
 
@@ -30,30 +86,19 @@
 // changes. Any return should return back up to UI callback, so wrapped this all in a sync.
 /*
  TODO
-  - Try the Open API edit endpoint and chatGPT endpoints
+  - Try the Open API edit endpoint
   - P0 before ship: the assumption the prompt returns valid json is not nearly robust enough to ship.
     strangely it's been rock solid, so using for prototyping. Try the "n" param of open API endpoint,
     and structured response instead of parsing json from plaintext
  */
 - (NSArray<NSString*>*)sendSynchronousRequest:(NSError**)error
 {
-    // TODO: none of these are tuned, just defaults
-    NSDictionary* bodyPayloadData = @{
-        @"model" : @"text-davinci-003",
-        @"prompt" : self.prompt,
-        @"temperature" : @0,
-        @"max_tokens" : @245,
-        @"top_p" : @1,
-        @"frequency_penalty" : @0,
-        @"presence_penalty" : @0
-    };
-
-    NSData* bodyPayloadJsonData = [NSJSONSerialization dataWithJSONObject:bodyPayloadData options:NSJSONWritingPrettyPrinted error:error];
+    NSData* bodyPayloadJsonData = [NSJSONSerialization dataWithJSONObject:self.bodyPayload options:NSJSONWritingPrettyPrinted error:error];
     if (*error) {
         return nil;
     }
 
-    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.openai.com/v1/completions"]];
+    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:self.apiUrl]];
 
     // POST body
     [urlRequest setHTTPMethod:@"POST"];
@@ -79,7 +124,12 @@
     [dataTask resume];
 
     // Timeout: 1s over the network timeout
-    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NSEC_PER_SEC * (OPEN_AI_API_TIMEOUT_SECONDS + 1.0))));
+    float timeoutBuffer = 1.0;
+#if DEBUG
+    // When debugging, want lots of time before UI timeout
+    timeoutBuffer = 1000.0;
+#endif
+    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NSEC_PER_SEC * (OPEN_AI_API_TIMEOUT_SECONDS + timeoutBuffer))));
 
     if (requestBlockError) {
         *error = requestBlockError;
@@ -149,11 +199,24 @@
     }
     NSDictionary* firstChoiceDict = firstChoice;
 
-    id text = firstChoiceDict[@"text"];
-    if (!text || ![text isKindOfClass:[NSString class]]) {
+    // text for GPT3, message for chatGPT
+    id optionsText = firstChoiceDict[@"text"];
+    if (!optionsText) {
+        id chatGptMessage = firstChoiceDict[@"message"];
+        if (!chatGptMessage || ![chatGptMessage isKindOfClass:[NSDictionary class]]) {
+            return nil;
+        }
+        NSDictionary* chatGptMessageDict = chatGptMessage;
+        if (![@"assistant" isEqualToString:chatGptMessageDict[@"role"]]) {
+            NSLog(@"expected assistant response");
+            return nil;
+        }
+        optionsText = chatGptMessageDict[@"content"];
+    }
+    if (!optionsText || ![optionsText isKindOfClass:[NSString class]]) {
         return nil;
     }
-    return text;
+    return optionsText;
 }
 
 - (NSError*)apiError:(NSInteger)code

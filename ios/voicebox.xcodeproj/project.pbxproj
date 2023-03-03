@@ -14,7 +14,7 @@
 		E049ED4C2943B779002080BD /* next-sentence.txt in Resources */ = {isa = PBXBuildFile; fileRef = E049ED4B2943AD2B002080BD /* next-sentence.txt */; };
 		E049ED4F2944B833002080BD /* VBStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED4E2944B833002080BD /* VBStringUtils.m */; };
 		E049ED512944B986002080BD /* stringUtliTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED502944B986002080BD /* stringUtliTests.m */; };
-		E04A3321294A347300EF6628 /* OpenApiRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E04A3320294A347300EF6628 /* OpenApiRequest.m */; };
+		E04A3321294A347300EF6628 /* OpenAiApiRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E04A3320294A347300EF6628 /* OpenAiApiRequest.m */; };
 		E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */; };
 		E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */; };
 		E0BBF1F1293EEE9000FB7FF9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1F0293EEE9000FB7FF9 /* SceneDelegate.m */; };
@@ -28,15 +28,16 @@
 		E0CE98AD295D393B00FF9CA5 /* ggml-base.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */; };
 		E0CE98AE295D393B00FF9CA5 /* ggml-base.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */; };
 		E0CE98AF295D393B00FF9CA5 /* ggml-base.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */; };
-		E0CE98B0295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; settings = {COMPILER_FLAGS = "-DGGML_USE_ACCELERATE"; }; };
+		E0CE98B0295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; settings = {COMPILER_FLAGS = "-DGGML_USE_ACCELERATE -w"; }; };
 		E0CE98B1295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; };
 		E0CE98B2295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; };
-		E0CE98B3295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; };
+		E0CE98B3295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		E0CE98B4295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; };
 		E0CE98B5295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; };
 		E0CE98B8295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
 		E0CE98B9295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
 		E0CE98BA295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
+		E0F9A34329B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt in Resources */ = {isa = PBXBuildFile; fileRef = E0F9A34229B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt */; };
 		E0FE7D7A29AFB62000762C36 /* VBAudioListener.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7D7929AFB62000762C36 /* VBAudioListener.m */; };
 /* End PBXBuildFile section */
 
@@ -71,8 +72,8 @@
 		E049ED4D2944B833002080BD /* VBStringUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBStringUtils.h; sourceTree = "<group>"; };
 		E049ED4E2944B833002080BD /* VBStringUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBStringUtils.m; sourceTree = "<group>"; };
 		E049ED502944B986002080BD /* stringUtliTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = stringUtliTests.m; sourceTree = "<group>"; };
-		E04A331F294A347300EF6628 /* OpenApiRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenApiRequest.h; sourceTree = "<group>"; };
-		E04A3320294A347300EF6628 /* OpenApiRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenApiRequest.m; sourceTree = "<group>"; };
+		E04A331F294A347300EF6628 /* OpenAiApiRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenAiApiRequest.h; sourceTree = "<group>"; };
+		E04A3320294A347300EF6628 /* OpenAiApiRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenAiApiRequest.m; sourceTree = "<group>"; };
 		E05B910F293FC4ED004DBFE2 /* VBSpeechSynthesizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBSpeechSynthesizer.h; sourceTree = "<group>"; };
 		E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBSpeechSynthesizer.m; sourceTree = "<group>"; };
 		E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = voicebox.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +99,7 @@
 		E0CE98AC295D393B00FF9CA5 /* ggml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ggml.h; sourceTree = "<group>"; };
 		E0CE98B6295D398700FF9CA5 /* ListenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListenViewController.h; sourceTree = "<group>"; };
 		E0CE98B7295D398700FF9CA5 /* ListenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListenViewController.m; sourceTree = "<group>"; };
+		E0F9A34229B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "chat-gpt-text-expansion-system-directive.txt"; sourceTree = "<group>"; };
 		E0FE7D7829AFB62000762C36 /* VBAudioListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBAudioListener.h; sourceTree = "<group>"; };
 		E0FE7D7929AFB62000762C36 /* VBAudioListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBAudioListener.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -152,8 +154,8 @@
 				E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */,
 				E049ED4D2944B833002080BD /* VBStringUtils.h */,
 				E049ED4E2944B833002080BD /* VBStringUtils.m */,
-				E04A331F294A347300EF6628 /* OpenApiRequest.h */,
-				E04A3320294A347300EF6628 /* OpenApiRequest.m */,
+				E04A331F294A347300EF6628 /* OpenAiApiRequest.h */,
+				E04A3320294A347300EF6628 /* OpenAiApiRequest.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -161,8 +163,8 @@
 		E049ED472943A4B2002080BD /* Prompts */ = {
 			isa = PBXGroup;
 			children = (
-				E049ED482943A4DC002080BD /* text-expansion.txt */,
-				E049ED4B2943AD2B002080BD /* next-sentence.txt */,
+				E0F9A33A29B16C0F002F42A5 /* chatGpt */,
+				E0F9A33929B16BF3002F42A5 /* gpt3 */,
 			);
 			path = Prompts;
 			sourceTree = "<group>";
@@ -237,6 +239,23 @@
 				E0FE7D7929AFB62000762C36 /* VBAudioListener.m */,
 			);
 			path = Whisper;
+			sourceTree = "<group>";
+		};
+		E0F9A33929B16BF3002F42A5 /* gpt3 */ = {
+			isa = PBXGroup;
+			children = (
+				E049ED482943A4DC002080BD /* text-expansion.txt */,
+				E049ED4B2943AD2B002080BD /* next-sentence.txt */,
+			);
+			path = gpt3;
+			sourceTree = "<group>";
+		};
+		E0F9A33A29B16C0F002F42A5 /* chatGpt */ = {
+			isa = PBXGroup;
+			children = (
+				E0F9A34229B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt */,
+			);
+			path = chatGpt;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -346,6 +365,7 @@
 				E049ED492943A6A2002080BD /* text-expansion.txt in Resources */,
 				E0BBF1FC293EEE9100FB7FF9 /* LaunchScreen.storyboard in Resources */,
 				E0BBF1F9293EEE9100FB7FF9 /* Assets.xcassets in Resources */,
+				E0F9A34329B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt in Resources */,
 				E0CE98AD295D393B00FF9CA5 /* ggml-base.en.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,7 +393,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E04A3321294A347300EF6628 /* OpenApiRequest.m in Sources */,
+				E04A3321294A347300EF6628 /* OpenAiApiRequest.m in Sources */,
 				E0BBF1F4293EEE9000FB7FF9 /* MainViewController.m in Sources */,
 				E0CE98B3295D393B00FF9CA5 /* whisper.cpp in Sources */,
 				E049ED41293FCC5D002080BD /* VBMagicEnhancer.m in Sources */,
