@@ -16,6 +16,7 @@
 		E049ED512944B986002080BD /* stringUtliTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED502944B986002080BD /* stringUtliTests.m */; };
 		E04A3321294A347300EF6628 /* OpenAiApiRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E04A3320294A347300EF6628 /* OpenAiApiRequest.m */; };
 		E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */; };
+		E0A894DF29DB28790059AFEE /* whisper.h in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98A9295D393B00FF9CA5 /* whisper.h */; settings = {COMPILER_FLAGS = "-Wno-"; }; };
 		E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */; };
 		E0BBF1F1293EEE9000FB7FF9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1F0293EEE9000FB7FF9 /* SceneDelegate.m */; };
 		E0BBF1F4293EEE9000FB7FF9 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1F3293EEE9000FB7FF9 /* MainViewController.m */; };
@@ -393,6 +394,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0A894DF29DB28790059AFEE /* whisper.h in Sources */,
 				E04A3321294A347300EF6628 /* OpenAiApiRequest.m in Sources */,
 				E0BBF1F4293EEE9000FB7FF9 /* MainViewController.m in Sources */,
 				E0CE98B3295D393B00FF9CA5 /* whisper.cpp in Sources */,
