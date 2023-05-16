@@ -1,0 +1,616 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E0639F4D2A12F87B0014EAA4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F4C2A12F87B0014EAA4 /* AppDelegate.m */; };
+		E0639F502A12F87B0014EAA4 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F4F2A12F87B0014EAA4 /* SceneDelegate.m */; };
+		E0639F532A12F87B0014EAA4 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F522A12F87B0014EAA4 /* MainViewController.m */; };
+		E0639F562A12F87B0014EAA4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0639F542A12F87B0014EAA4 /* Main.storyboard */; };
+		E0639F582A12F87D0014EAA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0639F572A12F87D0014EAA4 /* Assets.xcassets */; };
+		E0639F5B2A12F87D0014EAA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0639F592A12F87D0014EAA4 /* LaunchScreen.storyboard */; };
+		E0639F5E2A12F87D0014EAA4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F5D2A12F87D0014EAA4 /* main.m */; };
+		E0639F682A12F87D0014EAA4 /* MorseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F672A12F87D0014EAA4 /* MorseTests.m */; };
+		E0639F722A12F87D0014EAA4 /* MorseUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F712A12F87D0014EAA4 /* MorseUITests.m */; };
+		E0639F742A12F87D0014EAA4 /* MorseUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F732A12F87D0014EAA4 /* MorseUITestsLaunchTests.m */; };
+		E0639F832A1300B10014EAA4 /* VBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F822A1300B10014EAA4 /* VBButton.m */; };
+		E0639F872A130D440014EAA4 /* BaseTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F862A130D440014EAA4 /* BaseTestViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E0639F642A12F87D0014EAA4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0639F402A12F87B0014EAA4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E0639F472A12F87B0014EAA4;
+			remoteInfo = Morse;
+		};
+		E0639F6E2A12F87D0014EAA4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0639F402A12F87B0014EAA4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E0639F472A12F87B0014EAA4;
+			remoteInfo = Morse;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E0639F482A12F87B0014EAA4 /* Morse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Morse.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0639F4B2A12F87B0014EAA4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		E0639F4C2A12F87B0014EAA4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		E0639F4E2A12F87B0014EAA4 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		E0639F4F2A12F87B0014EAA4 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		E0639F512A12F87B0014EAA4 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		E0639F522A12F87B0014EAA4 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		E0639F552A12F87B0014EAA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E0639F572A12F87D0014EAA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E0639F5A2A12F87D0014EAA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E0639F5C2A12F87D0014EAA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0639F5D2A12F87D0014EAA4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E0639F632A12F87D0014EAA4 /* MorseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MorseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0639F672A12F87D0014EAA4 /* MorseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MorseTests.m; sourceTree = "<group>"; };
+		E0639F6D2A12F87D0014EAA4 /* MorseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MorseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0639F712A12F87D0014EAA4 /* MorseUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MorseUITests.m; sourceTree = "<group>"; };
+		E0639F732A12F87D0014EAA4 /* MorseUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MorseUITestsLaunchTests.m; sourceTree = "<group>"; };
+		E0639F812A1300B00014EAA4 /* VBButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VBButton.h; path = ../../ios/voicebox/UI/VBButton.h; sourceTree = "<group>"; };
+		E0639F822A1300B10014EAA4 /* VBButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VBButton.m; path = ../../ios/voicebox/UI/VBButton.m; sourceTree = "<group>"; };
+		E0639F842A1300D50014EAA4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = ../../ios/voicebox/Constants.h; sourceTree = "<group>"; };
+		E0639F852A130D440014EAA4 /* BaseTestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseTestViewController.h; sourceTree = "<group>"; };
+		E0639F862A130D440014EAA4 /* BaseTestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseTestViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E0639F452A12F87B0014EAA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0639F602A12F87D0014EAA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0639F6A2A12F87D0014EAA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E0639F3F2A12F87B0014EAA4 = {
+			isa = PBXGroup;
+			children = (
+				E0639F4A2A12F87B0014EAA4 /* Morse */,
+				E0639F662A12F87D0014EAA4 /* MorseTests */,
+				E0639F702A12F87D0014EAA4 /* MorseUITests */,
+				E0639F492A12F87B0014EAA4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E0639F492A12F87B0014EAA4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E0639F482A12F87B0014EAA4 /* Morse.app */,
+				E0639F632A12F87D0014EAA4 /* MorseTests.xctest */,
+				E0639F6D2A12F87D0014EAA4 /* MorseUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E0639F4A2A12F87B0014EAA4 /* Morse */ = {
+			isa = PBXGroup;
+			children = (
+				E0639F4B2A12F87B0014EAA4 /* AppDelegate.h */,
+				E0639F4C2A12F87B0014EAA4 /* AppDelegate.m */,
+				E0639F842A1300D50014EAA4 /* Constants.h */,
+				E0639F4E2A12F87B0014EAA4 /* SceneDelegate.h */,
+				E0639F4F2A12F87B0014EAA4 /* SceneDelegate.m */,
+				E0639F512A12F87B0014EAA4 /* MainViewController.h */,
+				E0639F522A12F87B0014EAA4 /* MainViewController.m */,
+				E0639F812A1300B00014EAA4 /* VBButton.h */,
+				E0639F822A1300B10014EAA4 /* VBButton.m */,
+				E0639F542A12F87B0014EAA4 /* Main.storyboard */,
+				E0639F572A12F87D0014EAA4 /* Assets.xcassets */,
+				E0639F592A12F87D0014EAA4 /* LaunchScreen.storyboard */,
+				E0639F5C2A12F87D0014EAA4 /* Info.plist */,
+				E0639F5D2A12F87D0014EAA4 /* main.m */,
+				E0639F852A130D440014EAA4 /* BaseTestViewController.h */,
+				E0639F862A130D440014EAA4 /* BaseTestViewController.m */,
+			);
+			path = Morse;
+			sourceTree = "<group>";
+		};
+		E0639F662A12F87D0014EAA4 /* MorseTests */ = {
+			isa = PBXGroup;
+			children = (
+				E0639F672A12F87D0014EAA4 /* MorseTests.m */,
+			);
+			path = MorseTests;
+			sourceTree = "<group>";
+		};
+		E0639F702A12F87D0014EAA4 /* MorseUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E0639F712A12F87D0014EAA4 /* MorseUITests.m */,
+				E0639F732A12F87D0014EAA4 /* MorseUITestsLaunchTests.m */,
+			);
+			path = MorseUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E0639F472A12F87B0014EAA4 /* Morse */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E0639F772A12F87D0014EAA4 /* Build configuration list for PBXNativeTarget "Morse" */;
+			buildPhases = (
+				E0639F442A12F87B0014EAA4 /* Sources */,
+				E0639F452A12F87B0014EAA4 /* Frameworks */,
+				E0639F462A12F87B0014EAA4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Morse;
+			productName = Morse;
+			productReference = E0639F482A12F87B0014EAA4 /* Morse.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E0639F622A12F87D0014EAA4 /* MorseTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E0639F7A2A12F87D0014EAA4 /* Build configuration list for PBXNativeTarget "MorseTests" */;
+			buildPhases = (
+				E0639F5F2A12F87D0014EAA4 /* Sources */,
+				E0639F602A12F87D0014EAA4 /* Frameworks */,
+				E0639F612A12F87D0014EAA4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E0639F652A12F87D0014EAA4 /* PBXTargetDependency */,
+			);
+			name = MorseTests;
+			productName = MorseTests;
+			productReference = E0639F632A12F87D0014EAA4 /* MorseTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E0639F6C2A12F87D0014EAA4 /* MorseUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E0639F7D2A12F87D0014EAA4 /* Build configuration list for PBXNativeTarget "MorseUITests" */;
+			buildPhases = (
+				E0639F692A12F87D0014EAA4 /* Sources */,
+				E0639F6A2A12F87D0014EAA4 /* Frameworks */,
+				E0639F6B2A12F87D0014EAA4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E0639F6F2A12F87D0014EAA4 /* PBXTargetDependency */,
+			);
+			name = MorseUITests;
+			productName = MorseUITests;
+			productReference = E0639F6D2A12F87D0014EAA4 /* MorseUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E0639F402A12F87B0014EAA4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					E0639F472A12F87B0014EAA4 = {
+						CreatedOnToolsVersion = 14.3;
+					};
+					E0639F622A12F87D0014EAA4 = {
+						CreatedOnToolsVersion = 14.3;
+						TestTargetID = E0639F472A12F87B0014EAA4;
+					};
+					E0639F6C2A12F87D0014EAA4 = {
+						CreatedOnToolsVersion = 14.3;
+						TestTargetID = E0639F472A12F87B0014EAA4;
+					};
+				};
+			};
+			buildConfigurationList = E0639F432A12F87B0014EAA4 /* Build configuration list for PBXProject "Morse" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E0639F3F2A12F87B0014EAA4;
+			productRefGroup = E0639F492A12F87B0014EAA4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E0639F472A12F87B0014EAA4 /* Morse */,
+				E0639F622A12F87D0014EAA4 /* MorseTests */,
+				E0639F6C2A12F87D0014EAA4 /* MorseUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E0639F462A12F87B0014EAA4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0639F5B2A12F87D0014EAA4 /* LaunchScreen.storyboard in Resources */,
+				E0639F582A12F87D0014EAA4 /* Assets.xcassets in Resources */,
+				E0639F562A12F87B0014EAA4 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0639F612A12F87D0014EAA4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0639F6B2A12F87D0014EAA4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E0639F442A12F87B0014EAA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0639F532A12F87B0014EAA4 /* MainViewController.m in Sources */,
+				E0639F4D2A12F87B0014EAA4 /* AppDelegate.m in Sources */,
+				E0639F832A1300B10014EAA4 /* VBButton.m in Sources */,
+				E0639F5E2A12F87D0014EAA4 /* main.m in Sources */,
+				E0639F502A12F87B0014EAA4 /* SceneDelegate.m in Sources */,
+				E0639F872A130D440014EAA4 /* BaseTestViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0639F5F2A12F87D0014EAA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0639F682A12F87D0014EAA4 /* MorseTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0639F692A12F87D0014EAA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0639F722A12F87D0014EAA4 /* MorseUITests.m in Sources */,
+				E0639F742A12F87D0014EAA4 /* MorseUITestsLaunchTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E0639F652A12F87D0014EAA4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E0639F472A12F87B0014EAA4 /* Morse */;
+			targetProxy = E0639F642A12F87D0014EAA4 /* PBXContainerItemProxy */;
+		};
+		E0639F6F2A12F87D0014EAA4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E0639F472A12F87B0014EAA4 /* Morse */;
+			targetProxy = E0639F6E2A12F87D0014EAA4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E0639F542A12F87B0014EAA4 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E0639F552A12F87B0014EAA4 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E0639F592A12F87D0014EAA4 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E0639F5A2A12F87D0014EAA4 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E0639F752A12F87D0014EAA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		E0639F762A12F87D0014EAA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E0639F782A12F87D0014EAA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D5VFD22Y98;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Morse/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.Morse;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E0639F792A12F87D0014EAA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D5VFD22Y98;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Morse/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.Morse;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E0639F7B2A12F87D0014EAA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D5VFD22Y98;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.MorseTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Morse.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Morse";
+			};
+			name = Debug;
+		};
+		E0639F7C2A12F87D0014EAA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D5VFD22Y98;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.MorseTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Morse.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Morse";
+			};
+			name = Release;
+		};
+		E0639F7E2A12F87D0014EAA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D5VFD22Y98;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.MorseUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Morse;
+			};
+			name = Debug;
+		};
+		E0639F7F2A12F87D0014EAA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D5VFD22Y98;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.MorseUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Morse;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E0639F432A12F87B0014EAA4 /* Build configuration list for PBXProject "Morse" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E0639F752A12F87D0014EAA4 /* Debug */,
+				E0639F762A12F87D0014EAA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E0639F772A12F87D0014EAA4 /* Build configuration list for PBXNativeTarget "Morse" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E0639F782A12F87D0014EAA4 /* Debug */,
+				E0639F792A12F87D0014EAA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E0639F7A2A12F87D0014EAA4 /* Build configuration list for PBXNativeTarget "MorseTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E0639F7B2A12F87D0014EAA4 /* Debug */,
+				E0639F7C2A12F87D0014EAA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E0639F7D2A12F87D0014EAA4 /* Build configuration list for PBXNativeTarget "MorseUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E0639F7E2A12F87D0014EAA4 /* Debug */,
+				E0639F7F2A12F87D0014EAA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E0639F402A12F87B0014EAA4 /* Project object */;
+}
