@@ -19,6 +19,9 @@
 		E0639F742A12F87D0014EAA4 /* MorseUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F732A12F87D0014EAA4 /* MorseUITestsLaunchTests.m */; };
 		E0639F832A1300B10014EAA4 /* VBButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F822A1300B10014EAA4 /* VBButton.m */; };
 		E0639F872A130D440014EAA4 /* BaseTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F862A130D440014EAA4 /* BaseTestViewController.m */; };
+		E0639F8A2A1346C40014EAA4 /* MorseTwoTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F892A1346C40014EAA4 /* MorseTwoTestViewController.m */; };
+		E0639F8D2A1348B80014EAA4 /* KeyboardTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F8C2A1348B80014EAA4 /* KeyboardTestViewController.m */; };
+		E0639F902A1420D60014EAA4 /* MorseOneTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0639F8F2A1420D60014EAA4 /* MorseOneTestViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +64,12 @@
 		E0639F842A1300D50014EAA4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = ../../ios/voicebox/Constants.h; sourceTree = "<group>"; };
 		E0639F852A130D440014EAA4 /* BaseTestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseTestViewController.h; sourceTree = "<group>"; };
 		E0639F862A130D440014EAA4 /* BaseTestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseTestViewController.m; sourceTree = "<group>"; };
+		E0639F882A1346C40014EAA4 /* MorseTwoTestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MorseTwoTestViewController.h; sourceTree = "<group>"; };
+		E0639F892A1346C40014EAA4 /* MorseTwoTestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MorseTwoTestViewController.m; sourceTree = "<group>"; };
+		E0639F8B2A1348B80014EAA4 /* KeyboardTestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardTestViewController.h; sourceTree = "<group>"; };
+		E0639F8C2A1348B80014EAA4 /* KeyboardTestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardTestViewController.m; sourceTree = "<group>"; };
+		E0639F8E2A1420D60014EAA4 /* MorseOneTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MorseOneTestViewController.h; sourceTree = "<group>"; };
+		E0639F8F2A1420D60014EAA4 /* MorseOneTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MorseOneTestViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +127,10 @@
 				E0639F4F2A12F87B0014EAA4 /* SceneDelegate.m */,
 				E0639F512A12F87B0014EAA4 /* MainViewController.h */,
 				E0639F522A12F87B0014EAA4 /* MainViewController.m */,
+				E0639F8E2A1420D60014EAA4 /* MorseOneTestViewController.h */,
+				E0639F8F2A1420D60014EAA4 /* MorseOneTestViewController.m */,
+				E0639F882A1346C40014EAA4 /* MorseTwoTestViewController.h */,
+				E0639F892A1346C40014EAA4 /* MorseTwoTestViewController.m */,
 				E0639F812A1300B00014EAA4 /* VBButton.h */,
 				E0639F822A1300B10014EAA4 /* VBButton.m */,
 				E0639F542A12F87B0014EAA4 /* Main.storyboard */,
@@ -127,6 +140,8 @@
 				E0639F5D2A12F87D0014EAA4 /* main.m */,
 				E0639F852A130D440014EAA4 /* BaseTestViewController.h */,
 				E0639F862A130D440014EAA4 /* BaseTestViewController.m */,
+				E0639F8B2A1348B80014EAA4 /* KeyboardTestViewController.h */,
+				E0639F8C2A1348B80014EAA4 /* KeyboardTestViewController.m */,
 			);
 			path = Morse;
 			sourceTree = "<group>";
@@ -279,11 +294,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0639F532A12F87B0014EAA4 /* MainViewController.m in Sources */,
+				E0639F902A1420D60014EAA4 /* MorseOneTestViewController.m in Sources */,
 				E0639F4D2A12F87B0014EAA4 /* AppDelegate.m in Sources */,
 				E0639F832A1300B10014EAA4 /* VBButton.m in Sources */,
 				E0639F5E2A12F87D0014EAA4 /* main.m in Sources */,
+				E0639F8A2A1346C40014EAA4 /* MorseTwoTestViewController.m in Sources */,
 				E0639F502A12F87B0014EAA4 /* SceneDelegate.m in Sources */,
 				E0639F872A130D440014EAA4 /* BaseTestViewController.m in Sources */,
+				E0639F8D2A1348B80014EAA4 /* KeyboardTestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,9 @@
 
 #import "MainViewController.h"
 
-#import "BaseTestViewController.h"
+#import "MorseOneTestViewController.h"
+#import "MorseTwoTestViewController.h"
+#import "KeyboardTestViewController.h"
 #import "Constants.h"
 #import "VBButton.h"
 
@@ -52,21 +54,23 @@
     UIButton* keyboardTestBtn = [[VBButton alloc] initOptionButtonWithTitle:@"26er Test"];
     keyboardTestBtn.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:keyboardTestBtn];
+    [keyboardTestBtn addTarget:self action:@selector(openKeyboardTest:) forControlEvents:UIControlEventTouchUpInside];
     
     UILayoutGuide *morseBtnSpaceTop = [[UILayoutGuide alloc] init];
     [self.view addLayoutGuide:morseBtnSpaceTop];
     
-    UIButton* morseTestBtn = [[VBButton alloc] initOptionButtonWithTitle:@"Morse Test"];
-    morseTestBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:morseTestBtn];
-    [morseTestBtn addTarget:self action:@selector(openMorse:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton* morseOneTestBtn = [[VBButton alloc] initOptionButtonWithTitle:@"Morse One Test"];
+    morseOneTestBtn.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:morseOneTestBtn];
+    [morseOneTestBtn addTarget:self action:@selector(openMorseOne:) forControlEvents:UIControlEventTouchUpInside];
     
-    UILayoutGuide *hawkinsBtnSpaceTop = [[UILayoutGuide alloc] init];
-    [self.view addLayoutGuide:hawkinsBtnSpaceTop];
+    UILayoutGuide *morseTwoSpaceTop = [[UILayoutGuide alloc] init];
+    [self.view addLayoutGuide:morseTwoSpaceTop];
     
-    UIButton* hawkinsTestBtn = [[VBButton alloc] initOptionButtonWithTitle:@"Hawkins Test"];
-    hawkinsTestBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:hawkinsTestBtn];
+    UIButton* morseTwoTestBtn = [[VBButton alloc] initOptionButtonWithTitle:@"Morse Two Test"];
+    morseTwoTestBtn.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:morseTwoTestBtn];
+    [morseTwoTestBtn addTarget:self action:@selector(openMorseTwo:) forControlEvents:UIControlEventTouchUpInside];
     
     NSArray<NSLayoutConstraint*>* constraints = @[
         // Top Space
@@ -95,25 +99,47 @@
         [morseBtnSpaceTop.heightAnchor constraintEqualToConstant:BTN_space],
         
         // morse button
-        [morseTestBtn.topAnchor constraintEqualToAnchor:morseBtnSpaceTop.bottomAnchor],
-        [morseTestBtn.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-        [morseTestBtn.widthAnchor constraintEqualToConstant:BTN_WIDTH],
+        [morseOneTestBtn.topAnchor constraintEqualToAnchor:morseBtnSpaceTop.bottomAnchor],
+        [morseOneTestBtn.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [morseOneTestBtn.widthAnchor constraintEqualToConstant:BTN_WIDTH],
         
-        // Hawkins btn Space
-        [hawkinsBtnSpaceTop.topAnchor constraintEqualToAnchor:morseTestBtn.bottomAnchor],
-        [hawkinsBtnSpaceTop.heightAnchor constraintEqualToConstant:BTN_space],
+        // Morse 2 btn Space
+        [morseTwoSpaceTop.topAnchor constraintEqualToAnchor:morseOneTestBtn.bottomAnchor],
+        [morseTwoSpaceTop.heightAnchor constraintEqualToConstant:BTN_space],
         
-        // Hawkins button
-        [hawkinsTestBtn.topAnchor constraintEqualToAnchor:hawkinsBtnSpaceTop.bottomAnchor],
-        [hawkinsTestBtn.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-        [hawkinsTestBtn.widthAnchor constraintEqualToConstant:BTN_WIDTH],
+        // Morse 2 button
+        [morseTwoTestBtn.topAnchor constraintEqualToAnchor:morseTwoSpaceTop.bottomAnchor],
+        [morseTwoTestBtn.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [morseTwoTestBtn.widthAnchor constraintEqualToConstant:BTN_WIDTH],
     ];
     [NSLayoutConstraint activateConstraints:constraints];
 }
 
--(void) openMorse:(id)sender {
-    BaseTestViewController* morseVc = [[BaseTestViewController alloc] init];
+-(void) openKeyboardTest:(id)sender {
+    KeyboardTestViewController* kbvc = [[KeyboardTestViewController alloc] init];
+    [self presentViewController:kbvc animated:YES completion:nil];
+}
+
+-(void) openMorseOne:(id)sender {
+    MorseOneTestViewController* morseVc = [[MorseOneTestViewController alloc] init];
     [self presentViewController:morseVc animated:YES completion:nil];
+}
+
+-(void) openMorseTwo:(id)sender {
+    MorseTwoTestViewController* morseVc = [[MorseTwoTestViewController alloc] init];
+    [self presentViewController:morseVc animated:YES completion:nil];
+}
+
+-(void) openHawkins:(id)sender {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Coming soon"
+                                   message:@"Hawkins is coming soon (ish)."
+                                   preferredStyle:UIAlertControllerStyleAlert];
+     
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+       handler:^(UIAlertAction * action) {}];
+     
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end
