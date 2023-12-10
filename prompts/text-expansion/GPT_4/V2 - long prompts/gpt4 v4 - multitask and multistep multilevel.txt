@@ -26,13 +26,7 @@ This is a detailed breakdown of how to reply. The assistant should perform the f
     - The options list is a set of 6 unique response options for this topic, in first person. They shouldn't conflict with the other topics. Some examples for the example topic are: "When do your classes start?", "When is your next vacation or break?", etc
     - The most_general string is an extrmely general way selecting this topic without any specifics at all. An example for the example optic: "I was curious about your schedule."
 
-If there is an error, you can return the json structure: 
-"""
-{
-  "devErrorMessage": "Message describing the error to developers in this string. Can include comments about the prompt.",
-  "userErrorMessage": "Messing describing how the user can fix this. For example: Please type more to help me guess what you want to say." 
-}
-"""
+If there is an error, you can return the json response: {"errorCode": 500}
 
 The following bullets are information about the speaker. It can be included if the quote strongly indicates this information would be helpful, but it's often not necessary and should not be included unless the quote implies it should be included.
  - the user's name is Bryan
