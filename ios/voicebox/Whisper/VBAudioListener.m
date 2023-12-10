@@ -271,11 +271,12 @@ static VBAudioListener *sharedInstance = nil;
         params.print_special = false;
         params.translate = false;
         params.language = "en";
+        // TODO P1: `params.suppress_non_speech_tokens = true;` once it makes it to stable release
         params.n_threads = max_threads;
         // TODO: think we're processing whole thing each time?
         params.offset_ms = 0;
         params.no_context = true;
-        params.single_segment = true;
+        params.single_segment = false;
 
         CFTimeInterval startTime = CACurrentMediaTime();
 

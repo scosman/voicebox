@@ -15,6 +15,7 @@
 @property (nonatomic, weak) UILabel *loadingLabel, *transcriptLabel;
 @property (nonatomic, weak) UIActivityIndicatorView* spinner;
 @property (nonatomic, weak) UIButton* closeBtn;
+@property (nonatomic, strong) NSArray<NSString*>* priorSegments;
 
 @end
 
@@ -41,7 +42,7 @@
 
     UILabel* transcriptLabel = [[UILabel alloc] init];
     transcriptLabel.text = @"";
-    transcriptLabel.font = [UIFont systemFontOfSize:MAX(22.0, [UIFont labelFontSize])];
+    transcriptLabel.font = [UIFont systemFontOfSize:MAX(16.0, [UIFont labelFontSize])];
     transcriptLabel.textColor = [UIColor systemGrayColor];
     transcriptLabel.translatesAutoresizingMaskIntoConstraints = NO;
     transcriptLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -119,11 +120,50 @@
         weakself.loadingLabel.text = @"Listening...";
 
         if (segments) {
-            NSString* transcript = @"";
-            for (NSString* segment in segments) {
-                transcript = [transcript stringByAppendingString:segment];
+            NSString* liveContent = @"";
+            NSString* readyToProcess = @"";
+            /*
+             NSString* transcript = @"";
+             for (NSString* segment in segments) {
+                NSString* segmentString = [NSString stringWithFormat:@" - %@\n", segment];
+                transcript = [transcript stringByAppendingString:segmentString];
+            }*/
+            // weakself.transcriptLabel.text = transcript;
+
+            NSArray* priorSegments = weakself.priorSegments;
+            if (priorSegments) {
+                // Check if prior segments don't match, with exclusion of last segment
+                for (int i = 0; i < (int)priorSegments.count - 2; i++) {
+                    NSString* priorSegment = priorSegments[i];
+                    NSString* curSegment = segments[i];
+                    if (![priorSegment isEqualToString:curSegment]) {
+                        /* Findings:
+                          - very often changing last segment, it's the "in progress" segment.
+                          - pretty often changing n-1 segment -- not stable
+                          - rarely but sometimes changes n-2 segment. Doesn't seem to be any stability guaruntee. Changes I've seen:
+                              - correct a word
+                              - fix punctuation
+                              - move word from one segment to another
+                         */
+                        NSLog(@"segment changed!\nPrior: %@\nCurrent: %@", priorSegment, curSegment);
+                    }
+                }
             }
-            weakself.transcriptLabel.text = transcript;
+
+            for (int i = 0; i < segments.count; i++) {
+                NSString* segment = segments[i];
+
+                if (priorSegments && i < (int)priorSegments.count - 2) {
+                    // stable enough, ready to process this
+                    readyToProcess = [readyToProcess stringByAppendingString:segment];
+                } else {
+                    liveContent = [liveContent stringByAppendingString:segment];
+                }
+            }
+
+            weakself.transcriptLabel.text = [NSString stringWithFormat:@"Ready to Process:\n%@\n\nLive:\n%@", readyToProcess, liveContent];
+
+            weakself.priorSegments = segments;
         }
     });
 }

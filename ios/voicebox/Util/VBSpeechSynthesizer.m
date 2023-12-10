@@ -36,8 +36,18 @@
 
     // TODO -- specify voice. List all with AVSpeechSynthesisVoice.speechVoices, find
     // highest quality matching curent locale. Save result for next time.
+    // AVSpeechSynthesisVoice* voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"en-US"];
+    // voice = [AVSpeechSynthesisVoice voiceWithIdentifier:@"com.apple.speech.synthesis.voice.Fred"];
+    // en-US, Name: Fred, Quality: Default [com.apple.speech.synthesis.voice.Fred]
     AVSpeechSynthesisVoice* voice = [[AVSpeechSynthesisVoice alloc] init];
-    ;
+    /*NSArray* speechVoices = [AVSpeechSynthesisVoice speechVoices];
+    NSLog(@"Voices: (%d) %@", speechVoices.count, speechVoices);
+    for (AVSpeechSynthesisVoice* candidateVoice in speechVoices) {
+        if (candidateVoice.quality > voice.quality) {
+     // Need to check gender, and region
+            voice = candidateVoice;
+        }
+    }*/
     utterance.voice = voice;
 
     // Create a speech synthesizer if not available. May be removed under memory presure so always check.

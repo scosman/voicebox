@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initOptionButtonWithTitle:(NSString*)title;
 - (instancetype)initOptionCancelButton;
+- (instancetype)initKeyboardButton;
 
 @end
 

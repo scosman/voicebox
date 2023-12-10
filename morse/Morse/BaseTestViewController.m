@@ -293,7 +293,7 @@
     
     // highlight button
     UIButtonConfiguration* config = UIButtonConfiguration.grayButtonConfiguration;
-    config.baseBackgroundColor = [UIColor greenColor];
+    config.baseBackgroundColor = [UIColor systemBlueColor];
     _currentTestTarget.configuration = config;
 }
 

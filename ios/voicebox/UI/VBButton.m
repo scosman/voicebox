@@ -62,6 +62,20 @@
     return self;
 }
 
+- (instancetype)initKeyboardButton
+{
+    self = [super init];
+    if (self) {
+        UIButtonConfiguration* config = UIButtonConfiguration.grayButtonConfiguration;
+        config.attributedTitle = [[NSAttributedString alloc] initWithString:@"" attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:MAX([UIFont labelFontSize], 24.0)] }];
+        config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
+        ;
+        config.baseBackgroundColor = [UIColor systemGray6Color];
+        self.configuration = config;
+    }
+    return self;
+}
+
 - (void)setupStandardActionButtonColor
 {
     self.backgroundColor = ACTION_BUTTON_UICOLOR;
