@@ -1,0 +1,34 @@
+
+This is a message for for task 1.
+
+The user had already typed (preceeing text/prior sentances): "How is is work going?"
+
+The quote (partial sentence in progress) is: "when"
+
+--- 
+
+This message is for task 1.
+
+The quote (partial sentence in progress) is: "how school"
+
+ --- Chat model sentence completion -- 
+
+This is a message for for task 1.
+
+The user had already typed (preceeing text/prior sentances): "How is school going for you?"
+
+The quote (partial sentence in progress) is: "when"
+
+---
+
+This is a message for for task 1.
+
+The user had already typed (preceeing text/prior sentances): "How is was your day at work?"
+
+The quote (partial sentence in progress) is: "when"
+
+--- Chat model for next sentence ---
+
+This message is for task 2.
+
+The preceding text is: "I'm a bit hungry".

@@ -245,7 +245,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
 {
     static NSString* gpt35MidSystemDirective;
     if (!gpt35MidSystemDirective) {
-        NSString* path = [[NSBundle mainBundle] pathForResource:@"gpt3.5 - mid 2" ofType:@"txt"];
+        NSString* path = [[NSBundle mainBundle] pathForResource:@"gpt3.5 - mid 3" ofType:@"txt"];
         gpt35MidSystemDirective = [NSString stringWithContentsOfFile:path
                                                             encoding:NSUTF8StringEncoding
                                                                error:NULL];

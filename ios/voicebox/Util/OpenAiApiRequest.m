@@ -266,6 +266,7 @@
 
 + (NSMutableArray<ResponseOption*>*)processMessageString:(NSString*)msgString withError:(NSError**)error
 {
+    NSLog(@"%@", msgString);
     NSString* jsonString = [self extractJsonBlockFromStringMsg:msgString];
     NSLog(@"%@", jsonString);
 

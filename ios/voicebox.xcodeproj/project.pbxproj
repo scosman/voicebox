@@ -19,6 +19,7 @@
 		E07DFF522B2781ED00930E10 /* rawResp.md in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF512B2781ED00930E10 /* rawResp.md */; };
 		E07DFF542B27DA8900930E10 /* gpt3.5 - long.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF532B27DA8900930E10 /* gpt3.5 - long.txt */; };
 		E07DFF562B28052C00930E10 /* gpt3.5 - mid 2.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF552B28052C00930E10 /* gpt3.5 - mid 2.txt */; };
+		E07DFF582B28C69000930E10 /* gpt3.5 - mid 3.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF572B28C69000930E10 /* gpt3.5 - mid 3.txt */; };
 		E0A894DF29DB28790059AFEE /* whisper.h in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98A9295D393B00FF9CA5 /* whisper.h */; settings = {COMPILER_FLAGS = "-Wno-"; }; };
 		E0B3DF312B2689B000E7D802 /* gpt4-v4.txt in Resources */ = {isa = PBXBuildFile; fileRef = E0B3DF302B2689B000E7D802 /* gpt4-v4.txt */; };
 		E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */; };
@@ -84,6 +85,7 @@
 		E07DFF512B2781ED00930E10 /* rawResp.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = rawResp.md; path = "../../../prompts/text-expansion/GPT_4/V2 - long prompts/rawResp.md"; sourceTree = "<group>"; };
 		E07DFF532B27DA8900930E10 /* gpt3.5 - long.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "gpt3.5 - long.txt"; path = "../../../prompts/GPT_3.5/gpt3.5 - long.txt"; sourceTree = "<group>"; };
 		E07DFF552B28052C00930E10 /* gpt3.5 - mid 2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "gpt3.5 - mid 2.txt"; path = "../../../prompts/GPT_3.5/gpt3.5 - mid 2.txt"; sourceTree = "<group>"; };
+		E07DFF572B28C69000930E10 /* gpt3.5 - mid 3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "gpt3.5 - mid 3.txt"; path = "../../../prompts/GPT_3.5/gpt3.5 - mid 3.txt"; sourceTree = "<group>"; };
 		E0B3DF302B2689B000E7D802 /* gpt4-v4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "gpt4-v4.txt"; path = "../../../prompts/text-expansion/GPT_4/V2 - long prompts/gpt4-v4.txt"; sourceTree = "<group>"; };
 		E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = voicebox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0BBF1EC293EEE9000FB7FF9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				E0B3DF302B2689B000E7D802 /* gpt4-v4.txt */,
 				E07DFF532B27DA8900930E10 /* gpt3.5 - long.txt */,
 				E07DFF552B28052C00930E10 /* gpt3.5 - mid 2.txt */,
+				E07DFF572B28C69000930E10 /* gpt3.5 - mid 3.txt */,
 				E07DFF512B2781ED00930E10 /* rawResp.md */,
 				E0F9A33A29B16C0F002F42A5 /* chatGpt */,
 				E0F9A33929B16BF3002F42A5 /* gpt3 */,
@@ -374,6 +377,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E07DFF582B28C69000930E10 /* gpt3.5 - mid 3.txt in Resources */,
 				E049ED4C2943B779002080BD /* next-sentence.txt in Resources */,
 				E0B3DF312B2689B000E7D802 /* gpt4-v4.txt in Resources */,
 				E07DFF562B28052C00930E10 /* gpt3.5 - mid 2.txt in Resources */,
