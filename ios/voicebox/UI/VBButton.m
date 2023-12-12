@@ -39,7 +39,8 @@
     self = [super init];
     if (self) {
         UIButtonConfiguration* config = UIButtonConfiguration.filledButtonConfiguration;
-        config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:MAX([UIFont labelFontSize], 24.0)] }];
+        CGFloat textSize = IS_IPAD ? 24.0 : 16.0;
+        config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:MAX([UIFont labelFontSize], textSize)] }];
         config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
         config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
         config.imagePadding = 10.0;
