@@ -224,17 +224,39 @@
 
     // Load suggestions from the great ML in the cloud
     NSString* fullText = self.textView.text;
-    [self.enhancer enhance:fullText
-                onComplete:^(NSArray* _Nonnull options, NSError* _Nonnull error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (error || options.count == 0) {
-                            // TODO: user visible error handling
-                            [enhanceVc dismissViewControllerAnimated:YES completion:nil];
-                            return;
-                        }
-                        [enhanceVc showOptions:options];
-                    });
-                }];
+
+    // These are for local testing during development
+    BOOL uiDevelopment = false;
+    BOOL parserDevelopment = false;
+    if (uiDevelopment) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [enhanceVc showOptions:[OpenAiApiRequest developmentResponseOptions]];
+        });
+    } else if (parserDevelopment) {
+        NSString* path = [[NSBundle mainBundle] pathForResource:@"rawResp" ofType:@"md"];
+        NSString* rawMsg = [NSString stringWithContentsOfFile:path
+                                                     encoding:NSUTF8StringEncoding
+                                                        error:NULL];
+        NSError* error;
+        NSArray<ResponseOption*>* options = [OpenAiApiRequest processMessageString:rawMsg withError:&error];
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [enhanceVc showOptions:options];
+            });
+        }
+    } else {
+        [self.enhancer enhance:fullText
+                    onComplete:^(NSArray* _Nonnull options, NSError* _Nonnull error) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (error || options.count == 0) {
+                                // TODO: user visible error handling
+                                [enhanceVc dismissViewControllerAnimated:YES completion:nil];
+                                return;
+                            }
+                            [enhanceVc showOptions:options];
+                        });
+                    }];
+    }
 }
 
 - (void)updateButtonStates
@@ -311,9 +333,9 @@ const float logoFontSize = 38.0;
 
 #pragma - mark EnhanceViewSelectionDelegate
 
-- (void)didSelectEnhanceOption:(VBMagicEnhancerOption*)selectedOption
+- (void)didSelectEnhanceOption:(ResponseOption*)selectedOption
 {
-    self.textView.text = selectedOption.replacementText;
+    self.textView.text = selectedOption.fullBodyReplacement;
 }
 
 @end

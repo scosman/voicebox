@@ -17,7 +17,7 @@
 #define ACTION_BUTTON_HIGHLIGHT_UICOLOR [UIColor colorWithRed:0.32 green:0.402 blue:0.555 alpha:1.0]
 #define ACTION_BUTTON_DISABLED_UICOLOR [[UIColor systemGray4Color] colorWithAlphaComponent:0.6]
 
-#define OPEN_AI_API_TIMEOUT_SECONDS 12.0
+#define OPEN_AI_API_TIMEOUT_SECONDS 30.0
 
 #define IS_IPAD ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 

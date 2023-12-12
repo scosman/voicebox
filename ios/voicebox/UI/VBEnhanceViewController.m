@@ -12,10 +12,10 @@
 
 @interface VBEnhanceViewController ()
 
-@property (nonatomic, strong) NSArray<VBMagicEnhancerOption*>*options, *optionsLoadedInView;
+@property (nonatomic, strong) NSArray<ResponseOption*>*options, *optionsLoadedInView, *rootOptions;
 @property (nonatomic, weak) UILabel* loadingLabel;
 @property (nonatomic, weak) UIActivityIndicatorView* spinner;
-@property (nonatomic, weak) UIButton* closeBtn;
+@property (nonatomic, weak) UIButton *closeBtn, *backBtn;
 @property (nonatomic, weak) UIView* optionsStackView;
 
 @end
@@ -40,7 +40,15 @@
     [self.view addSubview:loadingLabel];
     _loadingLabel = loadingLabel;
 
-    UIButton* closeBtn = [UIButton buttonWithType:UIButtonTypeClose];
+    UIButton* backBtn = [[VBButton alloc] initSecondaryButtonWithTitle:@" Back"];
+    UIImage* backImg = [UIImage systemImageNamed:@"chevron.backward.circle.fill"];
+    [backBtn setImage:backImg forState:UIControlStateNormal];
+    backBtn.translatesAutoresizingMaskIntoConstraints = NO;
+    [backBtn addTarget:self action:@selector(backButtonAction:) forControlEvents:UIControlEventPrimaryActionTriggered];
+    [self.view addSubview:backBtn];
+    _backBtn = backBtn;
+
+    UIButton* closeBtn = [VBButton buttonWithType:UIButtonTypeClose];
     // scale for larger tap target
     closeBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
     closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
@@ -61,6 +69,12 @@
                                                                multiplier:1.0],
         [loadingLabel.centerXAnchor constraintEqualToAnchor:spinner.centerXAnchor],
 
+        // Back button
+        [backBtn.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor
+                                              constant:22],
+        [backBtn.topAnchor constraintEqualToAnchor:self.view.topAnchor
+                                          constant:22.0],
+
         // Close button
         [closeBtn.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor
                                                 constant:-22.0],
@@ -68,15 +82,21 @@
                                            constant:22.0],
 
         // Main content area
-        [optionsStackView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
         [optionsStackView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
         [optionsStackView.widthAnchor constraintEqualToAnchor:self.view.widthAnchor
                                                    multiplier:0.8],
-        [optionsStackView.heightAnchor constraintEqualToAnchor:self.view.heightAnchor
-                                                    multiplier:0.95],
+        [optionsStackView.topAnchor constraintEqualToAnchor:backBtn.bottomAnchor],
+        [optionsStackView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor
+                                                      constant:-15],
     ];
     [NSLayoutConstraint activateConstraints:constraints];
 
+    [self updateState];
+}
+
+- (void)backButtonAction:(UIButton*)sender
+{
+    _options = _rootOptions;
     [self updateState];
 }
 
@@ -85,21 +105,29 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)selectOptionAction:(VBMagicEnhancerOption*)optionSelected
+- (void)selectOptionAction:(ResponseOption*)optionSelected
 {
-    [self.selectionDelegate didSelectEnhanceOption:optionSelected];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (optionSelected.hasSuboptions) {
+        self.options = optionSelected.subOptions;
+        [self updateState];
+    } else {
+        [self.selectionDelegate didSelectEnhanceOption:optionSelected];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
-- (void)showOptions:(NSArray<VBMagicEnhancerOption*>*)options
+- (void)showOptions:(NSArray<ResponseOption*>*)options
 {
     _options = options;
+    if (!_rootOptions) {
+        _rootOptions = options;
+    }
     [self updateState];
 }
 
 - (void)updateOptionsButtons
 {
-    NSArray<VBMagicEnhancerOption*>* options = _options;
+    NSArray<ResponseOption*>* options = _options;
 
     @synchronized(self) {
         if (options == _optionsLoadedInView) {
@@ -117,8 +145,8 @@
     NSLayoutYAxisAnchor* topAnchor;
 
     VBButton *topButton, *bottonButton;
-    for (VBMagicEnhancerOption* option in options) {
-        VBButton* optionButton = [[VBButton alloc] initOptionButtonWithTitle:option.buttonLabel];
+    for (ResponseOption* option in options) {
+        VBButton* optionButton = [[VBButton alloc] initOptionButtonWithTitle:option.displayName hasSuboptions:option.hasSuboptions];
         optionButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_optionsStackView addSubview:optionButton];
 
@@ -190,6 +218,8 @@
     }
 
     [self updateOptionsButtons];
+
+    _backBtn.hidden = !(_options && _options != _rootOptions);
 }
 
 - (NSString*)randomLoadingLabel

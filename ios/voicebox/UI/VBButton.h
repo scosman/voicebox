@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initLargeSymbolButtonWithSystemImageNamed:(NSString*)systemImageName andTitle:(NSString*)title;
 
-- (instancetype)initOptionButtonWithTitle:(NSString*)title;
+- (instancetype)initOptionButtonWithTitle:(NSString*)title hasSuboptions:(bool)hasSuboptions;
+- (instancetype)initSecondaryButtonWithTitle:(NSString*)title;
 - (instancetype)initOptionCancelButton;
 
 @end

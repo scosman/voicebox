@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)endsInCompleteSentence:(NSString*)text;
 + (NSString*)truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:(NSString*)firstString withSecondString:(NSString*)secondString;
 + (NSString*)lastPartialSentenceFromString:(NSString*)text;
++ (NSString*)originalTextToKeepWhenStrippingLastPartialSentence:(NSString*)text;
 
 @end
 

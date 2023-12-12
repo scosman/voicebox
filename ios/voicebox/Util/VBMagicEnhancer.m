@@ -10,20 +10,22 @@
 #import "OpenAiApiRequest.h"
 #import "VBStringUtils.h"
 
+#define PROMPT_QUOTE_PLACEHOLDER @"INSERT_QUOTE_PLACEHOLDER"
+#define PROMPT_PRIOR_CONTENT_PLACEHOLDER @"PRIOR_CONTENT_PLACEHOLDER"
+
 typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     kModeTextExpansion,
     kModeNextSentence
 };
 
-#define PROMPT_QUOTE_PLACEHOLDER @"INSERT_QUOTE_PLACEHOLDER"
-#define PROMPT_PRIOR_CONTENT_PLACEHOLDER @"PRIOR_CONTENT_PLACEHOLDER"
-
+/*
 @implementation VBMagicEnhancerOption
 @end
+*/
 
 @implementation VBMagicEnhancer
 
-- (void)enhance:(NSString*)text onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete
+- (void)enhance:(NSString*)text onComplete:(void (^)(NSArray<ResponseOption*>*, NSError*))complete
 {
     // default to text expansion.
     MagicEnhancerMode mode = kModeTextExpansion;
@@ -42,11 +44,11 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     [self requestAndBuildOptions:request withOriginalText:text withMode:mode onComplete:complete];
 }
 
-- (void)requestAndBuildOptions:(OpenAiApiRequest*)request withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<VBMagicEnhancerOption*>*, NSError*))complete
+- (void)requestAndBuildOptions:(OpenAiApiRequest*)request withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<ResponseOption*>*, NSError*))complete
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSError* err;
-        NSMutableArray<VBMagicEnhancerOption*>* options = [self requestAndBuildOptionsSyncronous:request withOriginalText:(NSString*)originalText withMode:mode withError:&err];
+        NSMutableArray<ResponseOption*>* options = [self requestAndBuildOptionsSyncronous:request withOriginalText:(NSString*)originalText withMode:mode withError:&err];
 
         if (err) {
             complete(nil, err);
@@ -56,19 +58,44 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     });
 }
 
-- (NSMutableArray<VBMagicEnhancerOption*>*)requestAndBuildOptionsSyncronous:(OpenAiApiRequest*)apiRequest withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode withError:(NSError**)error
+- (NSMutableArray<ResponseOption*>*)requestAndBuildOptionsSyncronous:(OpenAiApiRequest*)apiRequest withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode withError:(NSError**)error
 {
-    NSArray<NSString*>* stringOptions = [apiRequest sendSynchronousRequest:error];
+    NSMutableArray<ResponseOption*>* sourceOptions = [apiRequest sendSynchronousRequest:error];
     if (*error) {
         return nil;
     }
 
-    NSMutableArray<VBMagicEnhancerOption*>* options = [[NSMutableArray alloc] initWithCapacity:stringOptions.count];
-    for (NSString* stringOption in stringOptions) {
+    [self buildFullResponseStrings:sourceOptions withOriginalText:originalText withMode:mode];
+
+    return sourceOptions;
+
+    /*NSMutableArray<VBMagicEnhancerOption*>* options = [[NSMutableArray alloc] initWithCapacity:stringOptions.count];
+    for (NSString* stringOption in stringOptions) {I'm cold.
         VBMagicEnhancerOption* option = [self optionForText:originalText withSelectedOption:stringOption withMode:mode];
         [options addObject:option];
     }
-    return options;
+    return options;*/
+}
+
+- (void)buildFullResponseStrings:(NSArray<ResponseOption*>*)sourceOptions withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode
+{
+    for (ResponseOption* option in sourceOptions) {
+        if (option.hasSuboptions) {
+            [self buildFullResponseStrings:option.subOptions withOriginalText:originalText withMode:mode];
+        } else if (option.replacementText) {
+            switch (mode) {
+            case kModeTextExpansion: {
+                NSString* originalTextToKeep = [VBStringUtils originalTextToKeepWhenStrippingLastPartialSentence:originalText];
+                option.fullBodyReplacement = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalTextToKeep withSecondString:option.replacementText];
+                break;
+            }
+            case kModeNextSentence: {
+                option.fullBodyReplacement = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalText withSecondString:option.replacementText];
+                break;
+            }
+            }
+        }
+    }
 }
 
 - (NSString*)escapeDoubleQuotes:(NSString*)text
@@ -78,30 +105,70 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     ;
 }
 
-- (NSString*)originalTextToKeepWhenStrippingLastPartialSentence:(NSString*)text
-{
-    NSString* lastSentenceToReplace = [VBStringUtils lastPartialSentenceFromString:text];
-    NSUInteger originalTextToKeepLength = text.length - lastSentenceToReplace.length;
-    if (originalTextToKeepLength > text.length) {
-        // shouldn't hit
-        NSAssert(NO, @"Unexpected: last sentence to replace longer than original text.");
-        return @"";
-    }
-    return [text substringToIndex:originalTextToKeepLength];
-    ;
-}
-
 - (OpenAiApiRequest*)requestForText:(NSString*)originalText withMode:(MagicEnhancerMode)mode
 {
-    switch (mode) {
+    return [self gpt35MidRequestForText:originalText ofMode:mode];
+    // return [self gpt4RequestForText:originalText ofMode:mode];
+    /*switch (mode) {
     case kModeTextExpansion: {
         return [self gpt3TextExpansionRequestForText:originalText];
-        // return [self chatGptTextExpansionRequestForText:originalText];
+        //return [self chatGptTextExpansionRequestForText:originalText];
     }
     case kModeNextSentence: {
         return [self gpt3NextSentenceRequestForText:originalText];
     }
+    }*/
+}
+
+- (OpenAiApiRequest*)gpt35MidRequestForText:(NSString*)originalText ofMode:(MagicEnhancerMode)mode;
+{
+    return [self gptSharedTaskRequestForText:originalText ofMode:mode withSystemPrompt:[self gpt35MidSystemDirective]];
+}
+
+- (OpenAiApiRequest*)gpt4RequestForText:(NSString*)originalText ofMode:(MagicEnhancerMode)mode;
+{
+    return [self gptSharedTaskRequestForText:originalText ofMode:mode withSystemPrompt:[self gpt4SystemDirective]];
+}
+
+- (OpenAiApiRequest*)gptSharedTaskRequestForText:(NSString*)originalText ofMode:(MagicEnhancerMode)mode withSystemPrompt:(NSString*)systemPrompt
+{
+
+    NSString* userMessage;
+    switch (mode) {
+    case kModeTextExpansion:
+        userMessage = @"This message is for task 1.";
+        break;
+    case kModeNextSentence:
+        userMessage = @"This message is for task 2.";
     }
+
+    NSString* originalTextToKeep = [VBStringUtils originalTextToKeepWhenStrippingLastPartialSentence:originalText];
+    NSString* trimmedOriginalTextToKeep = [originalTextToKeep stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (trimmedOriginalTextToKeep.length > 0) {
+        // TODO trim this
+        NSString* escapedPriorContent = [self escapeDoubleQuotes:trimmedOriginalTextToKeep];
+        NSString* priorContentSection = [NSString stringWithFormat:@"The user had already typed (preceeing text/prior sentances): \"%@\"", escapedPriorContent];
+        userMessage = [NSString stringWithFormat:@"%@\n\n%@", userMessage, priorContentSection];
+    }
+
+    if (mode == kModeTextExpansion) {
+        NSString* lastSentence = [VBStringUtils lastPartialSentenceFromString:originalText];
+        if (!lastSentence) {
+            return nil;
+        }
+        NSString* escapedLastSentence = [self escapeDoubleQuotes:lastSentence];
+        userMessage = [NSString stringWithFormat:@"%@\n\nThe quote (partial sentence in progress) is: \"%@\"", userMessage, escapedLastSentence];
+    }
+
+    ChatGptRequest* request = [[ChatGptRequest alloc] init];
+    request.systemDirective = systemPrompt;
+
+    ChatGptMessage* apiMessage = [[ChatGptMessage alloc] init];
+    apiMessage.roll = kChatGptRollUser;
+    apiMessage.content = userMessage;
+    request.messages = @[ apiMessage ];
+
+    return [[OpenAiApiRequest alloc] initChatGtpWithRequest:request];
 }
 
 - (OpenAiApiRequest*)chatGptTextExpansionRequestForText:(NSString*)originalText
@@ -134,7 +201,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
         return nil;
     }
 
-    NSString* originalTextToKeep = [self originalTextToKeepWhenStrippingLastPartialSentence:originalText];
+    NSString* originalTextToKeep = [VBStringUtils originalTextToKeepWhenStrippingLastPartialSentence:originalText];
     NSString* trimmedOriginalTextToKeep = [originalTextToKeep stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString* promptTemplateWithPriorContextFilled;
     if (trimmedOriginalTextToKeep.length > 0) {
@@ -162,24 +229,28 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     return [[OpenAiApiRequest alloc] initGtp3WithPrompt:prompt];
 }
 
-- (VBMagicEnhancerOption*)optionForText:(NSString*)originalText withSelectedOption:(NSString*)optionString withMode:(MagicEnhancerMode)mode
+- (NSString*)gpt4SystemDirective
 {
-    VBMagicEnhancerOption* option = [[VBMagicEnhancerOption alloc] init];
-    option.buttonLabel = optionString;
+    static NSString* gpt4SystemDirective;
+    if (!gpt4SystemDirective) {
+        NSString* path = [[NSBundle mainBundle] pathForResource:@"gpt4-v4" ofType:@"txt"];
+        gpt4SystemDirective = [NSString stringWithContentsOfFile:path
+                                                        encoding:NSUTF8StringEncoding
+                                                           error:NULL];
+    }
+    return gpt4SystemDirective;
+}
 
-    switch (mode) {
-    case kModeTextExpansion: {
-        NSString* originalTextToKeep = [self originalTextToKeepWhenStrippingLastPartialSentence:originalText];
-        option.replacementText = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalTextToKeep withSecondString:optionString];
-        break;
+- (NSString*)gpt35MidSystemDirective
+{
+    static NSString* gpt35MidSystemDirective;
+    if (!gpt35MidSystemDirective) {
+        NSString* path = [[NSBundle mainBundle] pathForResource:@"gpt3.5 - mid 2" ofType:@"txt"];
+        gpt35MidSystemDirective = [NSString stringWithContentsOfFile:path
+                                                            encoding:NSUTF8StringEncoding
+                                                               error:NULL];
     }
-    case kModeNextSentence: {
-        option.replacementText = [VBStringUtils truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:originalText withSecondString:optionString];
-        break;
-    }
-    }
-
-    return option;
+    return gpt35MidSystemDirective;
 }
 
 - (NSString*)chatGptTextExpansionSystemDirective

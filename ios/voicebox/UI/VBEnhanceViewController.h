@@ -12,14 +12,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol EnhanceViewSelectionDelegate <NSObject>
-- (void)didSelectEnhanceOption:(VBMagicEnhancerOption*)selectedOption;
+- (void)didSelectEnhanceOption:(ResponseOption*)selectedOption;
 @end
 
 @interface VBEnhanceViewController : UIViewController
 
 @property (nonatomic, weak) id<EnhanceViewSelectionDelegate> selectionDelegate;
 
-- (void)showOptions:(NSArray<VBMagicEnhancerOption*>*)options;
+- (void)showOptions:(NSArray<ResponseOption*>*)options;
 
 @end
 
