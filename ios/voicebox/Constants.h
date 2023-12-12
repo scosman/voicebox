@@ -8,6 +8,8 @@
 #ifndef Constants_h
 #define Constants_h
 
+#define LISTEN_ENABLED false
+
 #define ACCESSIBLE_SYSTEM_SPACING_MULTIPLE 3.0
 
 // Colors
