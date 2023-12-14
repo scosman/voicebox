@@ -14,6 +14,16 @@ typedef NS_ENUM(NSUInteger, ChatGptRoll) {
     kChatGptRollAssistant
 };
 
+@interface ResponseOption : NSObject
+
+@property (nonatomic, strong) NSString* fullBodyReplacement;
+
+- (bool)hasSuboptions;
+- (NSString*)displayName;
+- (NSString*)replacementText;
+- (NSArray<ResponseOption*>*)subOptions;
+@end
+
 @interface ChatGptMessage : NSObject
 
 @property (assign) ChatGptRoll roll;
@@ -32,7 +42,10 @@ typedef NS_ENUM(NSUInteger, ChatGptRoll) {
 
 - (instancetype)initGtp3WithPrompt:(NSString*)prompt;
 - (instancetype)initChatGtpWithRequest:(ChatGptRequest*)request;
-- (NSArray<NSString*>*)sendSynchronousRequest:(NSError**)error;
+- (NSMutableArray<ResponseOption*>*)sendSynchronousRequest:(NSError**)error;
+
++ (NSArray<ResponseOption*>*)developmentResponseOptions;
++ (NSMutableArray<ResponseOption*>*)processMessageString:(NSString*)msgString withError:(NSError**)error;
 
 @end
 

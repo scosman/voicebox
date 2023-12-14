@@ -34,27 +34,39 @@
     return self;
 }
 
-- (instancetype)initOptionButtonWithTitle:(NSString*)title
+- (instancetype)initOptionButtonWithTitle:(NSString*)title hasSuboptions:(bool)hasSuboptions
 {
     self = [super init];
     if (self) {
         UIButtonConfiguration* config = UIButtonConfiguration.filledButtonConfiguration;
-        config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:MAX([UIFont labelFontSize], 24.0)] }];
+        CGFloat textSize = IS_IPAD ? 24.0 : 16.0;
+        config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:MAX([UIFont labelFontSize], textSize)] }];
         config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
         config.background.backgroundColor = ACTION_BUTTON_UICOLOR;
+        config.imagePadding = 10.0;
         self.configuration = config;
 
-        [self setupStandardActionButtonColor];
+        self.configurationUpdateHandler = [self actionButtonColorConfigUpdateHandler];
+
+        if (hasSuboptions) {
+            UIImage* expand = [UIImage systemImageNamed:@"arrow.up.and.down.circle.fill"];
+            [self setImage:expand forState:UIControlStateNormal];
+        }
     }
     return self;
 }
 
 - (instancetype)initOptionCancelButton
 {
+    return [self initSecondaryButtonWithTitle:@"Cancel"];
+}
+
+- (instancetype)initSecondaryButtonWithTitle:(NSString*)title
+{
     self = [super init];
     if (self) {
         UIButtonConfiguration* config = UIButtonConfiguration.grayButtonConfiguration;
-        config.attributedTitle = [[NSAttributedString alloc] initWithString:@"Cancel" attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:MAX([UIFont labelFontSize], 24.0)] }];
+        config.attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:MAX([UIFont labelFontSize], 24.0)] }];
         config.contentInsets = NSDirectionalEdgeInsetsMake(16, 16, 16, 16);
         config.baseForegroundColor = ACTION_BUTTON_UICOLOR;
         self.configuration = config;
@@ -90,11 +102,11 @@
     return ^(UIButton* button) {
         UIButtonConfiguration* config = button.configuration;
 
-        if (!button.isEnabled) {
+        if (!button.isEnabled && weakSelf.disabledBgColor) {
             config.background.backgroundColor = weakSelf.disabledBgColor;
-        } else if (button.isHighlighted) {
+        } else if (button.isHighlighted && weakSelf.highlightBgColor) {
             config.background.backgroundColor = weakSelf.highlightBgColor;
-        } else {
+        } else if (weakSelf.backgroundColor) {
             config.background.backgroundColor = weakSelf.backgroundColor;
         }
 

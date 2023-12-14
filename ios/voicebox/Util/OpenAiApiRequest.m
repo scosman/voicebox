@@ -10,6 +10,8 @@
 #import "AppSecrets.h"
 #import "Constants.h"
 
+#import "VBStringUtils.h"
+
 #define OPEN_API_ROLE_PARAM @"role"
 #define OPEN_API_CONTENT_PARAM @"content"
 
@@ -17,6 +19,95 @@
 @end
 
 @implementation ChatGptRequest
+@end
+
+@implementation ResponseOption
+- (bool)hasSuboptions
+{
+    return NO;
+}
+- (nonnull NSString*)replacementText
+{
+    return nil;
+}
+- (nonnull NSArray<ResponseOption*>*)subOptions
+{
+    return nil;
+}
+- (nonnull NSString*)displayName
+{
+    return nil;
+}
+@end
+
+@interface StringResponseOption : ResponseOption
+@property (nonatomic, strong) NSString* optionText;
+@end
+
+@implementation StringResponseOption
+- (instancetype)initWithString:(NSString*)str
+{
+    self = [super init];
+    if (self) {
+        self.optionText = str;
+    }
+    return self;
+}
+
+- (bool)hasSuboptions
+{
+    return false;
+}
+- (NSString*)displayName
+{
+    return self.optionText;
+}
+- (NSString*)replacementText
+{
+    return self.optionText;
+}
+
+- (NSArray<ResponseOption*>*)subOptions
+{
+    return nil;
+}
+@end
+
+@interface TopicResponseOption : ResponseOption
+@property (nonatomic, strong) NSString* topicName;
+@property (nonatomic, strong) NSMutableArray<ResponseOption*>* options;
+@end
+
+@implementation TopicResponseOption
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.options = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (bool)hasSuboptions
+{
+    return true;
+}
+
+- (NSString*)displayName
+{
+    return self.topicName;
+}
+- (NSString*)replacementText
+{
+    return nil;
+}
+
+- (NSArray<ResponseOption*>*)subOptions
+{
+    return self.options;
+}
+
 @end
 
 @interface OpenAiApiRequest ()
@@ -53,7 +144,8 @@
     if (self) {
         self.apiUrl = @"https://api.openai.com/v1/chat/completions";
         NSMutableDictionary* bodyPayload = [[NSMutableDictionary alloc] init];
-        bodyPayload[@"model"] = @"gpt-3.5-turbo";
+        // bodyPayload[@"model"] = @"gpt-4-1106-preview";
+        bodyPayload[@"model"] = @"gpt-3.5-turbo-1106";
 
         // build system directive message
         NSMutableArray<NSDictionary*>* apiMessageSet = [[NSMutableArray alloc] init];
@@ -91,7 +183,7 @@
     strangely it's been rock solid, so using for prototyping. Try the "n" param of open API endpoint,
     and structured response instead of parsing json from plaintext
  */
-- (NSArray<NSString*>*)sendSynchronousRequest:(NSError**)error
+- (NSMutableArray<ResponseOption*>*)sendSynchronousRequest:(NSError**)error
 {
     NSData* bodyPayloadJsonData = [NSJSONSerialization dataWithJSONObject:self.bodyPayload options:NSJSONWritingPrettyPrinted error:error];
     if (*error) {
@@ -114,7 +206,7 @@
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 
     NSURLSession* session = [NSURLSession sharedSession];
-    __block NSArray<NSString*>* options;
+    __block NSMutableArray<ResponseOption*>* options;
     __block NSError* requestBlockError;
     NSURLSessionDataTask* dataTask = [session dataTaskWithRequest:urlRequest
                                                 completionHandler:^(NSData* data, NSURLResponse* response, NSError* requestError) {
@@ -143,14 +235,13 @@
     return options;
 }
 
-- (NSArray<NSString*>*)processResponse:(NSURLResponse*)response withData:(NSData*)data withRequestError:(NSError*)requestError withError:(NSError**)error
+- (NSMutableArray<ResponseOption*>*)processResponse:(NSURLResponse*)response withData:(NSData*)data withRequestError:(NSError*)requestError withError:(NSError**)error
 {
     if (requestError) {
         *error = requestError;
         return nil;
     }
 
-    NSArray<NSString*>* stringOptions;
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     if (httpResponse.statusCode != 200) {
         *error = [self apiError:999200];
@@ -164,20 +255,55 @@
         return nil;
     }
 
-    NSString* responseJSONString = [self parseOpenApiResponseForFirstChoice:parsedJsonResponse];
-    if (!responseJSONString) {
+    NSString* responseMessage = [self parseOpenApiResponseForFirstChoice:parsedJsonResponse];
+    if (!responseMessage) {
         *error = [self apiError:89345];
         return nil;
     }
 
-    NSData* jsonData = [responseJSONString dataUsingEncoding:NSUTF8StringEncoding];
-    stringOptions = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&jsonError];
+    return [OpenAiApiRequest processMessageString:responseMessage withError:error];
+}
+
++ (NSMutableArray<ResponseOption*>*)processMessageString:(NSString*)msgString withError:(NSError**)error
+{
+    NSLog(@"%@", msgString);
+    NSString* jsonString = [self extractJsonBlockFromStringMsg:msgString];
+    NSLog(@"%@", jsonString);
+
+    NSData* jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError* jsonError = nil;
+    id options = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&jsonError];
     if (jsonError) {
         *error = jsonError;
         return nil;
     }
 
-    return stringOptions;
+    NSMutableArray<ResponseOption*>* optionArray = [[NSMutableArray alloc] init];
+    if ([options isKindOfClass:[NSArray class]]) {
+        for (id option in (NSArray*)options) {
+            if ([option isKindOfClass:[NSString class]]) {
+                StringResponseOption* sro = [[StringResponseOption alloc] initWithString:option];
+                [optionArray addObject:sro];
+            }
+            if ([option isKindOfClass:[NSDictionary class]]) {
+                NSDictionary* dict = (NSDictionary*)option;
+                if (dict[@"name"] && dict[@"options"] && dict[@"most_general"]) {
+                    // this is a topic
+                    TopicResponseOption* topic = [[TopicResponseOption alloc] init];
+                    topic.topicName = dict[@"name"];
+                    for (NSString* optionText in (NSArray*)dict[@"options"]) {
+                        StringResponseOption* sro = [[StringResponseOption alloc] initWithString:optionText];
+                        [topic.options addObject:sro];
+                    }
+                    StringResponseOption* sro = [[StringResponseOption alloc] initWithString:dict[@"most_general"]];
+                    [topic.options addObject:sro];
+                    [optionArray addObject:topic];
+                }
+            }
+        }
+    }
+
+    return optionArray;
 }
 
 - (NSString*)parseOpenApiResponseForFirstChoice:(id)parsedJsonResponse
@@ -216,12 +342,57 @@
     if (!optionsText || ![optionsText isKindOfClass:[NSString class]]) {
         return nil;
     }
+
     return optionsText;
 }
 
 - (NSError*)apiError:(NSInteger)code
 {
     return [NSError errorWithDomain:@"net.scosman.voicebox.openai.errors" code:code userInfo:@{ NSLocalizedDescriptionKey : @"Issue with OpenAI API." }];
+}
+
+// Extracts a ```json .... ``` block if one exists
++ (NSString*)extractJsonBlockFromStringMsg:(NSString*)rawMsg
+{
+    // Support ```json and ``` for start
+    NSRange startRange = [rawMsg rangeOfString:@"```json"];
+    if (startRange.location == NSNotFound) {
+        startRange = [rawMsg rangeOfString:@"```"];
+    }
+    NSRange endRange = [rawMsg rangeOfString:@"```" options:NSBackwardsSearch];
+    if (startRange.location == NSNotFound || endRange.location == NSNotFound || endRange.location <= startRange.location) {
+        return rawMsg;
+    }
+
+    NSUInteger startPos = startRange.location + startRange.length;
+    NSRange jsonRange = NSMakeRange(startPos, endRange.location - startPos);
+    return [rawMsg substringWithRange:jsonRange];
+}
+
++ (NSArray<ResponseOption*>*)developmentResponseOptions
+{
+    NSMutableArray<ResponseOption*>* a = [[NSMutableArray alloc] init];
+
+    StringResponseOption* sro1 = [[StringResponseOption alloc] init];
+    sro1.optionText = @"Option 1";
+    [a addObject:sro1];
+
+    StringResponseOption* sro2 = [[StringResponseOption alloc] init];
+    sro2.optionText = @"Option 2";
+    [a addObject:sro2];
+
+    for (int j = 1; j < 3; j++) {
+        TopicResponseOption* tro = [[TopicResponseOption alloc] init];
+        tro.topicName = [NSString stringWithFormat:@"Topic %d", j];
+        for (int i = 1; i < 6; i++) {
+            StringResponseOption* sro = [[StringResponseOption alloc] init];
+            sro.optionText = [NSString stringWithFormat:@"Sub-option %d", i];
+            [tro.options addObject:sro];
+        }
+        [a addObject:tro];
+    }
+
+    return a;
 }
 
 @end

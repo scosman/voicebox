@@ -60,7 +60,8 @@
     // This is fast on release builds, and saves us allocating 500MB of memory if we aren't using it.
     // But debugging is painful without this.
 #if DEBUG
-    if ([scene isKindOfClass:[UIWindowScene class]]) {
+    BOOL shouldPreload = false;
+    if (shouldPreload && [scene isKindOfClass:[UIWindowScene class]]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             [VBAudioListener sharedInstance];
         });

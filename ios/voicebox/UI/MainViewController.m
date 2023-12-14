@@ -93,11 +93,13 @@
     [self.view addSubview:speakButton];
     _speakButton = speakButton;
 
-    VBButton* listenButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"ear" andTitle:@"Listen"];
-    listenButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [listenButton addTarget:self action:@selector(launchListen:) forControlEvents:UIControlEventPrimaryActionTriggered];
-    [self.view addSubview:listenButton];
-    _listenButton = listenButton;
+    if (LISTEN_ENABLED) {
+        VBButton* listenButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"ear" andTitle:@"Listen"];
+        listenButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [listenButton addTarget:self action:@selector(launchListen:) forControlEvents:UIControlEventPrimaryActionTriggered];
+        [self.view addSubview:listenButton];
+        _listenButton = listenButton;
+    }
 
     VBButton* magicButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"wand.and.stars" andTitle:@"Enhance"];
     magicButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -121,13 +123,15 @@
     // set the exact height of the buttons, but make it a weak constraint so they shrink to fit if needed
     NSLayoutConstraint* weakSpeakButtonHeightConstraint = [speakButton.heightAnchor constraintEqualToConstant:buttonHeight];
     [weakSpeakButtonHeightConstraint setPriority:UILayoutPriorityDefaultHigh];
-    NSLayoutConstraint* weakListenButtonHeightConstraint = [listenButton.heightAnchor constraintEqualToConstant:buttonHeight];
+    NSLayoutConstraint* weakListenButtonHeightConstraint = [_listenButton.heightAnchor constraintEqualToConstant:buttonHeight];
     [weakListenButtonHeightConstraint setPriority:UILayoutPriorityDefaultHigh];
     NSLayoutConstraint* weakMagicButtonHeightConstraint = [magicButton.heightAnchor constraintEqualToConstant:buttonHeight];
     [weakMagicButtonHeightConstraint setPriority:UILayoutPriorityDefaultHigh];
     // add some padding above the buttons so they align to textbox, but only if there's room
     NSLayoutConstraint* weakTopPaddingHeightConstraint = [buttonTopSpacer.heightAnchor constraintEqualToAnchor:voiceboxLabel.heightAnchor];
     [weakTopPaddingHeightConstraint setPriority:UILayoutPriorityDefaultLow];
+
+    NSLayoutYAxisAnchor* magicTopAnchor = _listenButton.bottomAnchor ? _listenButton.bottomAnchor : speakButton.bottomAnchor;
 
     NSArray<NSLayoutConstraint*>* constraints = @[
         // Logo
@@ -160,15 +164,8 @@
         [speakButton.widthAnchor constraintEqualToConstant:buttonWidth],
         weakSpeakButtonHeightConstraint,
 
-        // Listen button
-        [listenButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor
-                                                               multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
-        [listenButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
-        [listenButton.widthAnchor constraintEqualToConstant:buttonWidth],
-        weakListenButtonHeightConstraint,
-
         // Magic button
-        [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:listenButton.bottomAnchor
+        [magicButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:magicTopAnchor
                                                               multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
         [magicButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
         [magicButton.widthAnchor constraintEqualToConstant:buttonWidth],
@@ -176,13 +173,27 @@
 
         // Ensure buttons are equal height. If they do shrink, they should match.
         [speakButton.heightAnchor constraintEqualToAnchor:magicButton.heightAnchor],
-        [listenButton.heightAnchor constraintEqualToAnchor:magicButton.heightAnchor],
 
         // Button spacer, grows to prevent buttons from stretching vertically
         [buttonBottomSpacer.topAnchor constraintEqualToAnchor:magicButton.bottomAnchor],
         [buttonBottomSpacer.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor
                                                         constant:bottomPadding],
     ];
+
+    // Listen is optional
+    if (_listenButton) {
+        constraints = [constraints arrayByAddingObjectsFromArray:@[
+            // Listen button
+            [_listenButton.topAnchor constraintEqualToSystemSpacingBelowAnchor:speakButton.bottomAnchor
+                                                                    multiplier:ACCESSIBLE_SYSTEM_SPACING_MULTIPLE],
+            [_listenButton.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
+            [_listenButton.widthAnchor constraintEqualToConstant:buttonWidth],
+            weakListenButtonHeightConstraint,
+
+            // Ensure buttons are equal height. If they do shrink, they should match.
+            [_listenButton.heightAnchor constraintEqualToAnchor:magicButton.heightAnchor],
+        ]];
+    }
 
     [NSLayoutConstraint activateConstraints:constraints];
 
@@ -224,17 +235,39 @@
 
     // Load suggestions from the great ML in the cloud
     NSString* fullText = self.textView.text;
-    [self.enhancer enhance:fullText
-                onComplete:^(NSArray* _Nonnull options, NSError* _Nonnull error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (error || options.count == 0) {
-                            // TODO: user visible error handling
-                            [enhanceVc dismissViewControllerAnimated:YES completion:nil];
-                            return;
-                        }
-                        [enhanceVc showOptions:options];
-                    });
-                }];
+
+    // These are for local testing during development
+    BOOL uiDevelopment = false;
+    BOOL parserDevelopment = false;
+    if (uiDevelopment) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [enhanceVc showOptions:[OpenAiApiRequest developmentResponseOptions]];
+        });
+    } else if (parserDevelopment) {
+        NSString* path = [[NSBundle mainBundle] pathForResource:@"rawResp" ofType:@"md"];
+        NSString* rawMsg = [NSString stringWithContentsOfFile:path
+                                                     encoding:NSUTF8StringEncoding
+                                                        error:NULL];
+        NSError* error;
+        NSArray<ResponseOption*>* options = [OpenAiApiRequest processMessageString:rawMsg withError:&error];
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [enhanceVc showOptions:options];
+            });
+        }
+    } else {
+        [self.enhancer enhance:fullText
+                    onComplete:^(NSArray* _Nonnull options, NSError* _Nonnull error) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (error || options.count == 0) {
+                                // TODO: user visible error handling
+                                [enhanceVc dismissViewControllerAnimated:YES completion:nil];
+                                return;
+                            }
+                            [enhanceVc showOptions:options];
+                        });
+                    }];
+    }
 }
 
 - (void)updateButtonStates
@@ -311,9 +344,9 @@ const float logoFontSize = 38.0;
 
 #pragma - mark EnhanceViewSelectionDelegate
 
-- (void)didSelectEnhanceOption:(VBMagicEnhancerOption*)selectedOption
+- (void)didSelectEnhanceOption:(ResponseOption*)selectedOption
 {
-    self.textView.text = selectedOption.replacementText;
+    self.textView.text = selectedOption.fullBodyReplacement;
 }
 
 @end

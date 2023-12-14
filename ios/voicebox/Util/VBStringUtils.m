@@ -102,4 +102,16 @@
     return [VBStringUtils trimLeadingWhitespaceAndNewlines:stingAfterLastSentence];
 }
 
++ (NSString*)originalTextToKeepWhenStrippingLastPartialSentence:(NSString*)text
+{
+    NSString* lastSentenceToReplace = [VBStringUtils lastPartialSentenceFromString:text];
+    NSUInteger originalTextToKeepLength = text.length - lastSentenceToReplace.length;
+    if (originalTextToKeepLength > text.length) {
+        // shouldn't hit
+        NSAssert(NO, @"Unexpected: last sentence to replace longer than original text.");
+        return @"";
+    }
+    return [text substringToIndex:originalTextToKeepLength];
+}
+
 @end

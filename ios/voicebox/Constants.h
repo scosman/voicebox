@@ -8,6 +8,8 @@
 #ifndef Constants_h
 #define Constants_h
 
+#define LISTEN_ENABLED false
+
 #define ACCESSIBLE_SYSTEM_SPACING_MULTIPLE 3.0
 
 // Colors
@@ -18,7 +20,7 @@
 #define ACTION_BUTTON_DISABLED_UICOLOR [[UIColor systemGray4Color] colorWithAlphaComponent:0.6]
 #define KEYBOARD_BUTTON_UICOLOR [UIColor colorWithRed:0.6 green:0.702 blue:0.894 alpha:1.0]
 
-#define OPEN_AI_API_TIMEOUT_SECONDS 12.0
+#define OPEN_AI_API_TIMEOUT_SECONDS 30.0
 
 #define IS_IPAD ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
