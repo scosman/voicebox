@@ -15,7 +15,8 @@
 #define NUM_BYTES_PER_BUFFER 16 * 1024
 
 #define NUM_BUFFERS 3
-#define MAX_AUDIO_SEC 60
+#define MAX_AUDIO_SEC 120
+#define MAX_TRANSCRIBE_AUDIO_SEC 15
 #define SAMPLE_RATE WHISPER_SAMPLE_RATE
 
 struct whisper_context;
@@ -181,7 +182,7 @@ static VBAudioListener *sharedInstance = nil;
         stateInp.audioBufferI16 = malloc(MAX_AUDIO_SEC * SAMPLE_RATE * sizeof(int16_t));
     }
     if (!stateInp.audioBufferF32) {
-        stateInp.audioBufferF32 = malloc(MAX_AUDIO_SEC * SAMPLE_RATE * sizeof(float));
+        stateInp.audioBufferF32 = malloc(MAX_TRANSCRIBE_AUDIO_SEC * SAMPLE_RATE * sizeof(float));
     }
 
     stateInp.isTranscribing = false;
@@ -262,12 +263,24 @@ static VBAudioListener *sharedInstance = nil;
     stateInp.isTranscribing = true;
 
     // dispatch the model to a background thread
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    // TODO: really default? High was helping
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Transcribe window: last 15s (max) gets slid to latest.
+        float totalTime = self->stateInp.n_samples / SAMPLE_RATE;
+        float offsetStartTime = MAX(totalTime - 15.0, 0);
+        int offsetStartMs = offsetStartTime*1000;
+        int sampleWindowSize = MIN(MAX_TRANSCRIBE_AUDIO_SEC * SAMPLE_RATE, self->stateInp.n_samples);
+        int sampleStartOffset = self->stateInp.n_samples - sampleWindowSize;
+        NSLog(@"Transcribe offset start time: %f, %d\nTranscribe total samples: %d\nTranscribe sample window size: %d\nTranscribe sample offset: %d", offsetStartTime, offsetStartMs, self->stateInp.n_samples, sampleWindowSize, sampleStartOffset);
+        
         // process captured audio
         // convert I16 to F32
-        NSLog(@"Transcribing: %d", self->stateInp.n_samples);
-        for (int i = 0; i < self->stateInp.n_samples; i++) {
+        //NSLog(@"Transcribing: %d samples available", self->stateInp.n_samples);
+        /*for (int i = 0; i < self->stateInp.n_samples; i++) {
             self->stateInp.audioBufferF32[i] = (float)self->stateInp.audioBufferI16[i] / 32768.0f;
+        }*/
+        for (int i = 0; i < sampleWindowSize; i++) {
+            self->stateInp.audioBufferF32[i] = (float)self->stateInp.audioBufferI16[sampleStartOffset+i] / 32768.0f;
         }
 
         // run the model
@@ -276,6 +289,7 @@ static VBAudioListener *sharedInstance = nil;
         // get maximum number of threads on this device (max 8)
         const int max_threads = MIN(8, (int)[[NSProcessInfo processInfo] processorCount]);
 
+        
         params.print_realtime = true;
         params.print_progress = false;
         params.print_timestamps = true;
@@ -285,16 +299,17 @@ static VBAudioListener *sharedInstance = nil;
         params.suppress_non_speech_tokens = true;
         params.suppress_blank = true;
         params.n_threads = max_threads;
-        // TODO: think we're processing whole thing each time?
         params.offset_ms = 0;
         params.no_context = true;
-        params.single_segment = false;
+        //params.single_segment = false;
+        params.single_segment   = true; // true for realtime
+        params.no_timestamps    = params.single_segment;
 
         CFTimeInterval startTime = CACurrentMediaTime();
 
         whisper_reset_timings(self->stateInp.ctx);
 
-        int whisperStatus = whisper_full(self->stateInp.ctx, params, self->stateInp.audioBufferF32, self->stateInp.n_samples);
+        int whisperStatus = whisper_full(self->stateInp.ctx, params, self->stateInp.audioBufferF32, sampleWindowSize);
         if (whisperStatus != 0) {
             NSLog(@"Failed to run the model");
             [self distributeStateUpdate:false segments:nil];
