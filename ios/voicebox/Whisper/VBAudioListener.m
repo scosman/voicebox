@@ -15,8 +15,8 @@
 #define NUM_BYTES_PER_BUFFER 16 * 1024
 
 #define NUM_BUFFERS 3
-#define MAX_AUDIO_SEC 120
 #define MAX_TRANSCRIBE_AUDIO_SEC 15
+#define AUDIO_BUFFER_SIZE (MAX_TRANSCRIBE_AUDIO_SEC+5)
 #define SAMPLE_RATE WHISPER_SAMPLE_RATE
 
 struct whisper_context;
@@ -34,6 +34,7 @@ typedef struct
     AudioQueueBufferRef buffers[NUM_BUFFERS];
 
     int n_samples;
+    int audio_buffer_len;
     int16_t* audioBufferI16;
     float* audioBufferF32;
 
@@ -179,7 +180,8 @@ static VBAudioListener *sharedInstance = nil;
 
     stateInp.n_samples = 0;
     if (!stateInp.audioBufferI16) {
-        stateInp.audioBufferI16 = malloc(MAX_AUDIO_SEC * SAMPLE_RATE * sizeof(int16_t));
+        stateInp.audio_buffer_len = AUDIO_BUFFER_SIZE * SAMPLE_RATE;
+        stateInp.audioBufferI16 = malloc(stateInp.audio_buffer_len * sizeof(int16_t));
     }
     if (!stateInp.audioBufferF32) {
         stateInp.audioBufferF32 = malloc(MAX_TRANSCRIBE_AUDIO_SEC * SAMPLE_RATE * sizeof(float));
@@ -280,7 +282,8 @@ static VBAudioListener *sharedInstance = nil;
             self->stateInp.audioBufferF32[i] = (float)self->stateInp.audioBufferI16[i] / 32768.0f;
         }*/
         for (int i = 0; i < sampleWindowSize; i++) {
-            self->stateInp.audioBufferF32[i] = (float)self->stateInp.audioBufferI16[sampleStartOffset+i] / 32768.0f;
+            int bufferIndex = (sampleStartOffset+i) % self->stateInp.audio_buffer_len;
+            self->stateInp.audioBufferF32[i] = (float)self->stateInp.audioBufferI16[bufferIndex] / 32768.0f;
         }
 
         // run the model
@@ -365,21 +368,9 @@ void AudioInputCallback(void* inUserData,
 
     const int n = inBuffer->mAudioDataByteSize / 2;
 
-    NSLog(@"Captured %d new samples", n);
-
-    if (stateInp->n_samples + n > MAX_AUDIO_SEC * SAMPLE_RATE) {
-        NSLog(@"Too much audio data, ignoring");
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            VBAudioListener* listener = stateInp->listener;
-            [listener stopCapturing];
-        });
-
-        return;
-    }
-
     for (int i = 0; i < n; i++) {
-        stateInp->audioBufferI16[stateInp->n_samples + i] = ((short*)inBuffer->mAudioData)[i];
+        int bufferIndex = (stateInp->n_samples + i) % stateInp->audio_buffer_len;
+        stateInp->audioBufferI16[bufferIndex] = ((short*)inBuffer->mAudioData)[i];
     }
 
     stateInp->n_samples += n;
