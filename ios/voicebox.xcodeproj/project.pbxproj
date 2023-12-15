@@ -7,13 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E008525E2B2B4ABF009FE8C0 /* ggml-medium-32-2.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E008525D2B2B4ABF009FE8C0 /* ggml-medium-32-2.en.bin */; };
-		E008525F2B2B4B68009FE8C0 /* ggml-medium-32-2.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E008525D2B2B4ABF009FE8C0 /* ggml-medium-32-2.en.bin */; };
 		E00852612B2B4E59009FE8C0 /* ggml-distil-small.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E00852602B2B4E59009FE8C0 /* ggml-distil-small.en.bin */; };
 		E00852622B2B4E83009FE8C0 /* ggml-distil-small.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E00852602B2B4E59009FE8C0 /* ggml-distil-small.en.bin */; };
 		E029C3302B2CA69D00E2687A /* ggml-quants.c in Sources */ = {isa = PBXBuildFile; fileRef = E029C32E2B2CA69D00E2687A /* ggml-quants.c */; };
 		E029C33D2B2CA6D200E2687A /* ggml-metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = E029C3342B2CA6D200E2687A /* ggml-metal.metal */; };
-		E029C33E2B2CA6D200E2687A /* ggml-cuda.cu in Resources */ = {isa = PBXBuildFile; fileRef = E029C3352B2CA6D200E2687A /* ggml-cuda.cu */; };
 		E029C3402B2CA6D200E2687A /* ggml-alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = E029C3382B2CA6D200E2687A /* ggml-alloc.c */; };
 		E029C3412B2CA6D200E2687A /* ggml-backend.c in Sources */ = {isa = PBXBuildFile; fileRef = E029C33A2B2CA6D200E2687A /* ggml-backend.c */; };
 		E029C3422B2CA6D200E2687A /* ggml-metal.m in Sources */ = {isa = PBXBuildFile; fileRef = E029C33B2B2CA6D200E2687A /* ggml-metal.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -79,7 +76,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E008525D2B2B4ABF009FE8C0 /* ggml-medium-32-2.en.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "ggml-medium-32-2.en.bin"; sourceTree = "<group>"; };
 		E00852602B2B4E59009FE8C0 /* ggml-distil-small.en.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "ggml-distil-small.en.bin"; sourceTree = "<group>"; };
 		E029C32D2B2CA69D00E2687A /* ggml-impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ggml-impl.h"; sourceTree = "<group>"; };
 		E029C32E2B2CA69D00E2687A /* ggml-quants.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "ggml-quants.c"; sourceTree = "<group>"; };
@@ -88,8 +84,6 @@
 		E029C3322B2CA6D200E2687A /* ggml-metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ggml-metal.h"; sourceTree = "<group>"; };
 		E029C3332B2CA6D200E2687A /* ggml-alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ggml-alloc.h"; sourceTree = "<group>"; };
 		E029C3342B2CA6D200E2687A /* ggml-metal.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = "ggml-metal.metal"; sourceTree = "<group>"; };
-		E029C3352B2CA6D200E2687A /* ggml-cuda.cu */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ggml-cuda.cu"; sourceTree = "<group>"; };
-		E029C3362B2CA6D200E2687A /* ggml-cuda.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ggml-cuda.h"; sourceTree = "<group>"; };
 		E029C3382B2CA6D200E2687A /* ggml-alloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "ggml-alloc.c"; sourceTree = "<group>"; };
 		E029C3392B2CA6D200E2687A /* ggml-backend-impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ggml-backend-impl.h"; sourceTree = "<group>"; };
 		E029C33A2B2CA6D200E2687A /* ggml-backend.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "ggml-backend.c"; sourceTree = "<group>"; };
@@ -277,7 +271,6 @@
 			children = (
 				E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */,
 				E00852602B2B4E59009FE8C0 /* ggml-distil-small.en.bin */,
-				E008525D2B2B4ABF009FE8C0 /* ggml-medium-32-2.en.bin */,
 				E0CE98A9295D393B00FF9CA5 /* whisper.h */,
 				E0CE98AA295D393B00FF9CA5 /* ggml.c */,
 				E0CE98AB295D393B00FF9CA5 /* whisper.cpp */,
@@ -290,8 +283,6 @@
 				E029C3392B2CA6D200E2687A /* ggml-backend-impl.h */,
 				E029C33A2B2CA6D200E2687A /* ggml-backend.c */,
 				E029C3312B2CA6D200E2687A /* ggml-backend.h */,
-				E029C3352B2CA6D200E2687A /* ggml-cuda.cu */,
-				E029C3362B2CA6D200E2687A /* ggml-cuda.h */,
 				E029C3322B2CA6D200E2687A /* ggml-metal.h */,
 				E029C33B2B2CA6D200E2687A /* ggml-metal.m */,
 				E029C3342B2CA6D200E2687A /* ggml-metal.metal */,
@@ -427,14 +418,12 @@
 				E07DFF562B28052C00930E10 /* gpt3.5 - mid 2.txt in Resources */,
 				E00852612B2B4E59009FE8C0 /* ggml-distil-small.en.bin in Resources */,
 				E049ED492943A6A2002080BD /* text-expansion.txt in Resources */,
-				E008525E2B2B4ABF009FE8C0 /* ggml-medium-32-2.en.bin in Resources */,
 				E0BBF1FC293EEE9100FB7FF9 /* LaunchScreen.storyboard in Resources */,
 				E0BBF1F9293EEE9100FB7FF9 /* Assets.xcassets in Resources */,
 				E07DFF522B2781ED00930E10 /* rawResp.md in Resources */,
 				E0F9A34329B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt in Resources */,
 				E0CE98AD295D393B00FF9CA5 /* ggml-base.en.bin in Resources */,
 				E07DFF542B27DA8900930E10 /* gpt3.5 - long.txt in Resources */,
-				E029C33E2B2CA6D200E2687A /* ggml-cuda.cu in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,7 +432,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E00852622B2B4E83009FE8C0 /* ggml-distil-small.en.bin in Resources */,
-				E008525F2B2B4B68009FE8C0 /* ggml-medium-32-2.en.bin in Resources */,
 				E0CE98AE295D393B00FF9CA5 /* ggml-base.en.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
