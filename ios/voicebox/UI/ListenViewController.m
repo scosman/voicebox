@@ -135,6 +135,7 @@
                 // Check if prior segments don't match, with exclusion of last segment
                 for (int i = 0; i < (int)priorSegments.count - 2; i++) {
                     NSString* priorSegment = priorSegments[i];
+                    // TODO: This OOBs at end.
                     NSString* curSegment = segments[i];
                     if (![priorSegment isEqualToString:curSegment]) {
                         /* Findings:

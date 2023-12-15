@@ -99,8 +99,8 @@ static VBAudioListener *sharedInstance = nil;
          * If you want to play with this, add the models to "Copy Bundle Resources" step of build.
          */
         // load the whisper model
-        NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-base.en" ofType:@"bin"];
-        //NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-distil-small.en" ofType:@"bin"];
+        //NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-base.en" ofType:@"bin"];
+        NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-distil-small.en" ofType:@"bin"];
         //NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-medium-32-2.en" ofType:@"bin"];
 
         // check if the model exists
@@ -110,10 +110,12 @@ static VBAudioListener *sharedInstance = nil;
 
         NSLog(@"Loading model from %@", modelPath);
 
-        // create ggml context
-        whisper_init_with_params
-        stateInp.ctx = whisper_init([modelPath UTF8String]);
-
+        struct whisper_context_params cparams = whisper_context_default_params();
+#if TARGET_OS_SIMULATOR
+        cparams.use_gpu = false;
+        NSLog(@"Running on simulator, using CPU");
+#endif
+        stateInp.ctx = whisper_init_from_file_with_params([modelPath UTF8String], cparams);
         // check if the model was loaded successfully
         if (stateInp.ctx == NULL) {
             NSLog(@"Failed to load model");
@@ -280,7 +282,8 @@ static VBAudioListener *sharedInstance = nil;
         params.print_special = false;
         params.translate = false;
         params.language = "en";
-        // TODO P1: `params.suppress_non_speech_tokens = true;` once it makes it to stable release
+        params.suppress_non_speech_tokens = true;
+        params.suppress_blank = true;
         params.n_threads = max_threads;
         // TODO: think we're processing whole thing each time?
         params.offset_ms = 0;

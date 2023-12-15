@@ -51,7 +51,7 @@
 		E0CE98B0295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; settings = {COMPILER_FLAGS = "-DGGML_USE_ACCELERATE -w"; }; };
 		E0CE98B1295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; };
 		E0CE98B2295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; };
-		E0CE98B3295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
+		E0CE98B3295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; settings = {COMPILER_FLAGS = "-w -DGGML_USE_METAL"; }; };
 		E0CE98B4295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; };
 		E0CE98B5295D393B00FF9CA5 /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AB295D393B00FF9CA5 /* whisper.cpp */; };
 		E0CE98B8295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
