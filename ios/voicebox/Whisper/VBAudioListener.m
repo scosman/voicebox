@@ -15,7 +15,7 @@
 #define NUM_BYTES_PER_BUFFER 16 * 1024
 
 #define NUM_BUFFERS 3
-#define MAX_AUDIO_SEC 120
+#define MAX_AUDIO_SEC 60
 #define SAMPLE_RATE WHISPER_SAMPLE_RATE
 
 struct whisper_context;
@@ -85,16 +85,23 @@ static VBAudioListener *sharedInstance = nil;
         
         // whisper.cpp initialization
         
-        /* From rough experimentation, the base model seems to work well enough, so sticking to that
+        /* Important: must run in "release" mode to have reasonable perf. Debug kills it.
+         *
+         * From rough experimentation, the base model seems to work well enough, so sticking to that
          * for now. The small model works too, with similar CPU but double the memory, and slower
          * processing time (CPU probably isn't telling whole story).
-         * Next step to test on a device. Not sure if we're getting ANE acceleration, and how an iPad's
-         * microphone comares to macbook.
+         *
+         * The distil mode (ggml-distil-small / ggml-medium-32-2.en) should be better (better model, similar perf). However, the need this chunking strategy
+         * implemented for production usage. Keep deving on base/small, and switch to distil when fully supported
+         *
+         * Plan: ggml-distil-small is great. only a bit more processing than base. Better quality. Prob don't need to wait for second round processing nearly as much with small quality.
          *
          * If you want to play with this, add the models to "Copy Bundle Resources" step of build.
          */
-        // load the "base" whisper model
+        // load the whisper model
         NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-base.en" ofType:@"bin"];
+        //NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-distil-small.en" ofType:@"bin"];
+        //NSString* modelPath = [[NSBundle mainBundle] pathForResource:@"ggml-medium-32-2.en" ofType:@"bin"];
 
         // check if the model exists
         if (![[NSFileManager defaultManager] fileExistsAtPath:modelPath]) {
@@ -104,6 +111,7 @@ static VBAudioListener *sharedInstance = nil;
         NSLog(@"Loading model from %@", modelPath);
 
         // create ggml context
+        whisper_init_with_params
         stateInp.ctx = whisper_init([modelPath UTF8String]);
 
         // check if the model was loaded successfully
@@ -252,9 +260,10 @@ static VBAudioListener *sharedInstance = nil;
     stateInp.isTranscribing = true;
 
     // dispatch the model to a background thread
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // process captured audio
         // convert I16 to F32
+        NSLog(@"Transcribing: %d", self->stateInp.n_samples);
         for (int i = 0; i < self->stateInp.n_samples; i++) {
             self->stateInp.audioBufferF32[i] = (float)self->stateInp.audioBufferI16[i] / 32768.0f;
         }

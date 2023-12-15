@@ -8,7 +8,7 @@
 #ifndef Constants_h
 #define Constants_h
 
-#define LISTEN_ENABLED false
+#define LISTEN_ENABLED true
 
 #define ACCESSIBLE_SYSTEM_SPACING_MULTIPLE 3.0
 

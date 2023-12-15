@@ -6,6 +6,7 @@
 //
 
 #import "SceneDelegate.h"
+#import "Constants.h"
 #import "MainViewController.h"
 #import "VBAudioListener.h"
 
@@ -60,8 +61,7 @@
     // This is fast on release builds, and saves us allocating 500MB of memory if we aren't using it.
     // But debugging is painful without this.
 #if DEBUG
-    BOOL shouldPreload = false;
-    if (shouldPreload && [scene isKindOfClass:[UIWindowScene class]]) {
+    if (LISTEN_ENABLED && [scene isKindOfClass:[UIWindowScene class]]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             [VBAudioListener sharedInstance];
         });
