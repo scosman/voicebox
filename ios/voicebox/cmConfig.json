@@ -1,0 +1,38 @@
+{
+    "configVersion": "v1",
+    "appId": "net.scosman.voicebox",
+    "triggers": {
+        "namedTriggers": {
+            "launchMessageTrigger": {
+                "eventName": "app_start",
+                "actionName": "launchAlert"
+            }
+        }
+    },
+    "actions": {
+        "namedActions": {
+            "launchAlert": {
+                "actionType": "conditional_action",
+                "actionData": {
+                    "condition": "interface_orientation == 'landscape'",
+                    "passedActionName": "landscapeAlert",
+                    "failedActionName": "portraitAlert"
+                }
+            },
+            "landscapeAlert": {
+                "actionType": "alert",
+                "actionData": {
+                    "title": "Launched Landscape",
+                    "message": "The app was launched while in landscape orientation."
+                }
+            },
+            "portraitAlert": {
+                "actionType": "alert",
+                "actionData": {
+                    "title": "Launched Portrait",
+                    "message": "The app was launched while in portrait orientation."
+                }
+            }
+        }
+    }
+}

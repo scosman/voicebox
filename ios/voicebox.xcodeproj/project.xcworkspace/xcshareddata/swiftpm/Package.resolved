@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "criticalmoments",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/criticalmoments/criticalmoments",
+      "state" : {
+        "branch" : "main",
+        "revision" : "65243f296c963b81fda26fa97bbae02a2f2b3056"
+      }
+    }
+  ],
+  "version" : 2
+}

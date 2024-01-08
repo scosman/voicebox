@@ -7,6 +7,8 @@
 
 #import "AppDelegate.h"
 
+@import CriticalMoments;
+
 @interface AppDelegate ()
 
 @end
@@ -15,6 +17,13 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
+    NSString* apiKey = @"CM1-YjpuZXQuc2Nvc21hbi52b2ljZWJveA==-MEUCIEZKKaw7ERRXxoiElENVirF/p0eP4YA58h42eePVYmmmAiEA+HRo2cGPLgEPrBBV3OEPZV9Z+Au95z9C/AUe/aLiEVw=";
+    [CriticalMoments.sharedInstance setApiKey:apiKey error:nil];
+    NSURL* localConfigUrl = [[NSBundle mainBundle] URLForResource:@"cmConfig" withExtension:@"json"];
+    [CriticalMoments.sharedInstance setDevelopmentConfigUrl:localConfigUrl.absoluteString];
+    //[CriticalMoments.sharedInstance setReleaseConfigUrl:@"https://scosman.net/voicebox/cmconfig.cmconfig"];
+    [CriticalMoments.sharedInstance start];
+
     // Override point for customization after application launch.
     return YES;
 }

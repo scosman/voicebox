@@ -26,6 +26,8 @@
 		E049ED4F2944B833002080BD /* VBStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED4E2944B833002080BD /* VBStringUtils.m */; };
 		E049ED512944B986002080BD /* stringUtliTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED502944B986002080BD /* stringUtliTests.m */; };
 		E04A3321294A347300EF6628 /* OpenAiApiRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E04A3320294A347300EF6628 /* OpenAiApiRequest.m */; };
+		E04B889D2B4B9BAE00735169 /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E04B889C2B4B9BAE00735169 /* CriticalMoments */; };
+		E04B889F2B4B9C8C00735169 /* cmConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = E04B889E2B4B9C8C00735169 /* cmConfig.json */; };
 		E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */; };
 		E07DFF522B2781ED00930E10 /* rawResp.md in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF512B2781ED00930E10 /* rawResp.md */; };
 		E07DFF542B27DA8900930E10 /* gpt3.5 - long.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF532B27DA8900930E10 /* gpt3.5 - long.txt */; };
@@ -103,6 +105,7 @@
 		E049ED502944B986002080BD /* stringUtliTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = stringUtliTests.m; sourceTree = "<group>"; };
 		E04A331F294A347300EF6628 /* OpenAiApiRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenAiApiRequest.h; sourceTree = "<group>"; };
 		E04A3320294A347300EF6628 /* OpenAiApiRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenAiApiRequest.m; sourceTree = "<group>"; };
+		E04B889E2B4B9C8C00735169 /* cmConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cmConfig.json; sourceTree = "<group>"; };
 		E05B910F293FC4ED004DBFE2 /* VBSpeechSynthesizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBSpeechSynthesizer.h; sourceTree = "<group>"; };
 		E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBSpeechSynthesizer.m; sourceTree = "<group>"; };
 		E07DFF512B2781ED00930E10 /* rawResp.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = rawResp.md; path = "../../../prompts/text-expansion/GPT_4/V2 - long prompts/rawResp.md"; sourceTree = "<group>"; };
@@ -143,6 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E04B889D2B4B9BAE00735169 /* CriticalMoments in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +248,7 @@
 				E0BBF1FD293EEE9100FB7FF9 /* Info.plist */,
 				E0BBF1FE293EEE9100FB7FF9 /* main.m */,
 				E049ED462940F261002080BD /* Constants.h */,
+				E04B889E2B4B9C8C00735169 /* cmConfig.json */,
 			);
 			path = voicebox;
 			sourceTree = "<group>";
@@ -325,6 +330,9 @@
 			dependencies = (
 			);
 			name = voicebox;
+			packageProductDependencies = (
+				E04B889C2B4B9BAE00735169 /* CriticalMoments */,
+			);
 			productName = voicebox;
 			productReference = E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */;
 			productType = "com.apple.product-type.application";
@@ -396,6 +404,9 @@
 				Base,
 			);
 			mainGroup = E0BBF1E0293EEE9000FB7FF9;
+			packageReferences = (
+				E04B889B2B4B9BAE00735169 /* XCRemoteSwiftPackageReference "criticalmoments" */,
+			);
 			productRefGroup = E0BBF1EA293EEE9000FB7FF9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -417,6 +428,7 @@
 				E0B3DF312B2689B000E7D802 /* gpt4-v4.txt in Resources */,
 				E07DFF562B28052C00930E10 /* gpt3.5 - mid 2.txt in Resources */,
 				E00852612B2B4E59009FE8C0 /* ggml-distil-small.en.bin in Resources */,
+				E04B889F2B4B9C8C00735169 /* cmConfig.json in Resources */,
 				E049ED492943A6A2002080BD /* text-expansion.txt in Resources */,
 				E0BBF1FC293EEE9100FB7FF9 /* LaunchScreen.storyboard in Resources */,
 				E0BBF1F9293EEE9100FB7FF9 /* Assets.xcassets in Resources */,
@@ -803,6 +815,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E04B889B2B4B9BAE00735169 /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/criticalmoments/criticalmoments";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E04B889C2B4B9BAE00735169 /* CriticalMoments */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E04B889B2B4B9BAE00735169 /* XCRemoteSwiftPackageReference "criticalmoments" */;
+			productName = CriticalMoments;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E0BBF1E1293EEE9000FB7FF9 /* Project object */;
 }
