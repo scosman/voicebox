@@ -1,0 +1,14 @@
+
+What are 6 topics someone might be trying to discuss if they typed the sentence fragment "have pasta", but have not completed their thought. Make the topics as broad as possible, and mutually exclusive. 
+
+Reply with the list of 6 topics, formatted as a JSON array containing strings, as shown in the examples below. After the array stop.
+
+Some examples of what good results would be for sample sentence fragments:
+ - "hungry": `["Express being hungry", "Ask person if they are hungry", "Ask for food", "Ask if someone else is hungry", "Ask when they will be hungry"]`
+ - "cold": `["Express being cold in temperature", "Express having a cold (illness)", "Discuss weather", "Discuss indoor temperature", "Request help warming up"]`
+ - "how you": `["Ask how someone is doing", "Ask how someone did something", "Ask how someone is feeling (health)", "Ask how someone is feeling (emotional)", "Ask how well someone is doing at a task", "Ask how someone knows something/someone"]`
+ - "where": `["Where is someone", "Where is something", "Where is a place is", "Ask for directions", "Say where something is"]`
+ - "how school": `["Ask how school is going", "Ask about school grades", "Ask how they are liking school"]`
+
+ Now, please generate the 6 topics for the sentence fragment "have pasta", then stop.
+
