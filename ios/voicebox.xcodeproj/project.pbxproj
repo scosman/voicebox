@@ -26,7 +26,6 @@
 		E049ED4F2944B833002080BD /* VBStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED4E2944B833002080BD /* VBStringUtils.m */; };
 		E049ED512944B986002080BD /* stringUtliTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED502944B986002080BD /* stringUtliTests.m */; };
 		E04A3321294A347300EF6628 /* OpenAiApiRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E04A3320294A347300EF6628 /* OpenAiApiRequest.m */; };
-		E04B889D2B4B9BAE00735169 /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E04B889C2B4B9BAE00735169 /* CriticalMoments */; };
 		E04B889F2B4B9C8C00735169 /* cmConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = E04B889E2B4B9C8C00735169 /* cmConfig.json */; };
 		E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */; };
 		E07DFF522B2781ED00930E10 /* rawResp.md in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF512B2781ED00930E10 /* rawResp.md */; };
@@ -56,6 +55,7 @@
 		E0CE98B8295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
 		E0CE98B9295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
 		E0CE98BA295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
+		E0D56EE22B9CEB6900F24F6E /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E0D56EE12B9CEB6900F24F6E /* CriticalMoments */; };
 		E0F9A34329B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt in Resources */ = {isa = PBXBuildFile; fileRef = E0F9A34229B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt */; };
 		E0FE7D7A29AFB62000762C36 /* VBAudioListener.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7D7929AFB62000762C36 /* VBAudioListener.m */; };
 /* End PBXBuildFile section */
@@ -146,7 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E04B889D2B4B9BAE00735169 /* CriticalMoments in Frameworks */,
+				E0D56EE22B9CEB6900F24F6E /* CriticalMoments in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,7 +331,7 @@
 			);
 			name = voicebox;
 			packageProductDependencies = (
-				E04B889C2B4B9BAE00735169 /* CriticalMoments */,
+				E0D56EE12B9CEB6900F24F6E /* CriticalMoments */,
 			);
 			productName = voicebox;
 			productReference = E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */;
@@ -405,7 +405,7 @@
 			);
 			mainGroup = E0BBF1E0293EEE9000FB7FF9;
 			packageReferences = (
-				E04B889B2B4B9BAE00735169 /* XCRemoteSwiftPackageReference "criticalmoments" */,
+				E0D56EE02B9CEB6900F24F6E /* XCRemoteSwiftPackageReference "criticalmoments" */,
 			);
 			productRefGroup = E0BBF1EA293EEE9000FB7FF9 /* Products */;
 			projectDirPath = "";
@@ -817,20 +817,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E04B889B2B4B9BAE00735169 /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
+		E0D56EE02B9CEB6900F24F6E /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/criticalmoments/criticalmoments";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E04B889C2B4B9BAE00735169 /* CriticalMoments */ = {
+		E0D56EE12B9CEB6900F24F6E /* CriticalMoments */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E04B889B2B4B9BAE00735169 /* XCRemoteSwiftPackageReference "criticalmoments" */;
+			package = E0D56EE02B9CEB6900F24F6E /* XCRemoteSwiftPackageReference "criticalmoments" */;
 			productName = CriticalMoments;
 		};
 /* End XCSwiftPackageProductDependency section */
