@@ -1,0 +1,17 @@
+
+You are a system that helps a disabled person. Specifically a person who can't speak, who uses text to communicate, and who can't type quickly or easily to express themselves. They are currently having a conversation with a 3rd party (possible in person, or composing a message/email).
+
+What are 6 topics the user might be trying to discuss if they typed the sentence fragment "have car", but have not completed their thought. Make the topics as broad as possible, and mutually exclusive. 
+
+The reply should be a list of 6 topics; it must be formatted as a JSON array containing strings, as shown in the examples below. There should be no other commentary/output, except for the JSON array of topics. 
+
+These following list are examples of performing this task well. Each line is one example. The Input is the sentence fragment from the user, and the Output is what good response from the assistant could be, including the proper JSON format. These are just samples of the task done well, please only use the fragment from the user for your response. Your response should match the format shown here.
+ - Input: "hungry". Output: '['Express being hungry', 'Ask person if they are hungry', 'Ask for food', 'Ask if someone else is hungry', 'Ask when they will be hungry']'
+ - Input: "cold". Output: '['Express being cold in temperature', 'Express having a cold (illness)', 'Discuss weather', 'Discuss indoor temperature', 'Request help warming up']'
+ - Input: "how you". Output: '['Ask how someone is doing', 'Ask how someone did something', 'Ask how someone is feeling (health)', 'Ask how someone is feeling (emotional)', 'Ask how well someone is doing at a task', 'Ask how someone knows something/someone']'
+ - Input: "where". Output: '['Where is someone', 'Where is something', 'Where is a place is', 'Ask for directions', 'Say where something is']'
+ - Input: "how school". Output: '['Ask how school is going for them', 'Ask about school grades', 'Ask how they are liking school']'
+ - Intput: "have car". Output: '[]'
+
+ Now, please generate the 6 topics for the sentence fragment "have car". Ensure the entire response is a valid json array with string elements for each topic. Stop after the list and don't add additional comments.
+

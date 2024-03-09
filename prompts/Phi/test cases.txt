@@ -1,15 +1,27 @@
 
-This is a message for task 1.
+This is a message for for task 1.
 
-The user had already typed (preceding text/prior sentences): "How is work going?"
+The user had already typed (preceeing text/prior sentances): "How is is work going?"
 
 The quote (partial sentence in progress) is: "when"
 
 --- 
 
+<Start of task>
 This message is for task 1.
 
+There is no prior context. Only the sentence fragment is available.
+
 The quote (partial sentence in progress) is: "how school"
+<End of task>
+
+User:
+This message is for task 1.
+
+There is no prior context. Only the sentence fragment is available.
+
+The quote (partial sentence in progress) is: "how school"
+Voicebox:
 
  --- Chat model sentence completion -- 
 
