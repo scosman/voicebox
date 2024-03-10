@@ -32,6 +32,7 @@
 		E07DFF542B27DA8900930E10 /* gpt3.5 - long.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF532B27DA8900930E10 /* gpt3.5 - long.txt */; };
 		E07DFF562B28052C00930E10 /* gpt3.5 - mid 2.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF552B28052C00930E10 /* gpt3.5 - mid 2.txt */; };
 		E07DFF582B28C69000930E10 /* gpt3.5 - mid 3.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF572B28C69000930E10 /* gpt3.5 - mid 3.txt */; };
+		E096AB882B9E478100F43F80 /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E096AB872B9E478100F43F80 /* CriticalMoments */; };
 		E0A894DF29DB28790059AFEE /* whisper.h in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98A9295D393B00FF9CA5 /* whisper.h */; settings = {COMPILER_FLAGS = "-Wno-"; }; };
 		E0B3DF312B2689B000E7D802 /* gpt4-v4.txt in Resources */ = {isa = PBXBuildFile; fileRef = E0B3DF302B2689B000E7D802 /* gpt4-v4.txt */; };
 		E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */; };
@@ -55,7 +56,6 @@
 		E0CE98B8295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
 		E0CE98B9295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
 		E0CE98BA295D398700FF9CA5 /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98B7295D398700FF9CA5 /* ListenViewController.m */; };
-		E0D56EE22B9CEB6900F24F6E /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E0D56EE12B9CEB6900F24F6E /* CriticalMoments */; };
 		E0F9A34329B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt in Resources */ = {isa = PBXBuildFile; fileRef = E0F9A34229B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt */; };
 		E0FE7D7A29AFB62000762C36 /* VBAudioListener.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FE7D7929AFB62000762C36 /* VBAudioListener.m */; };
 /* End PBXBuildFile section */
@@ -136,6 +136,7 @@
 		E0CE98AC295D393B00FF9CA5 /* ggml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ggml.h; sourceTree = "<group>"; };
 		E0CE98B6295D398700FF9CA5 /* ListenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListenViewController.h; sourceTree = "<group>"; };
 		E0CE98B7295D398700FF9CA5 /* ListenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListenViewController.m; sourceTree = "<group>"; };
+		E0D56EE32B9CECA100F24F6E /* VBResponseOption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBResponseOption.h; sourceTree = "<group>"; };
 		E0F9A34229B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "chat-gpt-text-expansion-system-directive.txt"; sourceTree = "<group>"; };
 		E0FE7D7829AFB62000762C36 /* VBAudioListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBAudioListener.h; sourceTree = "<group>"; };
 		E0FE7D7929AFB62000762C36 /* VBAudioListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBAudioListener.m; sourceTree = "<group>"; };
@@ -146,7 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0D56EE22B9CEB6900F24F6E /* CriticalMoments in Frameworks */,
+				E096AB882B9E478100F43F80 /* CriticalMoments in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +195,7 @@
 				E049ED4E2944B833002080BD /* VBStringUtils.m */,
 				E04A331F294A347300EF6628 /* OpenAiApiRequest.h */,
 				E04A3320294A347300EF6628 /* OpenAiApiRequest.m */,
+				E0D56EE32B9CECA100F24F6E /* VBResponseOption.h */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -331,7 +333,7 @@
 			);
 			name = voicebox;
 			packageProductDependencies = (
-				E0D56EE12B9CEB6900F24F6E /* CriticalMoments */,
+				E096AB872B9E478100F43F80 /* CriticalMoments */,
 			);
 			productName = voicebox;
 			productReference = E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */;
@@ -405,7 +407,7 @@
 			);
 			mainGroup = E0BBF1E0293EEE9000FB7FF9;
 			packageReferences = (
-				E0D56EE02B9CEB6900F24F6E /* XCRemoteSwiftPackageReference "criticalmoments" */,
+				E096AB862B9E478100F43F80 /* XCRemoteSwiftPackageReference "criticalmoments" */,
 			);
 			productRefGroup = E0BBF1EA293EEE9000FB7FF9 /* Products */;
 			projectDirPath = "";
@@ -817,7 +819,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E0D56EE02B9CEB6900F24F6E /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
+		E096AB862B9E478100F43F80 /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/criticalmoments/criticalmoments";
 			requirement = {
@@ -828,9 +830,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E0D56EE12B9CEB6900F24F6E /* CriticalMoments */ = {
+		E096AB872B9E478100F43F80 /* CriticalMoments */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E0D56EE02B9CEB6900F24F6E /* XCRemoteSwiftPackageReference "criticalmoments" */;
+			package = E096AB862B9E478100F43F80 /* XCRemoteSwiftPackageReference "criticalmoments" */;
 			productName = CriticalMoments;
 		};
 /* End XCSwiftPackageProductDependency section */

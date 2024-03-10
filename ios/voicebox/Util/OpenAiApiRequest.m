@@ -113,7 +113,7 @@
 @interface OpenAiApiRequest ()
 
 @property (nonatomic, strong) NSDictionary* bodyPayload;
-@property (nonatomic, strong) NSString* apiUrl;
+@property (nonatomic, strong) NSString *apiUrl, *bearerToken;
 
 @end
 
@@ -124,6 +124,7 @@
     self = [super init];
     if (self) {
         self.apiUrl = @"https://api.openai.com/v1/completions";
+        self.bearerToken = OPEN_API_KEY;
         // TODO: none of these are tuned, just defaults
         self.bodyPayload = @{
             @"model" : @"text-davinci-003",
@@ -143,34 +144,58 @@
     self = [super init];
     if (self) {
         self.apiUrl = @"https://api.openai.com/v1/chat/completions";
-        NSMutableDictionary* bodyPayload = [[NSMutableDictionary alloc] init];
+        self.bearerToken = OPEN_API_KEY;
+        NSMutableDictionary* bodyPayload = [self buildBodyForChatCompletion:request];
         // bodyPayload[@"model"] = @"gpt-4-1106-preview";
         bodyPayload[@"model"] = @"gpt-3.5-turbo-1106";
 
-        // build system directive message
-        NSMutableArray<NSDictionary*>* apiMessageSet = [[NSMutableArray alloc] init];
-        [apiMessageSet addObject:@{ OPEN_API_ROLE_PARAM : @"system", OPEN_API_CONTENT_PARAM : request.systemDirective }];
-
-        // Build set of messages
-        for (ChatGptMessage* message in request.messages) {
-            NSString* role;
-            switch (message.roll) {
-            case kChatGptRollUser:
-                role = @"user";
-                break;
-            case kChatGptRollAssistant:
-                role = @"assistant";
-                break;
-            default:
-                NSLog(@"invalid role");
-                return nil;
-            }
-            [apiMessageSet addObject:@{ OPEN_API_ROLE_PARAM : role, OPEN_API_CONTENT_PARAM : message.content }];
-        }
-        bodyPayload[@"messages"] = apiMessageSet;
         self.bodyPayload = bodyPayload;
     }
     return self;
+}
+
+- (instancetype)initGrokWithRequest:(ChatGptRequest*)request
+{
+    self = [super init];
+    if (self) {
+        self.apiUrl = @"https://api.groq.com/openai/v1/chat/completions";
+        self.bearerToken = GROK_API_KEY;
+        NSMutableDictionary* bodyPayload = [self buildBodyForChatCompletion:request];
+        // https://console.groq.com/docs/models
+        bodyPayload[@"model"] = @"mixtral-8x7b-32768";
+
+        self.bodyPayload = bodyPayload;
+    }
+    return self;
+}
+
+- (NSMutableDictionary*)buildBodyForChatCompletion:(ChatGptRequest*)request
+{
+    NSMutableDictionary* bodyPayload = [[NSMutableDictionary alloc] init];
+
+    // build system directive message
+    NSMutableArray<NSDictionary*>* apiMessageSet = [[NSMutableArray alloc] init];
+    [apiMessageSet addObject:@{ OPEN_API_ROLE_PARAM : @"system", OPEN_API_CONTENT_PARAM : request.systemDirective }];
+
+    // Build set of messages
+    for (ChatGptMessage* message in request.messages) {
+        NSString* role;
+        switch (message.roll) {
+        case kChatGptRollUser:
+            role = @"user";
+            break;
+        case kChatGptRollAssistant:
+            role = @"assistant";
+            break;
+        default:
+            NSLog(@"invalid role");
+            return nil;
+        }
+        [apiMessageSet addObject:@{ OPEN_API_ROLE_PARAM : role, OPEN_API_CONTENT_PARAM : message.content }];
+    }
+    bodyPayload[@"messages"] = apiMessageSet;
+
+    return bodyPayload;
 }
 
 // Why make this sync? Too many error condition checks here for safe usage of callbacks.
@@ -198,7 +223,7 @@
 
     // Headers
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    NSString* authBearerKey = [NSString stringWithFormat:@"Bearer %@", OPEN_API_KEY];
+    NSString* authBearerKey = [NSString stringWithFormat:@"Bearer %@", self.bearerToken];
     [urlRequest setValue:authBearerKey forHTTPHeaderField:@"Authorization"];
 
     [urlRequest setTimeoutInterval:OPEN_AI_API_TIMEOUT_SECONDS];
@@ -244,6 +269,9 @@
 
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     if (httpResponse.statusCode != 200) {
+        if (data && data.length) {
+            NSLog(@"Data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+        }
         *error = [self apiError:999200];
         return nil;
     }

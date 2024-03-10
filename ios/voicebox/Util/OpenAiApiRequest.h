@@ -7,22 +7,14 @@
 
 #import <Foundation/Foundation.h>
 
+#import "VBResponseOption.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, ChatGptRoll) {
     kChatGptRollUser,
     kChatGptRollAssistant
 };
-
-@interface ResponseOption : NSObject
-
-@property (nonatomic, strong) NSString* fullBodyReplacement;
-
-- (bool)hasSuboptions;
-- (NSString*)displayName;
-- (NSString*)replacementText;
-- (NSArray<ResponseOption*>*)subOptions;
-@end
 
 @interface ChatGptMessage : NSObject
 
@@ -38,11 +30,11 @@ typedef NS_ENUM(NSUInteger, ChatGptRoll) {
 
 @end
 
-@interface OpenAiApiRequest : NSObject
+@interface OpenAiApiRequest : NSObject <VBMLProvider>
 
 - (instancetype)initGtp3WithPrompt:(NSString*)prompt;
 - (instancetype)initChatGtpWithRequest:(ChatGptRequest*)request;
-- (NSMutableArray<ResponseOption*>*)sendSynchronousRequest:(NSError**)error;
+- (instancetype)initGrokWithRequest:(ChatGptRequest*)request;
 
 + (NSArray<ResponseOption*>*)developmentResponseOptions;
 + (NSMutableArray<ResponseOption*>*)processMessageString:(NSString*)msgString withError:(NSError**)error;

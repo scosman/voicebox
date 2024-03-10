@@ -1,5 +1,4 @@
 {
-  "originHash" : "b6d1eb20c2e42a5c64d10d3b5ef89157291eb4491dd1e210f3ceb88bd15580b1",
   "pins" : [
     {
       "identity" : "criticalmoments",
@@ -11,5 +10,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

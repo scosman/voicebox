@@ -8,6 +8,7 @@
 #import "VBMagicEnhancer.h"
 
 #import "OpenAiApiRequest.h"
+#import "VBResponseOption.h"
 #import "VBStringUtils.h"
 
 #define PROMPT_QUOTE_PLACEHOLDER @"INSERT_QUOTE_PLACEHOLDER"
@@ -34,7 +35,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
         mode = kModeNextSentence;
     }
 
-    OpenAiApiRequest* request = [self requestForText:text withMode:mode];
+    id<VBMLProvider> request = [self requestForText:text withMode:mode];
     if (!request) {
         complete(nil, [NSError errorWithDomain:@"net.scosman.voicebox.custom" code:89939 userInfo:@{ NSLocalizedDescriptionKey : @"Issue generating prompt/request." }]);
         return;
@@ -44,7 +45,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     [self requestAndBuildOptions:request withOriginalText:text withMode:mode onComplete:complete];
 }
 
-- (void)requestAndBuildOptions:(OpenAiApiRequest*)request withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<ResponseOption*>*, NSError*))complete
+- (void)requestAndBuildOptions:(id<VBMLProvider>)request withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<ResponseOption*>*, NSError*))complete
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSError* err;
@@ -58,7 +59,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     });
 }
 
-- (NSMutableArray<ResponseOption*>*)requestAndBuildOptionsSyncronous:(OpenAiApiRequest*)apiRequest withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode withError:(NSError**)error
+- (NSMutableArray<ResponseOption*>*)requestAndBuildOptionsSyncronous:(id<VBMLProvider>)apiRequest withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode withError:(NSError**)error
 {
     NSMutableArray<ResponseOption*>* sourceOptions = [apiRequest sendSynchronousRequest:error];
     if (*error) {
@@ -105,7 +106,14 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     ;
 }
 
-- (OpenAiApiRequest*)requestForText:(NSString*)originalText withMode:(MagicEnhancerMode)mode
+- (OpenAiApiRequest*)buildApiRequest:(ChatGptRequest*)request
+{
+    // Swap between models here:
+    // return [[OpenAiApiRequest alloc] initChatGtpWithRequest:request];
+    return [[OpenAiApiRequest alloc] initGrokWithRequest:request];
+}
+
+- (id<VBMLProvider>)requestForText:(NSString*)originalText withMode:(MagicEnhancerMode)mode
 {
     return [self gpt35MidRequestForText:originalText ofMode:mode];
     // return [self gpt4RequestForText:originalText ofMode:mode];
@@ -168,7 +176,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     apiMessage.content = userMessage;
     request.messages = @[ apiMessage ];
 
-    return [[OpenAiApiRequest alloc] initChatGtpWithRequest:request];
+    return [self buildApiRequest:request];
 }
 
 - (OpenAiApiRequest*)chatGptTextExpansionRequestForText:(NSString*)originalText
@@ -189,7 +197,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     userMessage.content = [NSString stringWithFormat:@"The quote to make suggestions for is as follows:\n\n%@", lastSentence];
     request.messages = @[ userMessage ];
 
-    return [[OpenAiApiRequest alloc] initChatGtpWithRequest:request];
+    return [self buildApiRequest:request];
 }
 
 // Unused, but keeping
