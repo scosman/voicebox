@@ -7,6 +7,8 @@
 
 #import "VBStringUtils.h"
 
+@import UIKit;
+
 #define SENTENCE_TERMINATORS_STRING @".?!;"
 
 @implementation VBStringUtils
@@ -112,6 +114,15 @@
         return @"";
     }
     return [text substringToIndex:originalTextToKeepLength];
+}
+
++ (UIFont*)logoFontOfWeight:(UIFontWeight)weight withSize:(CGFloat)size
+{
+    // weird trick needed to get SF Pro Rounded
+    UIFont* systemFont = [UIFont systemFontOfSize:size weight:weight];
+    UIFontDescriptor* sfRoundedFontDescriptor = [systemFont.fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
+    UIFont* roundedSystemFont = [UIFont fontWithDescriptor:sfRoundedFontDescriptor size:size];
+    return roundedSystemFont ? roundedSystemFont : systemFont;
 }
 
 @end

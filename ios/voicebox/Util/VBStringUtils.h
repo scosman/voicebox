@@ -7,6 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
+@import UIKit;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VBStringUtils : NSObject
@@ -15,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*)truncateStringsAddingSpaceBetweenAndTrailingIfNeeded:(NSString*)firstString withSecondString:(NSString*)secondString;
 + (NSString*)lastPartialSentenceFromString:(NSString*)text;
 + (NSString*)originalTextToKeepWhenStrippingLastPartialSentence:(NSString*)text;
++ (UIFont*)logoFontOfWeight:(UIFontWeight)weight withSize:(CGFloat)size;
 
 @end
 

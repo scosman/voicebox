@@ -1,4 +1,32 @@
 {
     "configVersion": "v1",
-    "appId": "net.scosman.voicebox"
+    "appId": "net.scosman.voicebox",
+    "actions": {
+         "namedActions": {
+            "hello_sarnia_banner": {
+                "actionType": "banner",
+                "actionData": {
+                    "body": "Hello Sarnia!",
+                    "preferredPosition": "top",
+                    "tapActionName": "hello_sarnia_alert"
+                }
+            },
+            "hello_sarnia_alert": {
+                "actionType": "alert",
+                "actionData": {
+                    "title": "Hi folks!",
+                    "message": "How's the weather in Sarnia?\n\nThis message only appears in Sarnia."
+                }
+            }
+        }
+    },
+    "triggers": {
+        "namedTriggers": {
+            "suggestWatchAppTrigger": {
+                "eventName": "app_start",
+                "actionName": "hello_sarnia_banner",
+                "condition": "location_approx_city == \"Sarnia\""
+            }
+        }
+    }
 }

@@ -7,11 +7,13 @@
 
 #import "MainViewController.h"
 
+#import "../Util/VBStringUtils.h"
 #import "Constants.h"
 #import "ListenViewController.h"
 #import "VBButton.h"
 #import "VBEnhanceViewController.h"
 #import "VBMagicEnhancer.h"
+#import "VBShareViewController.h"
 #import "VBSpeechSynthesizer.h"
 
 @interface MainViewController () <UITextViewDelegate, EnhanceViewSelectionDelegate>
@@ -19,7 +21,7 @@
 @property (nonatomic, weak) UITextView* textView;
 @property (nonatomic, weak) UILabel* voiceboxLabel;
 @property (nonatomic, weak) VBButton *speakButton, *magicButton, *listenButton;
-@property (nonatomic, weak) UIButton* clearRestoreTextButton;
+@property (nonatomic, weak) UIButton *clearRestoreTextButton, *shareButton;
 @property (nonatomic, strong) VBSpeechSynthesizer* speechSynthesizer;
 @property (nonatomic, strong) VBMagicEnhancer* enhancer;
 @property (nonatomic, strong) NSString* bodyBeforeLastTextboxClear;
@@ -87,6 +89,20 @@
     [self.view addSubview:clearRestoreTextButton];
     _clearRestoreTextButton = clearRestoreTextButton;
 
+    const CGFloat shareButtonHeight = 46;
+    UIButton* shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [shareButton setTitle:@"     Share     " forState:UIControlStateNormal];
+    shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:22];
+    // match UIButtonTypeClose
+    [shareButton setTitleColor:[UIColor colorWithRed:0.41 green:0.41 blue:0.41 alpha:1.0] forState:UIControlStateNormal];
+    [shareButton setBackgroundColor:[UIColor colorWithRed:0.937254902 green:0.937254902 blue:0.937254902 alpha:1.0]];
+    shareButton.layer.cornerRadius = shareButtonHeight / 2;
+    shareButton.clipsToBounds = YES;
+    shareButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [shareButton addTarget:self action:@selector(shareText:) forControlEvents:UIControlEventPrimaryActionTriggered];
+    [self.view addSubview:shareButton];
+    _shareButton = shareButton;
+
     VBButton* speakButton = [[VBButton alloc] initLargeSymbolButtonWithSystemImageNamed:@"person.wave.2.fill" andTitle:@"Speak"];
     speakButton.translatesAutoresizingMaskIntoConstraints = NO;
     [speakButton addTarget:self action:@selector(speakText:) forControlEvents:UIControlEventPrimaryActionTriggered];
@@ -145,6 +161,13 @@
         [textView.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor
                                               constant:bottomPadding],
         [textView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor],
+
+        // Share button
+        [shareButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor
+                                                 constant:-32.0],
+        [shareButton.leadingAnchor constraintEqualToAnchor:textView.leadingAnchor
+                                                  constant:32.0],
+        [shareButton.heightAnchor constraintEqualToConstant:shareButtonHeight],
 
         // Clear text button
         [clearRestoreTextButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor
@@ -213,6 +236,13 @@
     [self updateButtonStates];
 }
 
+- (void)shareText:(UIButton*)sender
+{
+    VBShareViewController* shareVC = [[VBShareViewController alloc] initWithContent:self.textView.text];
+    shareVC.modalPresentationStyle = UIModalPresentationPageSheet;
+    [self presentViewController:shareVC animated:YES completion:nil];
+}
+
 - (void)speakText:(UIButton*)sender
 {
     NSString* textToSpeak = self.textView.text;
@@ -275,6 +305,7 @@
     BOOL hasText = self.textView.text.length > 0;
     self.speakButton.enabled = hasText;
     self.magicButton.enabled = hasText;
+    self.shareButton.hidden = !hasText;
 
     // hide "clear" button if no text, and no text to restore
     BOOL canRestoreText = !hasText && self.bodyBeforeLastTextboxClear.length > 0;
@@ -317,21 +348,12 @@ const float logoFontSize = 38.0;
 - (NSAttributedString*)logoLabelAttributedString
 {
     // UIFontWeightLight
-    NSMutableAttributedString* logoString = [[NSMutableAttributedString alloc] initWithString:@"voicebox" attributes:@{ NSFontAttributeName : [self logoFontOfWeight:UIFontWeightLight] }];
+    NSMutableAttributedString* logoString = [[NSMutableAttributedString alloc] initWithString:@"voicebox" attributes:@{ NSFontAttributeName : [VBStringUtils logoFontOfWeight:UIFontWeightLight withSize:logoFontSize] }];
 
     // Make "voice" semibold
-    [logoString addAttribute:NSFontAttributeName value:[self logoFontOfWeight:UIFontWeightSemibold] range:NSMakeRange(0, 5)];
+    [logoString addAttribute:NSFontAttributeName value:[VBStringUtils logoFontOfWeight:UIFontWeightSemibold withSize:logoFontSize] range:NSMakeRange(0, 5)];
 
     return logoString;
-}
-
-- (UIFont*)logoFontOfWeight:(UIFontWeight)weight
-{
-    // weird trick needed to get SF Pro Rounded
-    UIFont* systemFont = [UIFont systemFontOfSize:logoFontSize weight:weight];
-    UIFontDescriptor* sfRoundedFontDescriptor = [systemFont.fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
-    UIFont* roundedSystemFont = [UIFont fontWithDescriptor:sfRoundedFontDescriptor size:logoFontSize];
-    return roundedSystemFont ? roundedSystemFont : systemFont;
 }
 
 #pragma - mark UITextViewDelegate

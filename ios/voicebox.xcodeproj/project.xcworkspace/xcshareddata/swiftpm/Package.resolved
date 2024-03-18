@@ -1,14 +1,15 @@
 {
+  "originHash" : "b6d1eb20c2e42a5c64d10d3b5ef89157291eb4491dd1e210f3ceb88bd15580b1",
   "pins" : [
     {
       "identity" : "criticalmoments",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/criticalmoments/criticalmoments",
       "state" : {
-        "revision" : "ecf27e031cc25f308805fa86198c9d279a25e3af",
-        "version" : "0.9.0"
+        "revision" : "b87ebb60296270aa6607619bc4d71cf1502ca701",
+        "version" : "0.9.1"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

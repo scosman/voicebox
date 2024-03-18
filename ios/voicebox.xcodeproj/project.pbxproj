@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E00852612B2B4E59009FE8C0 /* ggml-distil-small.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E00852602B2B4E59009FE8C0 /* ggml-distil-small.en.bin */; };
+		E000E3382BA906D500F19B0E /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E000E3372BA906D500F19B0E /* CriticalMoments */; };
 		E00852622B2B4E83009FE8C0 /* ggml-distil-small.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E00852602B2B4E59009FE8C0 /* ggml-distil-small.en.bin */; };
+		E023B2042BA8D32700EA79C5 /* VBShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E023B2032BA8D32700EA79C5 /* VBShareViewController.m */; };
 		E029C3302B2CA69D00E2687A /* ggml-quants.c in Sources */ = {isa = PBXBuildFile; fileRef = E029C32E2B2CA69D00E2687A /* ggml-quants.c */; };
 		E029C33D2B2CA6D200E2687A /* ggml-metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = E029C3342B2CA6D200E2687A /* ggml-metal.metal */; };
 		E029C3402B2CA6D200E2687A /* ggml-alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = E029C3382B2CA6D200E2687A /* ggml-alloc.c */; };
@@ -32,7 +33,6 @@
 		E07DFF542B27DA8900930E10 /* gpt3.5 - long.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF532B27DA8900930E10 /* gpt3.5 - long.txt */; };
 		E07DFF562B28052C00930E10 /* gpt3.5 - mid 2.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF552B28052C00930E10 /* gpt3.5 - mid 2.txt */; };
 		E07DFF582B28C69000930E10 /* gpt3.5 - mid 3.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF572B28C69000930E10 /* gpt3.5 - mid 3.txt */; };
-		E096AB882B9E478100F43F80 /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E096AB872B9E478100F43F80 /* CriticalMoments */; };
 		E0A894DF29DB28790059AFEE /* whisper.h in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98A9295D393B00FF9CA5 /* whisper.h */; settings = {COMPILER_FLAGS = "-Wno-"; }; };
 		E0B3DF312B2689B000E7D802 /* gpt4-v4.txt in Resources */ = {isa = PBXBuildFile; fileRef = E0B3DF302B2689B000E7D802 /* gpt4-v4.txt */; };
 		E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */; };
@@ -44,7 +44,6 @@
 		E0BBF209293EEE9100FB7FF9 /* voiceboxTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF208293EEE9100FB7FF9 /* voiceboxTests.m */; };
 		E0BBF213293EEE9100FB7FF9 /* voiceboxUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF212293EEE9100FB7FF9 /* voiceboxUITests.m */; };
 		E0BBF215293EEE9100FB7FF9 /* voiceboxUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF214293EEE9100FB7FF9 /* voiceboxUITestsLaunchTests.m */; };
-		E0CE98AD295D393B00FF9CA5 /* ggml-base.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */; };
 		E0CE98AE295D393B00FF9CA5 /* ggml-base.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */; };
 		E0CE98AF295D393B00FF9CA5 /* ggml-base.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E0CE98A8295D393B00FF9CA5 /* ggml-base.en.bin */; };
 		E0CE98B0295D393B00FF9CA5 /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98AA295D393B00FF9CA5 /* ggml.c */; settings = {COMPILER_FLAGS = "-DGGML_USE_ACCELERATE -w"; }; };
@@ -79,6 +78,9 @@
 
 /* Begin PBXFileReference section */
 		E00852602B2B4E59009FE8C0 /* ggml-distil-small.en.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "ggml-distil-small.en.bin"; sourceTree = "<group>"; };
+		E023B2022BA8D32700EA79C5 /* VBShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBShareViewController.h; sourceTree = "<group>"; };
+		E023B2032BA8D32700EA79C5 /* VBShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VBShareViewController.m; sourceTree = "<group>"; };
+		E023B2062BA8EC6F00EA79C5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E029C32D2B2CA69D00E2687A /* ggml-impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ggml-impl.h"; sourceTree = "<group>"; };
 		E029C32E2B2CA69D00E2687A /* ggml-quants.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "ggml-quants.c"; sourceTree = "<group>"; };
 		E029C32F2B2CA69D00E2687A /* ggml-quants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ggml-quants.h"; sourceTree = "<group>"; };
@@ -147,7 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E096AB882B9E478100F43F80 /* CriticalMoments in Frameworks */,
+				E000E3382BA906D500F19B0E /* CriticalMoments in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +170,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E023B2052BA8EC6E00EA79C5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E023B2062BA8EC6F00EA79C5 /* Accelerate.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E049ED3A293FCC38002080BD /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +189,8 @@
 				E0BBF1F3293EEE9000FB7FF9 /* MainViewController.m */,
 				E0CE98B6295D398700FF9CA5 /* ListenViewController.h */,
 				E0CE98B7295D398700FF9CA5 /* ListenViewController.m */,
+				E023B2022BA8D32700EA79C5 /* VBShareViewController.h */,
+				E023B2032BA8D32700EA79C5 /* VBShareViewController.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -221,6 +233,7 @@
 				E0BBF207293EEE9100FB7FF9 /* voiceboxTests */,
 				E0BBF211293EEE9100FB7FF9 /* voiceboxUITests */,
 				E0BBF1EA293EEE9000FB7FF9 /* Products */,
+				E023B2052BA8EC6E00EA79C5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -333,7 +346,7 @@
 			);
 			name = voicebox;
 			packageProductDependencies = (
-				E096AB872B9E478100F43F80 /* CriticalMoments */,
+				E000E3372BA906D500F19B0E /* CriticalMoments */,
 			);
 			productName = voicebox;
 			productReference = E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */;
@@ -407,7 +420,7 @@
 			);
 			mainGroup = E0BBF1E0293EEE9000FB7FF9;
 			packageReferences = (
-				E096AB862B9E478100F43F80 /* XCRemoteSwiftPackageReference "criticalmoments" */,
+				E000E3362BA906D500F19B0E /* XCRemoteSwiftPackageReference "criticalmoments" */,
 			);
 			productRefGroup = E0BBF1EA293EEE9000FB7FF9 /* Products */;
 			projectDirPath = "";
@@ -429,14 +442,12 @@
 				E049ED4C2943B779002080BD /* next-sentence.txt in Resources */,
 				E0B3DF312B2689B000E7D802 /* gpt4-v4.txt in Resources */,
 				E07DFF562B28052C00930E10 /* gpt3.5 - mid 2.txt in Resources */,
-				E00852612B2B4E59009FE8C0 /* ggml-distil-small.en.bin in Resources */,
 				E04B889F2B4B9C8C00735169 /* cmConfig.json in Resources */,
 				E049ED492943A6A2002080BD /* text-expansion.txt in Resources */,
 				E0BBF1FC293EEE9100FB7FF9 /* LaunchScreen.storyboard in Resources */,
 				E0BBF1F9293EEE9100FB7FF9 /* Assets.xcassets in Resources */,
 				E07DFF522B2781ED00930E10 /* rawResp.md in Resources */,
 				E0F9A34329B16D4B002F42A5 /* chat-gpt-text-expansion-system-directive.txt in Resources */,
-				E0CE98AD295D393B00FF9CA5 /* ggml-base.en.bin in Resources */,
 				E07DFF542B27DA8900930E10 /* gpt3.5 - long.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,6 +489,7 @@
 				E049ED45293FFB93002080BD /* VBEnhanceViewController.m in Sources */,
 				E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */,
 				E0BBF1FF293EEE9100FB7FF9 /* main.m in Sources */,
+				E023B2042BA8D32700EA79C5 /* VBShareViewController.m in Sources */,
 				E0CE98B8295D398700FF9CA5 /* ListenViewController.m in Sources */,
 				E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */,
 				E0FE7D7A29AFB62000762C36 /* VBAudioListener.m in Sources */,
@@ -660,7 +672,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D5VFD22Y98;
+				DEVELOPMENT_TEAM = 3555VWY9R9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = voicebox/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Voicebox;
@@ -672,7 +684,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.voicebox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -690,7 +702,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D5VFD22Y98;
+				DEVELOPMENT_TEAM = 3555VWY9R9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = voicebox/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Voicebox;
@@ -702,7 +714,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.voicebox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -819,20 +831,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E096AB862B9E478100F43F80 /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
+		E000E3362BA906D500F19B0E /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/criticalmoments/criticalmoments";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.0;
+				minimumVersion = 0.9.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E096AB872B9E478100F43F80 /* CriticalMoments */ = {
+		E000E3372BA906D500F19B0E /* CriticalMoments */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E096AB862B9E478100F43F80 /* XCRemoteSwiftPackageReference "criticalmoments" */;
+			package = E000E3362BA906D500F19B0E /* XCRemoteSwiftPackageReference "criticalmoments" */;
 			productName = CriticalMoments;
 		};
 /* End XCSwiftPackageProductDependency section */
