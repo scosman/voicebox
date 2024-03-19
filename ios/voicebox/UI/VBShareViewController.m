@@ -83,7 +83,7 @@
         [closeBtn.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor
                                                 constant:-22.0],
         [closeBtn.topAnchor constraintEqualToAnchor:self.view.topAnchor
-                                           constant:22.0],
+                                           constant:26.0],
 
         // Email: centered
         [emailButton.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],

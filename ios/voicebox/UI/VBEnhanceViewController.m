@@ -7,13 +7,14 @@
 
 #import "VBEnhanceViewController.h"
 
+#import "../Util/VBStringUtils.h"
 #import "Constants.h"
 #import "VBButton.h"
 
 @interface VBEnhanceViewController ()
 
 @property (nonatomic, strong) NSArray<ResponseOption*>*options, *optionsLoadedInView, *rootOptions;
-@property (nonatomic, weak) UILabel* loadingLabel;
+@property (nonatomic, weak) UILabel *loadingLabel, *titleLabel;
 @property (nonatomic, weak) UIActivityIndicatorView* spinner;
 @property (nonatomic, weak) UIButton *closeBtn, *backBtn;
 @property (nonatomic, weak) UIView* optionsStackView;
@@ -40,6 +41,13 @@
     [self.view addSubview:loadingLabel];
     _loadingLabel = loadingLabel;
 
+    UILabel* titleLabel = [[UILabel alloc] init];
+    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    titleLabel.hidden = true;
+    titleLabel.font = [VBStringUtils logoFontOfWeight:UIFontWeightBold withSize:(IS_IPAD ? 32 : 28)];
+    [self.view addSubview:titleLabel];
+    _titleLabel = titleLabel;
+
     UIButton* backBtn = [[VBButton alloc] initSecondaryButtonWithTitle:@" Back"];
     UIImage* backImg = [UIImage systemImageNamed:@"chevron.backward.circle.fill"];
     [backBtn setImage:backImg forState:UIControlStateNormal];
@@ -62,6 +70,11 @@
     _optionsStackView = optionsStackView;
 
     NSArray* constraints = @[
+        // Title
+        [titleLabel.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor
+                                             constant:IS_IPAD ? 34.0 : 22.0],
+        [titleLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+
         // Loading Content
         [spinner.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
         [spinner.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
@@ -79,7 +92,7 @@
         [closeBtn.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor
                                                 constant:-22.0],
         [closeBtn.topAnchor constraintEqualToAnchor:self.view.topAnchor
-                                           constant:22.0],
+                                           constant:26.0],
 
         // Main content area
         [optionsStackView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
@@ -144,8 +157,14 @@
     NSMutableArray* constraints = [[NSMutableArray alloc] initWithCapacity:(options.count * 2 + 8)];
     NSLayoutYAxisAnchor* topAnchor;
 
+    BOOL allTopics = true;
+
     VBButton *topButton, *bottonButton;
     for (ResponseOption* option in options) {
+        if (!option.hasSuboptions) {
+            allTopics = false;
+        }
+
         VBButton* optionButton = [[VBButton alloc] initOptionButtonWithTitle:option.displayName hasSuboptions:option.hasSuboptions];
         optionButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_optionsStackView addSubview:optionButton];
@@ -168,6 +187,15 @@
         }
         bottonButton = optionButton;
     }
+
+    if (allTopics) {
+        _titleLabel.text = @"Select Topic";
+        [_titleLabel sizeToFit];
+    } else {
+        _titleLabel.text = @"Select";
+        [_titleLabel sizeToFit];
+    }
+    _titleLabel.hidden = options.count == 0;
 
     VBButton* cancelBtn = [[VBButton alloc] initOptionCancelButton];
     cancelBtn.translatesAutoresizingMaskIntoConstraints = NO;
