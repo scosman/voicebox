@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E000E3382BA906D500F19B0E /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E000E3372BA906D500F19B0E /* CriticalMoments */; };
 		E00852622B2B4E83009FE8C0 /* ggml-distil-small.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E00852602B2B4E59009FE8C0 /* ggml-distil-small.en.bin */; };
 		E023B2042BA8D32700EA79C5 /* VBShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E023B2032BA8D32700EA79C5 /* VBShareViewController.m */; };
 		E029C3302B2CA69D00E2687A /* ggml-quants.c in Sources */ = {isa = PBXBuildFile; fileRef = E029C32E2B2CA69D00E2687A /* ggml-quants.c */; };
@@ -28,11 +27,14 @@
 		E049ED512944B986002080BD /* stringUtliTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED502944B986002080BD /* stringUtliTests.m */; };
 		E04A3321294A347300EF6628 /* OpenAiApiRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E04A3320294A347300EF6628 /* OpenAiApiRequest.m */; };
 		E04B889F2B4B9C8C00735169 /* cmConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = E04B889E2B4B9C8C00735169 /* cmConfig.json */; };
+		E057C5572BAB38B3003158E4 /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E057C5562BAB38B3003158E4 /* CriticalMoments */; };
+		E057C55A2BAB3BA1003158E4 /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E057C5592BAB3BA1003158E4 /* CriticalMoments */; };
 		E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */; };
 		E07DFF522B2781ED00930E10 /* rawResp.md in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF512B2781ED00930E10 /* rawResp.md */; };
 		E07DFF542B27DA8900930E10 /* gpt3.5 - long.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF532B27DA8900930E10 /* gpt3.5 - long.txt */; };
 		E07DFF562B28052C00930E10 /* gpt3.5 - mid 2.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF552B28052C00930E10 /* gpt3.5 - mid 2.txt */; };
 		E07DFF582B28C69000930E10 /* gpt3.5 - mid 3.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF572B28C69000930E10 /* gpt3.5 - mid 3.txt */; };
+		E0A442652BAA01AC006C27CB /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E0A442642BAA01AC006C27CB /* CriticalMoments */; };
 		E0A894DF29DB28790059AFEE /* whisper.h in Sources */ = {isa = PBXBuildFile; fileRef = E0CE98A9295D393B00FF9CA5 /* whisper.h */; settings = {COMPILER_FLAGS = "-Wno-"; }; };
 		E0B3DF312B2689B000E7D802 /* gpt4-v4.txt in Resources */ = {isa = PBXBuildFile; fileRef = E0B3DF302B2689B000E7D802 /* gpt4-v4.txt */; };
 		E0BBF1EE293EEE9000FB7FF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BBF1ED293EEE9000FB7FF9 /* AppDelegate.m */; };
@@ -149,7 +151,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E000E3382BA906D500F19B0E /* CriticalMoments in Frameworks */,
+				E0A442652BAA01AC006C27CB /* CriticalMoments in Frameworks */,
+				E057C55A2BAB3BA1003158E4 /* CriticalMoments in Frameworks */,
+				E057C5572BAB38B3003158E4 /* CriticalMoments in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,7 +350,9 @@
 			);
 			name = voicebox;
 			packageProductDependencies = (
-				E000E3372BA906D500F19B0E /* CriticalMoments */,
+				E0A442642BAA01AC006C27CB /* CriticalMoments */,
+				E057C5562BAB38B3003158E4 /* CriticalMoments */,
+				E057C5592BAB3BA1003158E4 /* CriticalMoments */,
 			);
 			productName = voicebox;
 			productReference = E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */;
@@ -420,7 +426,7 @@
 			);
 			mainGroup = E0BBF1E0293EEE9000FB7FF9;
 			packageReferences = (
-				E000E3362BA906D500F19B0E /* XCRemoteSwiftPackageReference "criticalmoments" */,
+				E057C5582BAB3BA1003158E4 /* XCRemoteSwiftPackageReference "criticalmoments" */,
 			);
 			productRefGroup = E0BBF1EA293EEE9000FB7FF9 /* Products */;
 			projectDirPath = "";
@@ -731,6 +737,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3555VWY9R9;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
@@ -748,6 +755,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3555VWY9R9;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
@@ -764,6 +772,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.voiceboxUITests;
@@ -779,6 +788,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.scosman.voiceboxUITests;
@@ -831,7 +841,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E000E3362BA906D500F19B0E /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
+		E057C5582BAB3BA1003158E4 /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/criticalmoments/criticalmoments";
 			requirement = {
@@ -842,9 +852,17 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E000E3372BA906D500F19B0E /* CriticalMoments */ = {
+		E057C5562BAB38B3003158E4 /* CriticalMoments */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E000E3362BA906D500F19B0E /* XCRemoteSwiftPackageReference "criticalmoments" */;
+			productName = CriticalMoments;
+		};
+		E057C5592BAB3BA1003158E4 /* CriticalMoments */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E057C5582BAB3BA1003158E4 /* XCRemoteSwiftPackageReference "criticalmoments" */;
+			productName = CriticalMoments;
+		};
+		E0A442642BAA01AC006C27CB /* CriticalMoments */ = {
+			isa = XCSwiftPackageProductDependency;
 			productName = CriticalMoments;
 		};
 /* End XCSwiftPackageProductDependency section */
