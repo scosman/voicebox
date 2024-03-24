@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E00852622B2B4E83009FE8C0 /* ggml-distil-small.en.bin in Resources */ = {isa = PBXBuildFile; fileRef = E00852602B2B4E59009FE8C0 /* ggml-distil-small.en.bin */; };
 		E023B2042BA8D32700EA79C5 /* VBShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E023B2032BA8D32700EA79C5 /* VBShareViewController.m */; };
+		E02611112BAF450B00DE2A0E /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E02611102BAF450B00DE2A0E /* CriticalMoments */; };
 		E029C3302B2CA69D00E2687A /* ggml-quants.c in Sources */ = {isa = PBXBuildFile; fileRef = E029C32E2B2CA69D00E2687A /* ggml-quants.c */; };
 		E029C33D2B2CA6D200E2687A /* ggml-metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = E029C3342B2CA6D200E2687A /* ggml-metal.metal */; };
 		E029C3402B2CA6D200E2687A /* ggml-alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = E029C3382B2CA6D200E2687A /* ggml-alloc.c */; };
@@ -27,8 +28,8 @@
 		E049ED512944B986002080BD /* stringUtliTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E049ED502944B986002080BD /* stringUtliTests.m */; };
 		E04A3321294A347300EF6628 /* OpenAiApiRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E04A3320294A347300EF6628 /* OpenAiApiRequest.m */; };
 		E04B889F2B4B9C8C00735169 /* cmConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = E04B889E2B4B9C8C00735169 /* cmConfig.json */; };
+		E052B08D2BAF331E00E9415B /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E052B08C2BAF331E00E9415B /* CriticalMoments */; };
 		E057C5572BAB38B3003158E4 /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E057C5562BAB38B3003158E4 /* CriticalMoments */; };
-		E057C55A2BAB3BA1003158E4 /* CriticalMoments in Frameworks */ = {isa = PBXBuildFile; productRef = E057C5592BAB3BA1003158E4 /* CriticalMoments */; };
 		E05B9111293FC4ED004DBFE2 /* VBSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E05B9110293FC4ED004DBFE2 /* VBSpeechSynthesizer.m */; };
 		E07DFF522B2781ED00930E10 /* rawResp.md in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF512B2781ED00930E10 /* rawResp.md */; };
 		E07DFF542B27DA8900930E10 /* gpt3.5 - long.txt in Resources */ = {isa = PBXBuildFile; fileRef = E07DFF532B27DA8900930E10 /* gpt3.5 - long.txt */; };
@@ -152,7 +153,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0A442652BAA01AC006C27CB /* CriticalMoments in Frameworks */,
-				E057C55A2BAB3BA1003158E4 /* CriticalMoments in Frameworks */,
+				E02611112BAF450B00DE2A0E /* CriticalMoments in Frameworks */,
+				E052B08D2BAF331E00E9415B /* CriticalMoments in Frameworks */,
 				E057C5572BAB38B3003158E4 /* CriticalMoments in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,7 +354,8 @@
 			packageProductDependencies = (
 				E0A442642BAA01AC006C27CB /* CriticalMoments */,
 				E057C5562BAB38B3003158E4 /* CriticalMoments */,
-				E057C5592BAB3BA1003158E4 /* CriticalMoments */,
+				E052B08C2BAF331E00E9415B /* CriticalMoments */,
+				E02611102BAF450B00DE2A0E /* CriticalMoments */,
 			);
 			productName = voicebox;
 			productReference = E0BBF1E9293EEE9000FB7FF9 /* voicebox.app */;
@@ -426,7 +429,7 @@
 			);
 			mainGroup = E0BBF1E0293EEE9000FB7FF9;
 			packageReferences = (
-				E057C5582BAB3BA1003158E4 /* XCRemoteSwiftPackageReference "criticalmoments" */,
+				E026110F2BAF450B00DE2A0E /* XCRemoteSwiftPackageReference "criticalmoments" */,
 			);
 			productRefGroup = E0BBF1EA293EEE9000FB7FF9 /* Products */;
 			projectDirPath = "";
@@ -841,24 +844,28 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E057C5582BAB3BA1003158E4 /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
+		E026110F2BAF450B00DE2A0E /* XCRemoteSwiftPackageReference "criticalmoments" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/criticalmoments/criticalmoments";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.1;
+				minimumVersion = 0.9.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E057C5562BAB38B3003158E4 /* CriticalMoments */ = {
+		E02611102BAF450B00DE2A0E /* CriticalMoments */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E026110F2BAF450B00DE2A0E /* XCRemoteSwiftPackageReference "criticalmoments" */;
+			productName = CriticalMoments;
+		};
+		E052B08C2BAF331E00E9415B /* CriticalMoments */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CriticalMoments;
 		};
-		E057C5592BAB3BA1003158E4 /* CriticalMoments */ = {
+		E057C5562BAB38B3003158E4 /* CriticalMoments */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E057C5582BAB3BA1003158E4 /* XCRemoteSwiftPackageReference "criticalmoments" */;
 			productName = CriticalMoments;
 		};
 		E0A442642BAA01AC006C27CB /* CriticalMoments */ = {

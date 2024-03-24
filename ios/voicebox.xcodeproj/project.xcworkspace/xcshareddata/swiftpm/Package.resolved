@@ -6,10 +6,10 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/criticalmoments/criticalmoments",
       "state" : {
-        "revision" : "b87ebb60296270aa6607619bc4d71cf1502ca701",
-        "version" : "0.9.1"
+        "revision" : "2cef8c0b6208ef6fd7b97b6151bc3ffc8fff40c4",
+        "version" : "0.9.2"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
