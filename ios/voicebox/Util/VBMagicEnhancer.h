@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)enhance:(NSString*)text onComplete:(void (^)(NSArray<ResponseOption*>*, NSError*))complete;
 
+- (void)generateSubjectForEmail:(NSString*)emailText onComplete:(void (^)(NSString* _Nullable, NSError* _Nullable))complete;
+
 @end
 
 NS_ASSUME_NONNULL_END

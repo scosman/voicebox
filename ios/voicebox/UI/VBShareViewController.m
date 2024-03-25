@@ -6,6 +6,7 @@
 //
 
 #import "VBShareViewController.h"
+#import "../Util/VBMagicEnhancer.h"
 #import "../Util/VBStringUtils.h"
 #import "Constants.h"
 #import "VBButton.h"
@@ -121,32 +122,52 @@
 
 - (void)email:(UIButton*)sender
 {
-    NSString* body = self.content;
+    UIAlertController* generatingSubjectAlert = [UIAlertController alertControllerWithTitle:@"Generating Subject Line" message:@"\nThis will only take a few seconds....\n" preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:generatingSubjectAlert animated:YES completion:nil];
+
+    __block NSString* body = self.content;
+    VBMagicEnhancer* enhancer = [[VBMagicEnhancer alloc] init];
+    [enhancer generateSubjectForEmail:body
+                           onComplete:^(NSString* _Nullable subject, NSError* _Nullable err) {
+                               dispatch_sync(dispatch_get_main_queue(), ^{
+                                   [generatingSubjectAlert dismissViewControllerAnimated:NO completion:nil];
+                               });
+
+                               // Send even if error generating subject
+                               [self showSendEmail:body withSubject:subject];
+                           }];
+}
+
+- (void)showSendEmail:(NSString*)body withSubject:(NSString*)subject
+{
     // Mailto required /r/n
     body = [body stringByReplacingOccurrencesOfString:@"\n" withString:@"\r\n"];
 
     NSURLComponents* urlComps = [NSURLComponents componentsWithString:@"mailto:"];
     urlComps.queryItems = @[
         [NSURLQueryItem queryItemWithName:@"body"
-                                    value:body]
-        // TODO: smart ML @"subject"
+                                    value:body],
+        [NSURLQueryItem queryItemWithName:@"subject"
+                                    value:subject]
     ];
     NSURL* url = urlComps.URL;
 
-    [[UIApplication sharedApplication] openURL:url
-                                       options:@{}
-                             completionHandler:^(BOOL success) {
-                                 if (success) {
-                                     [self dismissViewControllerAnimated:YES completion:nil];
-                                 } else {
-                                     UIAlertController* errVC = [UIAlertController alertControllerWithTitle:@"Error Launching Email" message:@"We could not launch your default email application." preferredStyle:UIAlertControllerStyleAlert];
-                                     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
-                                                                                             style:UIAlertActionStyleDefault
-                                                                                           handler:nil];
-                                     [errVC addAction:defaultAction];
-                                     [self presentViewController:errVC animated:YES completion:nil];
-                                 }
-                             }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] openURL:url
+            options:@{}
+            completionHandler:^(BOOL success) {
+                if (success) {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    UIAlertController* errVC = [UIAlertController alertControllerWithTitle:@"Error Launching Email" message:@"We could not launch your default email application." preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:nil];
+                    [errVC addAction:defaultAction];
+                    [self presentViewController:errVC animated:YES completion:nil];
+                }
+            }];
+    });
 }
 
 - (void)otherShare:(UIButton*)sender

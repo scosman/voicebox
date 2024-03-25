@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol VBMLProvider <NSObject>
 
+- (NSString*)sendSynchronousRequestRaw:(NSError**)error;
 - (NSMutableArray<ResponseOption*>*)sendSynchronousRequest:(NSError**)error;
 
 @end

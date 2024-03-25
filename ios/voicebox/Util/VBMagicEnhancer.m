@@ -45,6 +45,35 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
     [self requestAndBuildOptions:request withOriginalText:text withMode:mode onComplete:complete];
 }
 
+- (void)generateSubjectForEmail:(NSString*)emailText onComplete:(void (^)(NSString* _Nullable, NSError* _Nullable))complete
+{
+    ChatGptRequest* request = [[ChatGptRequest alloc] init];
+    request.systemDirective = [self emailSubjectPrompt];
+
+    ChatGptMessage* apiMessage = [[ChatGptMessage alloc] init];
+    apiMessage.roll = kChatGptRollUser;
+    apiMessage.content = emailText;
+    request.messages = @[ apiMessage ];
+
+    OpenAiApiRequest* req = [self buildApiRequest:request];
+
+    if (!request) {
+        complete(nil, [NSError errorWithDomain:@"net.scosman.voicebox.custom" code:8374834 userInfo:@{ NSLocalizedDescriptionKey : @"Issue generating email subject." }]);
+        return;
+        ;
+    }
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSError* err;
+        NSString* subject = [req sendSynchronousRequestRaw:&err];
+        if (err) {
+            complete(nil, err);
+        } else {
+            complete(subject, nil);
+        }
+    });
+}
+
 - (void)requestAndBuildOptions:(id<VBMLProvider>)request withOriginalText:(NSString*)originalText withMode:(MagicEnhancerMode)mode onComplete:(void (^)(NSArray<ResponseOption*>*, NSError*))complete
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -295,6 +324,11 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
                                                           error:NULL];
     }
     return nextSentencePrompt;
+}
+
+- (NSString*)emailSubjectPrompt
+{
+    return @"You are a useful assistant which generates friendly email subjects, given an email body.\n\nEvery user message is a user email body, to which you should reply with a suggested subject.\n\n - The suggested subject should be brief. 2 to 8 words is ideal. Never over 12 words.\n - The suggested subject should not try to repeat the email content or all topics, but just give a nice subject to identify the emails from others\n - Your reply should contain only a single suggested subject. It should not contain any prefixes (\"Suggested email subject: \", etc), and formatting (list formatting, etc), alternative suggestions, or descriptions of your sugesstion.";
 }
 
 @end

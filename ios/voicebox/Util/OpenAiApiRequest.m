@@ -208,7 +208,7 @@
     strangely it's been rock solid, so using for prototyping. Try the "n" param of open API endpoint,
     and structured response instead of parsing json from plaintext
  */
-- (NSMutableArray<ResponseOption*>*)sendSynchronousRequest:(NSError**)error
+- (NSString*)sendSynchronousRequestRaw:(NSError**)error
 {
     NSData* bodyPayloadJsonData = [NSJSONSerialization dataWithJSONObject:self.bodyPayload options:NSJSONWritingPrettyPrinted error:error];
     if (*error) {
@@ -231,11 +231,22 @@
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 
     NSURLSession* session = [NSURLSession sharedSession];
-    __block NSMutableArray<ResponseOption*>* options;
+    __block NSData* responseData;
     __block NSError* requestBlockError;
     NSURLSessionDataTask* dataTask = [session dataTaskWithRequest:urlRequest
-                                                completionHandler:^(NSData* data, NSURLResponse* response, NSError* requestError) {
-                                                    options = [self processResponse:response withData:data withRequestError:requestError withError:&requestBlockError];
+                                                completionHandler:^(NSData* _Nullable data, NSURLResponse* _Nullable response, NSError* _Nullable requestErr) {
+                                                    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+                                                    if (requestErr) {
+                                                        requestBlockError = requestErr;
+                                                    } else if (httpResponse.statusCode != 200) {
+                                                        if (data && data.length) {
+                                                            NSLog(@"Data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+                                                        }
+                                                        requestBlockError = [self apiError:999200];
+                                                    } else {
+                                                        responseData = data;
+                                                    }
+
                                                     dispatch_semaphore_signal(semaphore);
                                                 }];
     [dataTask resume];
@@ -252,32 +263,13 @@
         *error = requestBlockError;
         return nil;
     }
-    if (!options) {
+    if (!responseData) {
         *error = [self apiError:91111];
         return nil;
     }
 
-    return options;
-}
-
-- (NSMutableArray<ResponseOption*>*)processResponse:(NSURLResponse*)response withData:(NSData*)data withRequestError:(NSError*)requestError withError:(NSError**)error
-{
-    if (requestError) {
-        *error = requestError;
-        return nil;
-    }
-
-    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-    if (httpResponse.statusCode != 200) {
-        if (data && data.length) {
-            NSLog(@"Data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-        }
-        *error = [self apiError:999200];
-        return nil;
-    }
-
     NSError* jsonError = nil;
-    id parsedJsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+    id parsedJsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&jsonError];
     if (jsonError) {
         *error = jsonError;
         return nil;
@@ -289,7 +281,13 @@
         return nil;
     }
 
-    return [OpenAiApiRequest processMessageString:responseMessage withError:error];
+    return responseMessage;
+}
+
+- (NSMutableArray<ResponseOption*>*)sendSynchronousRequest:(NSError**)error
+{
+    NSString* openAiMessage = [self sendSynchronousRequestRaw:error];
+    return [OpenAiApiRequest processMessageString:openAiMessage withError:error];
 }
 
 + (NSMutableArray<ResponseOption*>*)processMessageString:(NSString*)msgString withError:(NSError**)error
