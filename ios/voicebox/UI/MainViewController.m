@@ -164,12 +164,12 @@
 
         // Share button
         [shareButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor
-                                                 constant:-32.0],
+                                                 constant:-21.0],
         [shareButton.leadingAnchor constraintEqualToAnchor:textView.leadingAnchor
-                                                  constant:32.0],
+                                                  constant:21.0],
         [shareButton.heightAnchor constraintEqualToConstant:shareButtonHeight],
 
-        // Clear text button
+        // Clear text button (values impacted by scale)
         [clearRestoreTextButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor
                                                             constant:-32.0],
         [clearRestoreTextButton.trailingAnchor constraintEqualToAnchor:textView.trailingAnchor
