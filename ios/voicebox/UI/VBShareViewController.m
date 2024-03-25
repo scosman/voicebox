@@ -143,6 +143,8 @@
     // Mailto required /r/n
     body = [body stringByReplacingOccurrencesOfString:@"\n" withString:@"\r\n"];
 
+    NSLog(@"Subject: %@", subject);
+
     NSURLComponents* urlComps = [NSURLComponents componentsWithString:@"mailto:"];
     urlComps.queryItems = @[
         [NSURLQueryItem queryItemWithName:@"body"
@@ -159,12 +161,14 @@
                 if (success) {
                     [self dismissViewControllerAnimated:YES completion:nil];
                 } else {
-                    UIAlertController* errVC = [UIAlertController alertControllerWithTitle:@"Error Launching Email" message:@"We could not launch your default email application." preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
-                                                                            style:UIAlertActionStyleDefault
-                                                                          handler:nil];
-                    [errVC addAction:defaultAction];
-                    [self presentViewController:errVC animated:YES completion:nil];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        UIAlertController* errVC = [UIAlertController alertControllerWithTitle:@"Error Launching Email" message:@"We could not launch your default email application." preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:nil];
+                        [errVC addAction:defaultAction];
+                        [self presentViewController:errVC animated:YES completion:nil];
+                    });
                 }
             }];
     });

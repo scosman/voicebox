@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol VBMLProvider <NSObject>
 
-- (NSString*)sendSynchronousRequestRaw:(NSError**)error;
+- (id)sendSynchronousRequestRaw:(NSError**)error; // return parsed json (dict)
 - (NSMutableArray<ResponseOption*>*)sendSynchronousRequest:(NSError**)error;
 
 @end

@@ -52,7 +52,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
 
     ChatGptMessage* apiMessage = [[ChatGptMessage alloc] init];
     apiMessage.roll = kChatGptRollUser;
-    apiMessage.content = emailText;
+    apiMessage.content = [NSString stringWithFormat:@"The email body is as follows:\n\n%@", emailText];
     request.messages = @[ apiMessage ];
 
     OpenAiApiRequest* req = [self buildApiRequest:request];
@@ -65,12 +65,23 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSError* err;
-        NSString* subject = [req sendSynchronousRequestRaw:&err];
+        id json = [req sendSynchronousRequestRaw:&err];
         if (err) {
             complete(nil, err);
-        } else {
-            complete(subject, nil);
+            return;
         }
+        if (![json isKindOfClass:[NSDictionary class]]) {
+            complete(nil, err);
+            return;
+        }
+        NSDictionary* jsonDict = (NSDictionary*)json;
+        id subject = jsonDict[@"subject"];
+        if (![subject isKindOfClass:[NSString class]]) {
+            complete(nil, err);
+            return;
+        }
+
+        complete((NSString*)subject, nil);
     });
 }
 
@@ -328,7 +339,7 @@ typedef NS_ENUM(NSUInteger, MagicEnhancerMode) {
 
 - (NSString*)emailSubjectPrompt
 {
-    return @"You are a useful assistant which generates friendly email subjects, given an email body.\n\nEvery user message is a user email body, to which you should reply with a suggested subject.\n\n - The suggested subject should be brief. 2 to 8 words is ideal. Never over 12 words.\n - The suggested subject should not try to repeat the email content or all topics, but just give a nice subject to identify the emails from others\n - Your reply should contain only a single suggested subject. It should not contain any prefixes (\"Suggested email subject: \", etc), and formatting (list formatting, etc), alternative suggestions, or descriptions of your sugesstion.";
+    return @"You are a useful assistant which generates friendly email subjects, given an email body.\n\nEvery user message is a user email body, to which you should reply with a suggested subject (in JSON format, described below).\n\n - The suggested subject should be brief. 2 to 8 words is ideal. Never over 12 words.\n - The suggested subject should not try to repeat the email content or all topics, but just give a nice subject to identify the emails from others\n - The subject should be friendly and use plain language. For example 'question' is better than 'inquiry'.\n - You must not not guess information that isn't clearly included from the email body, or request string replacement such as '[More Data]'. If there's not enough information in the email body to generate a useful subject (and only in that case), return the exact string 'Email from Bryan' as the subject line in the JSON (this exact string, including the name Bryan, as the user's name is Bryan).\n\nYour response should be formatted as follows:\n1) First include a short 1-3 sentence description of the subject line and why it was chosen.\n2) The answer to this step must be JSON formatted and wrapped in triple backtick quotes. The root of the JSON structure is an object/map, which contains a single key 'subject', whose value is the subject line as a string. The response will be parsed by an application, and expects this exact format, so failure to produce a valid JSON response is a complete failure. As an example of valid json is as follows: ```json\n{\"subject\": \"Email from Bryan\"}\n```\n\n";
 }
 
 @end

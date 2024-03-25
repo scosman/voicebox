@@ -208,7 +208,7 @@
     strangely it's been rock solid, so using for prototyping. Try the "n" param of open API endpoint,
     and structured response instead of parsing json from plaintext
  */
-- (NSString*)sendSynchronousRequestRaw:(NSError**)error
+- (id)sendSynchronousRequestRaw:(NSError**)error
 {
     NSData* bodyPayloadJsonData = [NSJSONSerialization dataWithJSONObject:self.bodyPayload options:NSJSONWritingPrettyPrinted error:error];
     if (*error) {
@@ -280,30 +280,28 @@
         *error = [self apiError:89345];
         return nil;
     }
+    NSLog(@"Raw string: %@", responseMessage);
 
-    return responseMessage;
-}
-
-- (NSMutableArray<ResponseOption*>*)sendSynchronousRequest:(NSError**)error
-{
-    NSString* openAiMessage = [self sendSynchronousRequestRaw:error];
-    return [OpenAiApiRequest processMessageString:openAiMessage withError:error];
-}
-
-+ (NSMutableArray<ResponseOption*>*)processMessageString:(NSString*)msgString withError:(NSError**)error
-{
-    NSLog(@"%@", msgString);
-    NSString* jsonString = [self extractJsonBlockFromStringMsg:msgString];
-    NSLog(@"%@", jsonString);
-
+    NSString* jsonString = [OpenAiApiRequest extractJsonBlockFromStringMsg:responseMessage];
     NSData* jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSError* jsonError = nil;
-    id options = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&jsonError];
+    id json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&jsonError];
     if (jsonError) {
         *error = jsonError;
         return nil;
     }
+    NSLog(@"Parsed JSON: %@", json);
 
+    return json;
+}
+
+- (NSMutableArray<ResponseOption*>*)sendSynchronousRequest:(NSError**)error
+{
+    id responseJson = [self sendSynchronousRequestRaw:error];
+    return [OpenAiApiRequest processMessageString:responseJson withError:error];
+}
+
++ (NSMutableArray<ResponseOption*>*)processMessageString:(id)options withError:(NSError**)error
+{
     NSMutableArray<ResponseOption*>* optionArray = [[NSMutableArray alloc] init];
     if ([options isKindOfClass:[NSArray class]]) {
         for (id option in (NSArray*)options) {
