@@ -164,16 +164,16 @@
 
         // Share button
         [shareButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor
-                                                 constant:-21.0],
+                                                 constant:-23.0],
         [shareButton.leadingAnchor constraintEqualToAnchor:textView.leadingAnchor
-                                                  constant:21.0],
+                                                  constant:23.0],
         [shareButton.heightAnchor constraintEqualToConstant:shareButtonHeight],
 
         // Clear text button (values impacted by scale)
         [clearRestoreTextButton.bottomAnchor constraintEqualToAnchor:textView.bottomAnchor
-                                                            constant:-32.0],
+                                                            constant:-30.0],
         [clearRestoreTextButton.trailingAnchor constraintEqualToAnchor:textView.trailingAnchor
-                                                              constant:-32.0],
+                                                              constant:-30.0],
 
         // Space above speak button, space permitting with weak height constraint
         [buttonTopSpacer.topAnchor constraintEqualToAnchor:voiceboxLabel.topAnchor],
