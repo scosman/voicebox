@@ -14,16 +14,22 @@ NS_ASSUME_NONNULL_BEGIN
 -(void) stateUpdate:(bool)running segments:(nullable NSArray<NSString*>*)segments;
 @end
 
-@interface VBAudioListener : NSObject
+@protocol VBListenerProto <NSObject>
 
+@required
 // Shared instance, which can be cleared out of memory under memory pressure, or app backgrounding
-+(VBAudioListener*) sharedInstance;
++(id<VBListenerProto>) sharedInstance;
 +(void) releaseSharedInstance;
 
 -(void) registerDelegate:(id <VBAudioListenerDelegate>)delegate;
 -(void) deregisterDelegate:(id <VBAudioListenerDelegate>)delegate;
 -(void) startListening;
 -(void)stopCapturing;
+
+@end
+
+@interface VBAudioListener : NSObject <VBListenerProto>
+
 
 @end
 

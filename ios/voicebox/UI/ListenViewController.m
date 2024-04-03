@@ -7,6 +7,7 @@
 
 #import "ListenViewController.h"
 
+#import "../Util/VBListener.h"
 #import "Constants.h"
 #import "VBAudioListener.h"
 
@@ -20,6 +21,13 @@
 @end
 
 @implementation ListenViewController
+
+- (id<VBListenerProto>)listener
+{
+    // My implementation vs Atila's
+    return [VBListener sharedInstance];
+    // return [VBAudioListener sharedInstance];
+}
 
 - (void)viewDidLoad
 {
@@ -89,21 +97,21 @@
     [NSLayoutConstraint activateConstraints:constraints];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[VBAudioListener sharedInstance] registerDelegate:self];
-        [[VBAudioListener sharedInstance] startListening];
+        [[self listener] registerDelegate:self];
+        [[self listener] startListening];
     });
 }
 
 - (void)dealloc
 {
-    [[VBAudioListener sharedInstance] deregisterDelegate:self];
+    [[self listener] deregisterDelegate:self];
 }
 
 - (void)closeButtonAction:(UIButton*)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[VBAudioListener sharedInstance] stopCapturing];
+        [[self listener] stopCapturing];
     });
 }
 
